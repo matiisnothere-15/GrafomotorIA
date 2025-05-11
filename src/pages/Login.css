@@ -1,28 +1,25 @@
-/* CONTENEDOR GENERAL */
+/* login-wrapper está en el div principal */
 .login-wrapper {
-  height: 100vh;
-  width: 100vw;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 100%;
   background: url('../assets/login-bg.jpg') no-repeat center center;
   background-size: cover;
-  position: relative;
 }
 
-/* ENCABEZADO CON LOGO */
+/* login-header es el header fijo */
 .login-header {
-  width: 100%;
-  padding: 0.7rem 0.5rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
+  height: 80px;
   background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .login-logo {
-  height: 65px;
+  height: 40px;
   object-fit: contain;
 }
 

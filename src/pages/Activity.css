@@ -1,0 +1,86 @@
+/* Contenedor general */
+.activity-wrapper {
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Grid de tarjetas */
+  .activity-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(260px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    padding: 1rem;
+  }
+  
+  /* Tarjeta individual */
+  .activity-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 250px; /* altura fija para alinear */
+  }
+  
+  
+  .activity-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  /* Icono grande */
+  .activity-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Título */
+  .activity-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #222;
+  }
+  
+  /* Etiqueta de categoría */
+  .activity-tag {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+  }
+  
+  /* Estilos por categoría */
+  .activity-tag.motricidad-fina {
+    background-color: #8ec8ff;
+  }
+  
+  .activity-tag.visomotor {
+    background-color: #d5a5f5;
+  }
+  
+  @media (max-width: 1024px) {
+    .activity-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .activity-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
