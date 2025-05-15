@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import './Activity.css';
 import logo from '../assets/teleton-logo.png';
@@ -8,6 +8,7 @@ import {
   FaUser,
   FaCog
 } from 'react-icons/fa';
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 // 🖼️ Importa imágenes desde assets
 import figura from '../assets/ejercicios/copia-figuras.png';
@@ -32,7 +33,15 @@ const Actividades: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/', { replace: true });
+  };
+
   useEffect(() => {
+    document.title = 'Grafomotor IA | Actividades';
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
@@ -45,12 +54,16 @@ const Actividades: React.FC = () => {
   }, []);
 
   return (
-    <div className="login-wrapper">
+    <div className="home-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Teletón" className="login-logo" />
+        <div className='logo'>
+          <img src={logo} alt="Teletón" className="login-logo" />
+          <hr className='linea'/>
+          <p className='nombre-logo'>Grafomotor IA</p>
+        </div>
         <div className="user-container" ref={dropdownRef}>
           <div className="user-label" onClick={() => setMenuOpen(!menuOpen)}>
-            <span>Hola, usuario</span>
+            <span>Hola, {sessionStorage.getItem("nombre") || "Usuario"}</span>
             <FaUserCircle className="user-icon" />
           </div>
           {menuOpen && (
@@ -61,6 +74,9 @@ const Actividades: React.FC = () => {
               <Link to="/ajustes">
                 <FaCog /> Ajustes
               </Link>
+              <button onClick={handleLogout} className="logout">
+                <RiLogoutBoxLine /> Salir
+              </button>
             </div>
           )}
         </div>

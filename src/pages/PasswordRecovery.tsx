@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Login.css';
 import './PasswordRecovery.css';
@@ -8,6 +8,10 @@ const PasswordRecovery: React.FC = () => {
   const [email, setEmail] = useState('');
   const [enviado, setEnviado] = useState(false);
   const [animando, setAnimando] = useState(false);
+
+  useEffect(() => {
+    document.title = 'Grafomotor IA | Recuperar contraseña';
+  },[]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +27,11 @@ const PasswordRecovery: React.FC = () => {
   return (
     <div className="login-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Teletón" className="login-logo" />
+        <div className='logo'>
+          <img src={logo} alt="Teletón" className="login-logo" />
+          <hr className='linea'/>
+          <p className='nombre-logo'>Grafomotor IA</p>
+        </div>
       </header>
 
       <main className="login-page">

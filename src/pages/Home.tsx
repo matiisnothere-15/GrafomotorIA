@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css'; // Fondo y header
 import './Home.css';
 import logo from '../assets/teleton-logo.png';
@@ -15,22 +15,31 @@ import {
   FaUser,
   FaCog
 } from 'react-icons/fa';
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 const opciones = [
-  { icono: <FaClipboardList />, texto: 'Sesiones', ruta: '/sesiones' },
-  { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: '/citas' },
-  { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: '/actividades' },
-  { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: '/planes' },
-  { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/seguimiento' },
-  { icono: <FaFileAlt />, texto: 'Reportes e informes', ruta: '/reportes' },
-  { icono: <FaInfoCircle />, texto: 'Ayuda y soporte', ruta: '/ayuda' }
+  { icono: <FaClipboardList />, texto: 'Sesiones', ruta: 'sesiones' },
+  { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: 'citas' },
+  { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: 'actividades' },
+  { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: 'planes' },
+  { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: 'seguimiento' },
+  { icono: <FaFileAlt />, texto: 'Reportes e informes', ruta: 'reportes' },
+  { icono: <FaInfoCircle />, texto: 'Ayuda y soporte', ruta: 'ayuda' }
 ];
 
 const Home: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/', { replace: true });
+  };
+
   useEffect(() => {
+    document.title = 'Grafomotor IA | Inicio';
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
@@ -42,10 +51,15 @@ const Home: React.FC = () => {
     };
   }, []);
 
+
   return (
-    <div className="login-wrapper">
+    <div className="home-wrapper">
       <header className="login-header">
-        <img src={logo} alt="Teletón" className="login-logo" />
+        <div className='logo'>
+          <img src={logo} alt="Teletón" className="login-logo" />
+          <hr className='linea'/>
+          <p className='nombre-logo'>Grafomotor IA</p>
+        </div>
         <div className="user-container" ref={dropdownRef}>
           <div className="user-label" onClick={() => setMenuOpen(!menuOpen)}>
             <span>Hola, {sessionStorage.getItem("nombre") || "Usuario"}</span>
@@ -59,6 +73,9 @@ const Home: React.FC = () => {
               <Link to="/ajustes">
                 <FaCog /> Ajustes
               </Link>
+              <button onClick={handleLogout} className="logout">
+                <RiLogoutBoxLine /> Salir
+              </button>
             </div>
           )}
         </div>

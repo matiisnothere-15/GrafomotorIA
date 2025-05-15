@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../assets/teleton-logo.png';
-import UserMenu from './UserMenu';
+import UserMenu from './UserMenu (sin uso)';
 import './Header.css';
 
 const Header: React.FC = () => {

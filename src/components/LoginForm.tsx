@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './LoginForm.css';
 
 interface LoginFormProps {
@@ -33,6 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         required
       />
       <button type="submit">Ingresar</button>
+      <Link to={'/recuperar-contrasena'} className='forgot-password-link'>¿Olvidaste tu contraseña?</Link>
     </form>
   );
 };
