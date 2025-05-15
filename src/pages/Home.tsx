@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         <img src={logo} alt="Teletón" className="login-logo" />
         <div className="user-container" ref={dropdownRef}>
           <div className="user-label" onClick={() => setMenuOpen(!menuOpen)}>
-            <span>Hola, usuario</span>
+            <span>Hola, {sessionStorage.getItem("nombre") || "Usuario"}</span>
             <FaUserCircle className="user-icon" />
           </div>
           {menuOpen && (
