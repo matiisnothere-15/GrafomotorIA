@@ -3,18 +3,35 @@ import Login from '../pages/Login';
 import PasswordRecovery from '../pages/PasswordRecovery';
 import Home from '../pages/Home';
 import Actividades from '../pages/Actividades';
-import CambiarContrasena from '../pages/CambiarContrasena';
+import RestablecerContrasena from '../pages/RestablecerContrasena';
+import PrivateRoute from '../components/PrivateRoute';
+
 function AppRoutes() {
   return (
     <Routes>
+      {/* Rutas públicas */}
       <Route path="/" element={<Login />} />
-      <Route path="/recuperar" element={<PasswordRecovery />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/actividades" element={<Actividades />} />
-      <Route path="/cambiar-contrasena" element={<CambiarContrasena />} />
+      <Route path="/recuperar-contrasena" element={<PasswordRecovery />} />
+      <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} />
+      
 
-
-      {/* Aquí se agergan  más rutas luego */}
+      {/* Rutas protegidas */}
+      <Route
+        path="/home"
+        element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/actividades"
+        element={
+          <PrivateRoute>
+            <Actividades />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

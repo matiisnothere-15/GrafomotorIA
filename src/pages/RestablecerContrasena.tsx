@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import './Login.css'; // reutiliza estilos existentes
+import Header from '../components/Header'; 
+import './Login.css';
 
-const CambiarContrasena: React.FC = () => {
+const RestablecerContrasena: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token'); // no se usa aún
+  const token = searchParams.get('token'); 
 
   const [password, setPassword] = useState('');
   const [confirmacion, setConfirmacion] = useState('');
@@ -19,12 +20,14 @@ const CambiarContrasena: React.FC = () => {
       return;
     }
 
-    // Aquí se agregará la lógica de envío real más adelante
+    // se agregará la lógica real 
     console.log('Formulario válido. Token:', token);
   };
 
   return (
     <div className="login-wrapper">
+      <Header /> 
+
       <main className="login-page">
         <div className="recovery-form">
           <h2>Restablecer Contraseña</h2>
@@ -53,4 +56,4 @@ const CambiarContrasena: React.FC = () => {
   );
 };
 
-export default CambiarContrasena;
+export default RestablecerContrasena;

@@ -33,11 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         required
       />
       <button type="submit">Ingresar</button>
-
-
-      <div className="forgot-password">
-        <Link to="/recuperar">¿Olvidaste tu contraseña?</Link>
-      </div>
+      <Link to={'/recuperar-contrasena'} className='forgot-password-link'>¿Olvidaste tu contraseña?</Link>
     </form>
   );
 };

@@ -1,3 +1,37 @@
+/* Logo con nombre*/
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nombre-logo {
+  margin: 0;
+  font-weight: bolder;
+  font-size: 17px;
+}
+
+.linea {
+  color: black;
+  height: 40px;
+}
+
+.logout {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+.logout:hover {
+  background-color: white;
+  text-decoration: underline;
+}
+
 /* 🟥 Tarjetas del Home */
 .home-grid {
   display: grid;
@@ -7,6 +41,7 @@
 }
 
 .home-card {
+
   width: 350px;
   height: 120px;
   background-color: white;
@@ -26,6 +61,7 @@
 .home-card:hover {
   background-color: #ffecec;
   transform: translateY(-2px);
+  color: #1a1a1a;
 }
 
 /* 🟩 Contenedor general del grid */
@@ -54,6 +90,15 @@
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background: url('../assets/login-bg.jpg') no-repeat center center;
+  background-size: cover;
 }
 
 /* 📱 Responsividad de las tarjetas */

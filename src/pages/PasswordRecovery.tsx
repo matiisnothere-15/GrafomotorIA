@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Login.css';
 import './PasswordRecovery.css';
-import logo from '../assets/teleton-logo.png';
+import Header from '../components/Header';
 
 const PasswordRecovery: React.FC = () => {
   const [email, setEmail] = useState('');
   const [enviado, setEnviado] = useState(false);
   const [animando, setAnimando] = useState(false);
+
+  useEffect(() => {
+    document.title = 'Grafomotor IA | Recuperar contraseña';
+  },[]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +26,7 @@ const PasswordRecovery: React.FC = () => {
 
   return (
     <div className="login-wrapper">
-      <header className="login-header">
-        <img src={logo} alt="Teletón" className="login-logo" />
-      </header>
+      <Header />
 
       <main className="login-page">
         <div className="recovery-form">
