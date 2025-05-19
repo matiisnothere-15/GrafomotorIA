@@ -50,3 +50,19 @@
   color: #e50914;
   text-decoration: underline;
 }
+
+
+.forgot-password {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.forgot-password a {
+  color: #555555;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
