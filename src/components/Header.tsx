@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const ocultarMenuUsuario = ['/', '/recuperar', '/cambiar-contrasena', '/restablecer-contrasena'];
+  const ocultarMenuUsuario = ['/', '/recuperar-contrasena', '/restablecer-contrasena'];
   const mostrarUsuario = !ocultarMenuUsuario.includes(location.pathname);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Header: React.FC = () => {
     navigate('/');
   };
 
-  // ✅ Nueva función: ir a home al hacer clic en el logo o nombre
+
   const handleLogoClick = () => {
     if (mostrarUsuario) {
       navigate('/home');

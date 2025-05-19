@@ -19,6 +19,17 @@ background-size: cover;
   z-index: 0;
 }
 
+.login-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.5); /* Blanco con opacidad */
+  z-index: 0;
+}
+
 /* login-header es el header fijo */
 .login-header {
   height: 80px;

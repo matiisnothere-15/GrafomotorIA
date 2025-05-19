@@ -13,6 +13,7 @@ import {
   FaInfoCircle
 } from 'react-icons/fa';
 
+
 const opciones = [
   { icono: <FaClipboardList />, texto: 'Sesiones', ruta: '/sesiones' },
   { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: '/citas' },
@@ -27,6 +28,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     document.title = 'Grafomotor IA | Inicio';
   }, []);
+
 
   return (
     <div className="home-wrapper">
