@@ -41,6 +41,7 @@
 }
 
 .home-card {
+
   width: 350px;
   height: 120px;
   background-color: white;
@@ -60,6 +61,7 @@
 .home-card:hover {
   background-color: #ffecec;
   transform: translateY(-2px);
+  color: #1a1a1a;
 }
 
 /* 🟩 Contenedor general del grid */

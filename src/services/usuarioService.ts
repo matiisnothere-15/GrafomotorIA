@@ -1,11 +1,25 @@
-//import type { Usuario } from "../models/Usuario";
 import { BASE_URL } from "../config.ts";
 
 interface LoginResponse {
-    token: string;
+  token: string;
 }
 
-export const loginUsuario = async (email: string, password: string): Promise<LoginResponse> => {
+export const loginUsuario = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
+  // ✅ SIMULACIÓN DE LOGIN TEMPORAL
+  if (email === 'admin@demo.com' && password === 'admin123') {
+    const token = 'token-temporal';
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('nombre', 'Admin');
+    sessionStorage.setItem('apellido', 'Demo');
+    sessionStorage.setItem('tipo_usuario', 'admin');
+
+    return { token };
+  }
+
+  // 🛑 LOGIN REAL
   const data = {
     correo: email,
     contrasena: password,

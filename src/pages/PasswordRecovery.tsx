@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Login.css';
 import './PasswordRecovery.css';
-import logo from '../assets/teleton-logo.png';
+import Header from '../components/Header';
 
 const PasswordRecovery: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -26,13 +26,7 @@ const PasswordRecovery: React.FC = () => {
 
   return (
     <div className="login-wrapper">
-      <header className="login-header">
-        <div className='logo'>
-          <img src={logo} alt="Teletón" className="login-logo" />
-          <hr className='linea'/>
-          <p className='nombre-logo'>Grafomotor IA</p>
-        </div>
-      </header>
+      <Header />
 
       <main className="login-page">
         <div className="recovery-form">
