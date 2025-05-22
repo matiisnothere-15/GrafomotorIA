@@ -1,0 +1,322 @@
+.reportes-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.reportes-background {
+  flex: 1;
+  background: url('../assets/login-bg.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;    
+  align-items: flex-start;   
+  padding: 4rem 0 2rem;      
+}
+
+
+.reportes-content {
+  background-color: rgba(255,255,255,0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;                /* ocupa todo el ancho disponible */
+  max-width: none;            /* quita límites previos */
+  max-height: calc(100vh - 8rem); /* deja margen para header + padding */
+  overflow-y: auto;           /* scroll vertical si hay muchas filas */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+/* --- Encabezado interno --- */
+.reportes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.reportes-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.btn-descargar-todos {
+  background-color: #ff0000;           
+  color: #fff;                   
+  border: 2px solid #e01e5a;   
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Al hacer hover vuelve a fondo rojo con texto blanco */
+.btn-descargar-todos:hover {
+  background-color: #e01e38;
+  color: #fff;
+}
+
+
+/* --- Tabla --- */
+.tabla-reportes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.1rem;
+  table-layout: auto;
+}
+
+.tabla-reportes th,
+.tabla-reportes td {
+  border: 1px solid #eee;
+  padding: 1rem;
+  text-align: left;
+}
+
+/* Botón “Ver informe” */
+.btn-ver-informe {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+/* --- Badges de estado --- */
+.badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: white;
+}
+/* Contenedor de controles (filtro + botón) */
+.reportes-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+
+.filtro-usuario {
+  /* Tamaño y espaciado */
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  min-width: 180px;
+  max-width: 240px; 
+  border: 1px solid #e01e5a;
+  border-radius: 6px;
+  background-color: #fff;
+
+  /* Sombra suave */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  /* Tipografía */
+  color: #333;
+  font-family: inherit;
+
+  /* Oculta flecha nativa */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+
+  /* Flecha custom */
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e01e5a' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px 7px;
+
+  /* Transición suave */
+  transition: 
+    border-color 0.2s ease-in-out, 
+    box-shadow 0.2s ease-in-out;
+}
+
+/* Hover y foco en rojo oscuro */
+.filtro-usuario:hover,
+.filtro-usuario:focus {
+  border-color: #c6174b;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  outline: none;
+}
+
+/* Las opciones dentro */
+.filtro-usuario option {
+  background-color: #fff;
+  color: #333;
+}
+
+/* En navegadores que respeten option:checked */
+.filtro-usuario option:checked {
+  background-color: #ffe5ec;
+  color: #e01e5a;
+}
+
+/* ------------ Overlay y contenido ------------ */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+/* SOLO para el botón “✕” de cerrar, nada más */
+.modal-header > .modal-close {
+  background-color: #ff0303;      /* Rojo Teletón */
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color .2s;
+  padding: 0;                    /* elimina padding extra */
+}
+
+/* Hover solo en ese botón */
+.modal-header > .modal-close:hover {
+  background-color: #c8174e;
+}
+
+
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modal-close {
+  background: #ed1c24;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  width: 32px; height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Cuerpo */
+.modal-body {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-row label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.modal-row input,
+.modal-row textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  background-color: #fafafa;
+}
+
+.modal-row textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Footer con botones */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.modal-footer button {
+  flex: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-pdf {
+  background-color: #ed1c24;
+  color: #fff;
+}
+
+.btn-pdf:hover {
+  background-color: #c11920;
+}
+
+.btn-xls {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.btn-xls:hover {
+  background-color: #1e8a50;
+}
+
+
+
+/* Colores según estado */
+.estado-enevaluación  { background-color: #f0ad4e; }
+.estado-entratamiento { background-color: #5cb85c; }
+.estado-altamédica    { background-color: #6f42c1; }
+.estado-enseguimiento { background-color: #0275d8; }
+
+
+/* 1) Fuerza total anchura dentro del viewport */
+.reportes-page-wrapper .reportes-background .reportes-content {
+  width: 100vw !important;       /* usa todo el viewport width */
+  max-width: none     !important;  
+  margin: 0            !important; /* elimina márgenes heredados */
+  left: 0              !important; 
+  transform: none      !important; /* cancela cualquier translate */
+  box-sizing: border-box;         /* incluye padding en el width */
+}

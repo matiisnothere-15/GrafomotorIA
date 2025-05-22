@@ -3,6 +3,7 @@ import Login from '../pages/Login';
 import PasswordRecovery from '../pages/PasswordRecovery';
 import Home from '../pages/Home';
 import Actividades from '../pages/Actividades';
+import Reportes from '../pages/Reportes';
 import RestablecerContrasena from '../pages/RestablecerContrasena';
 import PrivateRoute from '../components/PrivateRoute';
 
@@ -13,7 +14,7 @@ function AppRoutes() {
       <Route path="/" element={<Login />} />
       <Route path="/recuperar-contrasena" element={<PasswordRecovery />} />
       <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} />
-      
+      <Route path="/reportes" element={<Reportes />} />
 
       {/* Rutas protegidas */}
       <Route
@@ -29,6 +30,14 @@ function AppRoutes() {
         element={
           <PrivateRoute>
             <Actividades />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/reportes"
+        element={
+          <PrivateRoute>
+            <Reportes />
           </PrivateRoute>
         }
       />
