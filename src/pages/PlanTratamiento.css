@@ -1,0 +1,154 @@
+/* Fondo general */
+.plan-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: url('../assets/login-bg.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+/* Header fijo como en el Home */
+.plan-wrapper > header {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Contenido centrado más abajo */
+.plan-content {
+  flex: 1;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  width: 100%;
+  max-width: 1000px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Botón nuevo tratamiento */
+.acciones-superiores {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.btn-nuevo {
+  background-color: #e60026;
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-nuevo:hover {
+  background-color: #c40021;
+}
+
+/* Tabla */
+.plan-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.plan-tabla th,
+.plan-tabla td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.plan-tabla th {
+  background-color: #e60026;
+  color: white;
+}
+
+.plan-tabla td {
+  background-color: #fff;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-contenido input,
+.modal-contenido textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100%;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.modal-acciones button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modal-acciones button:first-child {
+  background-color: #e60026;
+  color: white;
+}
+
+.modal-acciones button:last-child {
+  background-color: #ccc;
+  color: #000;
+}
+
+/* Tablet-friendly */
+@media (max-width: 1023px) {
+  .plan-content {
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .btn-nuevo {
+    font-size: 13px;
+    padding: 0.6rem 1rem;
+  }
+
+  .plan-tabla th, .plan-tabla td {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
