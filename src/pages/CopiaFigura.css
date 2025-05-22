@@ -1,0 +1,115 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  background-color: #fff;
+}
+
+.canvas-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
+}
+
+#drawing-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fdfdfd;
+  touch-action: none;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+button {
+  background-color: #e60023;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.model-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.model-container img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #00000033;
+  border-radius: 8px;
+}
+.resultado {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff6f6;
+  border: 2px solid #e60023;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #111;
+  font-size: 16px;
+  white-space: pre-wrap;
+  z-index: 20;
+  max-width: 90vw;
+  text-align: center;
+}
+.debug-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 90vw;
+  max-width: 1000px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 12px;
+  z-index: 1000;
+  overflow: auto;
+  max-height: 60vh;
+}
+
+.floating-result {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid #e60023;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  touch-action: none;
+}
+.canvas-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
