@@ -68,18 +68,18 @@ const CopiaFigura: React.FC = () => {
   };
 
   const descargarCoordenadas = (datos: { x: number; y: number }[]) => {
-    const formateado = datos
-      .map(p => `(${Math.round(p.x)}, ${Math.round(p.y)})`)
-      .join(',\n');
-    const contenido = `[\n${formateado}\n]`;
-    const blob = new Blob([contenido], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
+  const formateado = datos
+    .map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`)
+    .join(',\n');
+  const contenido = `[\n${formateado}\n]`;
+  const blob = new Blob([contenido], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'coordenadas.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'coordenadas.txt';
+  a.click();
+  URL.revokeObjectURL(url);
   };
 
   const getColor = (puntaje: number | null) => {
