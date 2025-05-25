@@ -20,7 +20,6 @@ function AppRoutes() {
       <Route path="/PlanTratameinto" element={<PlanTratamientoPage />} />
       <Route path="/CopiaFigura" element={<CopiaFigura />} />
 
-
       {/* Rutas protegidas */}
       <Route
         path="/home"
