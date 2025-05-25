@@ -17,9 +17,8 @@ function AppRoutes() {
       <Route path="/recuperar-contrasena" element={<PasswordRecovery />} />
       <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} />
       <Route path="/reportes" element={<Reportes />} />
-            <Route path="/PlanTratameinto" element={<PlanTratamientoPage />} />
+      <Route path="/PlanTratameinto" element={<PlanTratamientoPage />} />
       <Route path="/CopiaFigura" element={<CopiaFigura />} />
-
 
       {/* Rutas protegidas */}
       <Route

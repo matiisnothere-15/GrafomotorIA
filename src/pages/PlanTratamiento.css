@@ -30,11 +30,27 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
-/* Botón nuevo tratamiento */
-.acciones-superiores {
+/* Botón nuevo tratamiento abajo a la derecha */
+.plan-footer {
   display: flex;
   justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Filtro paciente mejor alineado */
+.filtro-container {
+  display: flex;
+  justify-content: flex-start;
   margin-bottom: 1.5rem;
+}
+
+.filtro-paciente {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-weight: 500;
 }
 
 .btn-nuevo {
@@ -151,4 +167,27 @@
     font-size: 13px;
     padding: 10px;
   }
+}
+
+/* Botón nuevo tratamiento abajo a la derecha */
+.plan-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Filtro paciente mejor alineado */
+.filtro-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.filtro-paciente {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-weight: 500;
 }
