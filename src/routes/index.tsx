@@ -10,6 +10,8 @@ import PlanTratamientoPage from '../pages/PlanTratamiento';
 import CopiaFigura from '../pages/CopiaFigura';
 import AyudaSoporte from '../pages/AyudaSoporte';
 import Sesion from '../pages/Sesion';
+import Calendario from '../pages/Calendario';
+
 
 
 function AppRoutes() {
@@ -24,6 +26,8 @@ function AppRoutes() {
       <Route path="/CopiaFigura" element={<CopiaFigura />} />
       <Route path="/AyudaSoporte" element={<AyudaSoporte />} />
       <Route path="/Sesion" element={<Sesion />} />
+      <Route path="/Calendario" element={<Calendario />} />
+
 
       {/* Rutas protegidas */}
       <Route

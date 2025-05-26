@@ -10,6 +10,10 @@
     "start": "serve -s dist"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/react": "^6.1.17",
+    "@fullcalendar/timegrid": "^6.1.17",
     "@turf/turf": "^7.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
