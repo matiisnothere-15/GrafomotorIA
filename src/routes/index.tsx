@@ -8,6 +8,7 @@ import RestablecerContrasena from '../pages/RestablecerContrasena';
 import PrivateRoute from '../components/PrivateRoute';
 import PlanTratamientoPage from '../pages/PlanTratamiento';
 import CopiaFigura from '../pages/CopiaFigura';
+import AyudaSoporte from '../pages/AyudaSoporte';
 
 function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ function AppRoutes() {
       <Route path="/reportes" element={<Reportes />} />
       <Route path="/PlanTratameinto" element={<PlanTratamientoPage />} />
       <Route path="/CopiaFigura" element={<CopiaFigura />} />
+      <Route path="/AyudaSoporte" element={<AyudaSoporte />} />
 
       {/* Rutas protegidas */}
       <Route

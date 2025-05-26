@@ -1,0 +1,134 @@
+.container {
+  background-image: url('/fondo-teleton.png'); /* Ajusta la ruta según tu estructura */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 800px;
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.menuBtn {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d70027;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+}
+
+.searchContainer {
+  display: flex;
+  width: 90%;
+  max-width: 800px;
+  margin-bottom: 30px;
+  background-color: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.searchInput {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.searchBtn {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #d70027;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  width: 90%;
+  max-width: 800px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  display: block;
+  color: #d70027;
+}
+
+.card p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+.emoji {
+  font-size: 32px;
+  display: block;
+  margin: auto;
+}
+
+.card-circle {
+  width: 60px;
+  height: 60px;
+  background-color: #fbeaea;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
