@@ -9,6 +9,8 @@ import PrivateRoute from '../components/PrivateRoute';
 import PlanTratamientoPage from '../pages/PlanTratamiento';
 import CopiaFigura from '../pages/CopiaFigura';
 import AyudaSoporte from '../pages/AyudaSoporte';
+import Sesion from '../pages/Sesion';
+
 
 function AppRoutes() {
   return (
@@ -21,6 +23,7 @@ function AppRoutes() {
       <Route path="/PlanTratameinto" element={<PlanTratamientoPage />} />
       <Route path="/CopiaFigura" element={<CopiaFigura />} />
       <Route path="/AyudaSoporte" element={<AyudaSoporte />} />
+      <Route path="/Sesion" element={<Sesion />} />
 
       {/* Rutas protegidas */}
       <Route
