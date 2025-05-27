@@ -1,3 +1,4 @@
+
 import { BASE_URL } from "../config.ts";
 
 interface LoginResponse {
@@ -16,7 +17,7 @@ export const loginUsuario = async (
     contrasena: password,
   };
 
-  const res = await fetch(`${BASE_URL}/login`, {
+  const res = await fetch(`${BASE_URL}/usuarios/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

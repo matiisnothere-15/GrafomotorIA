@@ -13,15 +13,14 @@ import {
   FaInfoCircle
 } from 'react-icons/fa';
 
-
 const opciones = [
-  { icono: <FaClipboardList />, texto: 'Sesiones', ruta: '/sesiones' },
-  { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: '/citas' },
+  { icono: <FaClipboardList />, texto: 'Sesiones', ruta: '/Sesion' },
+  { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: '/Calendario' },
   { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: '/actividades' },
-  { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: '/planes' },
-  { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/seguimiento' },
+  { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: '/PlanTratamiento' },
+  { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/Seguimientos' },
   { icono: <FaFileAlt />, texto: 'Reportes e informes', ruta: '/reportes' },
-  { icono: <FaInfoCircle />, texto: 'Ayuda y soporte', ruta: '/ayuda' }
+  { icono: <FaInfoCircle />, texto: 'Ayuda y soporte', ruta: '/AyudaSoporte' }
 ];
 
 const Home: React.FC = () => {
