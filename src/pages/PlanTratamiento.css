@@ -10,15 +10,17 @@
 
 /* Header fijo como en el Home */
 .plan-wrapper > header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 1000;
 }
 
 /* Contenido centrado más abajo */
 .plan-content {
   flex: 1;
-  margin-top: 3rem;
+  margin-top: 6rem;
   margin-bottom: 3rem;
   width: 100%;
   max-width: 1000px;
