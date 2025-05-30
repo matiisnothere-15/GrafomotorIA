@@ -12,7 +12,7 @@ import conexiones from '../assets/ejercicios/conexiones.png';
 import laberinto from '../assets/ejercicios/seguir-laberinto.png';
 
 const actividades = [
-  { nombre: 'Copia de Figuras', icono: figura, categoria: 'Motricidad Fina', ruta: '/CopiaFigura' },
+  { nombre: 'Copia de Figuras', icono: figura, categoria: 'Motricidad Fina', ruta: '/actividad/CopiaFigura' },
   { nombre: 'Trazado Guiado', icono: trazado, categoria: 'Motricidad Fina' },
   { nombre: 'Toque secuencial', icono: toque, categoria: 'Visomotor' },
   { nombre: 'Seleccion Guiada', icono: seleccion, categoria: 'Visomotor' },

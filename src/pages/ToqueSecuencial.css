@@ -1,0 +1,143 @@
+.toque-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url('../assets/login-bg.jpg') no-repeat center center;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.titulo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.ronda,
+.contador {
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  color: #333;
+}
+
+.boton-jugar {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.circulo {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.circulo.activo {
+  border-color: black;
+  transform: scale(1.2);
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.popup-contenido {
+  background: #ffffff;
+  padding: 2.5rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  animation: zoomIn 0.25s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.popup-contenido p {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.resumen-juego {
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: left;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.resumen-juego p {
+  margin: 0.5rem 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.boton-cerrar {
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.boton-cerrar:hover {
+  background-color: #d32f2f;
+}
+
+.porcentaje {
+  font-weight: bold;
+}
+
+.porcentaje.verde {
+  color: #4CAF50;
+}
+
+.porcentaje.amarillo {
+  color: #FFB300;
+}
+
+.porcentaje.rojo {
+  color: #E53935;
+}
