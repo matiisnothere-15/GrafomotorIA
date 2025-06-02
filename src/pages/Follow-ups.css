@@ -11,7 +11,6 @@
 }
 
 .seguimientos-wrapper {
-  background: url('../assets/login-bg.jpg') no-repeat center center;
   background-size: cover;
   min-height: 100vh;
   padding-top: 6rem;
@@ -226,7 +225,7 @@ ul li {
 
 /* === Ajuste: separación entre filas del grid === */
 .seguimiento-grid {
-  gap: 1.2rem 1rem; /* row-gap column-gap */
+  gap: 1.2rem 1rem;
 }
 
 /* === Ajuste: espaciado de leyenda en tarjeta de líneas === */
