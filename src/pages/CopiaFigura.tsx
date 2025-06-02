@@ -1,6 +1,8 @@
 import React, {useState, useEffect } from 'react';
 import Pizarra from '../components/Pizarra';
 import { modeloCirculo } from '../components/FiguraModelo';
+import type { EvaluacionEscala} from '../models/EvaluacionEscala';
+import { crearEvaluacionEscala } from '../services/evaluacionEscalaSerice';
 
 const CopiaFigura: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
@@ -67,6 +69,7 @@ const CopiaFigura: React.FC = () => {
     setPuntuacion(Math.round(baseScore));
   };
 
+  /*
   const descargarCoordenadas = (datos: { x: number; y: number }[]) => {
   const formateado = datos
     .map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`)
@@ -80,6 +83,32 @@ const CopiaFigura: React.FC = () => {
   a.download = 'coordenadas.txt';
   a.click();
   URL.revokeObjectURL(url);
+  };*/
+
+  const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
+    const formateado = imagen
+      .map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`)
+      .join(',\n');
+    const contenido = `[\n${formateado}\n]`;
+    const jsonData = JSON.parse(contenido);
+    
+    const datos: EvaluacionEscala = {
+      fecha: "2025-06-02",
+      tipo_escala: "escala 2",
+      resultado: jsonData,
+      puntaje: puntuacion!,
+      // Luego cambiar por el id del paciente realizando el ejercicio
+      id_paciente: 1
+    }
+
+    const resultado = await crearEvaluacionEscala(datos);
+
+    if (resultado) {
+      alert("Coordenadas guardadas");
+    } else {
+      alert("Error al guardar las coordenadas")
+    }
+
   };
 
   const getColor = (puntaje: number | null) => {
@@ -102,7 +131,7 @@ const CopiaFigura: React.FC = () => {
 
       {coords.length > 0 && (
         <button
-          onClick={() => descargarCoordenadas(coords)}
+          onClick={() => guardarCoordenadas(coords)}
           style={{
             position: 'absolute',
             top: 10,
@@ -117,7 +146,7 @@ const CopiaFigura: React.FC = () => {
             zIndex: 3
           }}
         >
-          Descargar coordenadas
+          Guardar coordenadas
         </button>
       )}
 
