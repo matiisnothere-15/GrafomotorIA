@@ -3,14 +3,14 @@
   --color-secundario: #fbc02d;
   --color-rojo: #e53935;
   --color-verde: #4caf50;
+  --color-texto: #333;
   --sombra: 0 8px 20px rgba(0, 0, 0, 0.05);
   --borde-redondo: 1.5rem;
-  --ancho-maximo: 70rem;
+  --ancho-maximo: 90rem;
   --padding-horizontal: 1rem;
 }
 
 .seguimientos-wrapper {
-  background: url('../assets/login-bg.jpg') no-repeat center center;
   background-size: cover;
   min-height: 100vh;
   padding-top: 6rem;
@@ -30,25 +30,24 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 2rem;
+  color: var(--color-texto);
 }
 
-/* === GRID 3x2 === */
 .seguimiento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
-/* === TARJETAS === */
 .card {
   background: var(--color-fondo);
   border-radius: var(--borde-redondo);
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: var(--sombra);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 17rem;
+  min-height: 13rem;
   transition: transform 0.2s ease;
 }
 .card:hover {
@@ -56,39 +55,20 @@
 }
 .card h3 {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
+  color: var(--color-texto);
 }
 .card p {
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin: 0.25rem 0;
+  color: var(--color-texto);
 }
 
-/* === CÍRCULO DE ACIERTO === */
-.circulo-total .circulo {
-  width: 6rem;
-  height: 6rem;
-  border-radius: 50%;
-  background: conic-gradient(var(--color-verde) 75%, #ccc 0);
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
-}
-.leyenda-circulo {
-  text-align: center;
-  font-size: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-/* === BARRAS DE PROGRESO === */
 .barra {
-  height: 1.25rem;
+  height: 1rem;
   border-radius: 0.5rem;
   background: var(--color-verde);
   color: white;
@@ -97,96 +77,177 @@
   display: flex;
   align-items: center;
   margin-top: 0.2rem;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
 }
-.barra-75 { width: 75%; }
-.barra-84 { width: 84%; }
-.barra-73 { width: 73%; }
-.barra-40 { width: 40%; }
-.barra-50 { width: 50%; }
-.barra-88 { width: 88%; }
-.barra-99 { width: 99%; }
-.barra-46 { width: 46%; }
-
 .rojo { background: var(--color-rojo) !important; }
 .naranja { background: var(--color-secundario) !important; }
 
-/* === RENDIMIENTO SIMPLIFICADO === */
-.rendimiento-simple {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 1rem;
-  text-align: center;
+ul {
+  padding-left: 1rem;
+  list-style: disc;
 }
-.rendimiento-simple > div {
-  flex: 1 1 8rem;
-  min-width: 7rem;
-}
-.rendimiento-simple img {
-  width: 3.5rem;
-  height: 3.5rem;
-  object-fit: contain;
-  margin: 0.5rem auto;
+ul li {
+  margin-bottom: 0.6rem;
+  color: var(--color-texto);
 }
 
-/* === ICONO DE USUARIO === */
+.circulo-total .circulo {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  margin: auto;
+  background: conic-gradient(var(--color-verde) 75%, #ccc 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+.leyenda-circulo {
+  text-align: center;
+  font-size: 0.7rem;
+  margin-top: 0.4rem;
+}
+
+.rendimiento-simple {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+  gap: 0.8rem;
+}
+.rendimiento-simple img {
+  width: 3.2rem;
+  height: 3.2rem;
+  object-fit: contain;
+  margin: 0.4rem auto;
+}
+.rendimiento-simple span {
+  display: block;
+  margin-top: 0.2rem;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
 .icono-usuario {
-  font-size: 3.5rem;
+  font-size: 3rem;
   color: #d40000;
   display: block;
   margin: 1rem auto 0;
 }
 
-/* === ETIQUETA DE AUTONOMÍA === */
 .autonomia {
   display: inline-block;
   margin: 0.5rem auto 0;
-  padding: 0.3rem 1rem;
+  padding: 0.2rem 0.8rem;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   border-radius: 2rem;
   background: var(--color-secundario);
   color: white;
   text-align: center;
 }
 
-/* === ADAPTACIÓN A TABLET HORIZONTAL === */
-@media screen and (max-width: 1024px) {
-  .seguimientos-content {
-    padding: 0 var(--padding-horizontal);
-  }
+.leyenda {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+}
+.leyenda span::before {
+  content: "● ";
+}
+.leyenda-azul { color: #2196f3; }
+.leyenda-rojo { color: #e53935; }
+.leyenda-naranjo { color: #fb8c00; }
 
+@media screen and (min-width: 768px) and (max-width: 1024px) {
   .seguimiento-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
   }
 
   .card {
-    padding: 1.2rem;
-    min-height: 15rem;
+    min-height: 12rem;
+    padding: 0.9rem;
   }
 
   .titulo-vista {
     font-size: 1.6rem;
   }
 
-  .barra {
-    font-size: 0.75rem;
-    height: 1.1rem;
-  }
-
-  .icono-usuario {
-    font-size: 3rem;
-  }
-
-  .autonomia {
-    font-size: 0.8rem;
-    padding: 0.25rem 0.8rem;
+  .circulo-total .circulo {
+    width: 5rem;
+    height: 5rem;
+    font-size: 1.1rem;
   }
 
   .rendimiento-simple img {
-    width: 3rem;
-    height: 3rem;
+    width: 2.8rem;
+    height: 2.8rem;
   }
+
+  .autonomia {
+    font-size: 0.7rem;
+  }
+}
+
+/* === Ajuste: tarjeta del círculo de acierto total === */
+.circulo-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.circulo-total .circulo {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  background: conic-gradient(var(--color-verde) 75%, #ccc 0);
+  margin: auto;
+  position: relative;
+}
+
+.circulo-total .circulo::after {
+  content: "75%";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* === Ajuste: separación entre filas del grid === */
+.seguimiento-grid {
+  gap: 1.2rem 1rem;
+}
+
+/* === Ajuste: espaciado de leyenda en tarjeta de líneas === */
+.leyenda {
+  margin-top: 1rem;
+}
+
+/* === Ajuste: rendimiento reciente vacío === */
+.rendimiento-reciente {
+  min-height: 13rem;
+}
+.rendimiento-simple {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+.rendimiento-simple div {
+  flex: 1 1 40%;
+  max-width: 6.5rem;
+}
+.rendimiento-simple span {
+  font-size: 0.75rem;
 }

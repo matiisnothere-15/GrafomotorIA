@@ -1,5 +1,5 @@
 .container {
-  background-image: url('/fondo-teleton.png'); /* Ajusta la ruta según tu estructura */
+  background-image: url('../assets/login-bg.jpg'); /* Ajusta la ruta según tu estructura */
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -132,3 +132,4 @@
   justify-content: center;
   margin-bottom: 8px;
 }
+

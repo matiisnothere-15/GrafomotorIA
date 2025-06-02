@@ -4,7 +4,24 @@ import './Follow-ups.css';
 import { FaUserCircle } from 'react-icons/fa';
 import figura from '../assets/ejercicios/copia-figuras.png';
 import laberinto from '../assets/ejercicios/seguir-laberinto.png';
+
+const aciertosEjercicio = [
+  { nombre: 'Trazado Guiado', porcentaje: 75 },
+  { nombre: 'Seguir Laberinto', porcentaje: 84 },
+  { nombre: 'Toque Secuencial', porcentaje: 73 },
+  { nombre: 'Copia de Figuras', porcentaje: 40 },
+];
+
+const progresoTratamiento = [
+  { nombre: 'Motricidad fina', porcentaje: 99 },
+  { nombre: 'Estimulación sensorial', porcentaje: 88 },
+  { nombre: 'Grafomotricidad', porcentaje: 75 },
+  { nombre: 'Visomotora', porcentaje: 84 },
+];
+
 const Seguimientos: React.FC = () => {
+  const aciertoTotal = 75;
+
   return (
     <div className="seguimientos-wrapper">
       <Header />
@@ -12,11 +29,10 @@ const Seguimientos: React.FC = () => {
         <h2 className="titulo-vista">Seguimiento de Progreso</h2>
 
         <div className="seguimiento-grid">
-
           {/* FILA SUPERIOR */}
           <div className="card linea">
             <h3>Progreso del Paciente</h3>
-            <div className="grafico-lineas">[Gráfico líneas]</div>
+            <div className="grafico-lineas">[Gráfico dinámico aquí]</div>
             <div className="leyenda">
               <span className="leyenda-azul">Motricidad</span>
               <span className="leyenda-rojo">Lenguaje</span>
@@ -27,16 +43,32 @@ const Seguimientos: React.FC = () => {
           <div className="card barras-ejercicio">
             <h3>Porcentaje de acierto por ejercicio</h3>
             <ul>
-              <li><span>Trazado Guiado</span><div className="barra barra-75">75%</div></li>
-              <li><span>Seguir Laberinto</span><div className="barra barra-84">84%</div></li>
-              <li><span>Toque Secuencial</span><div className="barra barra-73">73%</div></li>
-              <li><span>Copia de Figuras</span><div className="barra barra-40 rojo">40%</div></li>
+              {aciertosEjercicio.map((ej, i) => (
+                <li key={i}>
+                  <span>{ej.nombre}</span>
+                  <div
+                    className={`barra barra-${ej.porcentaje} ${
+                      ej.porcentaje < 60 ? 'rojo' : ej.porcentaje < 85 ? 'naranja' : ''
+                    }`}
+                    style={{ width: `${ej.porcentaje}%` }}
+                  >
+                    {ej.porcentaje}%
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="card circulo-total">
             <h3>Porcentaje de acierto total</h3>
-            <div className="circulo">75%</div>
+            <div
+              className="circulo"
+              style={{
+                background: `conic-gradient(var(--color-verde) ${aciertoTotal}%, #ccc 0)`
+              }}
+            >
+              {aciertoTotal}%
+            </div>
             <p className="leyenda-circulo">+60%: bien • -60%: alerta</p>
           </div>
 
@@ -60,12 +92,19 @@ const Seguimientos: React.FC = () => {
           <div className="card progreso-barras">
             <h3>Progreso del Tratamiento</h3>
             <ul>
-              <li><span>Comunicación</span><div className="barra barra-50 rojo">50%</div></li>
-              <li><span>Motricidad fina</span><div className="barra barra-99 naranja">99%</div></li>
-              <li><span>Estimulación sensorial</span><div className="barra barra-88">88%</div></li>
-              <li><span>Grafomotricidad</span><div className="barra barra-75">75%</div></li>
-              <li><span>Atención</span><div className="barra barra-46 rojo">46%</div></li>
-              <li><span>Visomotora</span><div className="barra barra-84">84%</div></li>
+              {progresoTratamiento.map((item, i) => (
+                <li key={i}>
+                  <span>{item.nombre}</span>
+                  <div
+                    className={`barra barra-${item.porcentaje} ${
+                      item.porcentaje < 60 ? 'rojo' : item.porcentaje < 85 ? 'naranja' : ''
+                    }`}
+                    style={{ width: `${item.porcentaje}%` }}
+                  >
+                    {item.porcentaje}%
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
