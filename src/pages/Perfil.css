@@ -1,0 +1,108 @@
+.perfil-page {
+  padding-top: 80px;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+}
+
+.perfil-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.foto-container input {
+  margin-top: 0.5rem;
+}
+
+.foto-perfil {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.icono-perfil {
+  font-size: 120px;
+  color: #ccc;
+}
+
+.datos-personales {
+  text-align: center;
+  font-size: 16px;
+}
+
+.datos-personales p {
+  margin: 0.25rem 0;
+}
+
+.dato strong {
+  font-family: 'Poppins', sans-serif;
+}
+
+.perfil-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.perfil-modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 320px;
+  width: 90%;
+}
+
+.modal-foto {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.modal-icon {
+  font-size: 160px;
+  color: #ccc;
+}
+
+.btn-primario {
+  background-color: #E30613;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.btn-primario:hover {
+  background-color: #c40811;
+}

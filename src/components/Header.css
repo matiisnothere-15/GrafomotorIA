@@ -26,6 +26,16 @@ login-logo {
   height: 65px;
   object-fit: contain;
 }
+.perfil-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
 
 .linea {
   border: none;
@@ -68,6 +78,11 @@ login-logo {
   color: #8b0000;
 }
 
+.user-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .user-dropdown {
   position: absolute;
   top: 120%;
