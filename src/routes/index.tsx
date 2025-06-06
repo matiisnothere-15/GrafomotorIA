@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from '../pages/Login';
 import PasswordRecovery from '../pages/PasswordRecovery';
-import RestablecerContrasena from '../pages/RestablecerContrasena';
+// import RestablecerContrasena from '../pages/RestablecerContrasena';
 
 import Home from '../pages/Home';
 import Actividades from '../pages/Actividades';
@@ -23,7 +23,7 @@ function AppRoutes() {
       {/* Rutas públicas */}
       <Route path="/" element={<Login />} />
       <Route path="/recuperar-contrasena" element={<PasswordRecovery />} />
-      <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} />
+      {/* <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} /> */}
       
 
       {/* Rutas protegidas */}
