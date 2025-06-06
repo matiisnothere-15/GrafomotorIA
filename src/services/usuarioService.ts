@@ -37,3 +37,90 @@ export const loginUsuario = async (
 
   return respuesta;
 };
+
+
+export const enviarCodigo = async (correo: string) => {
+  const data = {
+    correo: correo
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/usuarios/solicitar-codigo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+
+    if(res.status == 404) {
+      const respuesta = await res.json();
+      return respuesta;
+    } else {
+      return true;
+    }
+
+  } catch(e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export const verificarCodigo = async (correo: string, codigo: string) => {
+  const data = {
+    correo: correo,
+    codigo: codigo
+  }
+  
+  try {
+    const res = await fetch(`${BASE_URL}/usuarios/verificar-codigo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+
+    if(res.status == 400) {
+      const respuesta = await res.json();
+      return respuesta;
+    } else {
+      return true;
+    }
+
+  } catch(e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export const cambiarContrasena = async (correo: string, contrasena: string) => {
+  const data = {
+    correo: correo,
+    contrasena: contrasena
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/usuarios/resetear-contrasena`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+
+    if(res.status == 400 || res.status == 404 || res.status == 401) {
+      const respuesta = await res.json();
+      return respuesta;
+    } else {
+      return true;
+    }
+
+  } catch(e) {
+    console.log(e);
+    return false;
+  }
+}
