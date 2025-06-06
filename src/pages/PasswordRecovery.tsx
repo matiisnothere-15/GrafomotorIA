@@ -33,6 +33,11 @@ const PasswordRecovery: React.FC = () => {
       const res = await enviarCodigo(email);
       setBotonEnviar(true);
 
+      if(!res) {
+        alert('Error al enviar código, intente más tarde');
+        return;
+      }
+
       if(res.msg) {
         alert(res.msg);
         return;
@@ -47,7 +52,7 @@ const PasswordRecovery: React.FC = () => {
 
     } catch(e) {
       console.log(e);
-      alert("Error al enviar código")
+      alert("Error al enviar código, intente más tarde")
     }
   };
 
@@ -60,6 +65,11 @@ const PasswordRecovery: React.FC = () => {
       const res = await verificarCodigo(email, codigo);
       setBotonEnviar(true);
 
+      if(!res) {
+        alert('Error al verificar el código, intente más tarde');
+        return;
+      }
+
       if(res.msg) {
         alert(res.msg);
         return;
@@ -68,7 +78,7 @@ const PasswordRecovery: React.FC = () => {
       setVerificado(true);
     } catch(e) {
       console.log(e);
-      alert('Error al verificar el código');
+      alert('Error al verificar el código, intente más tarde');
     }
   };
 
@@ -85,6 +95,11 @@ const PasswordRecovery: React.FC = () => {
       const res = await cambiarContrasena(email, newcontrasena);
       setBotonEnviar(true);
 
+      if(!res) {
+        alert('Error al cambiar la contraseña, intente más tarde');
+        return;
+      }
+
       if(res.msg) {
         alert(res.msg);
         return;
@@ -94,7 +109,7 @@ const PasswordRecovery: React.FC = () => {
       navigate('/');
     } catch(e) {
       console.log(e);
-      alert('Error al cambiar la contraseña');
+      alert('Error al cambiar la contraseña, intente más tarde');
     }
 
   };
