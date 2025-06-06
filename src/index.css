@@ -1,5 +1,5 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   line-height: 1.5;
   font-weight: 400;
 
@@ -22,7 +22,7 @@ html, body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Roboto', 'Noto Sans', 'Segoe UI', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;

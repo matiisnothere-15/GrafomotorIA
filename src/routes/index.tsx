@@ -12,6 +12,7 @@ import AyudaSoporte from '../pages/AyudaSoporte';
 import Sesion from '../pages/Sesion';
 import Calendario from '../pages/Calendario';
 import Seguimientos from '../pages/Follow-ups';
+import Perfil from '../pages/Perfil';
 import PrivateRoute from '../components/PrivateRoute';
 import ToqueSecuencial from '../pages/ToqueSecuencial';
 
@@ -36,6 +37,7 @@ function AppRoutes() {
       <Route path="/Calendario" element={<PrivateRoute><Calendario /></PrivateRoute>} />
       <Route path="/Seguimientos" element={<PrivateRoute><Seguimientos /></PrivateRoute>} />
       <Route path="/actividad/toque-secuencial" element={<ToqueSecuencial />} />
+      <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
     </Routes>
   );
 }
