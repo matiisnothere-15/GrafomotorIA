@@ -2,7 +2,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-image: url('../assets/login-bg.jpg')  no-repeat center center;
+  background-image: url('../assets/login-bg.jpg') no-repeat center center;
   background-size: cover;
   font-family: 'Poppins', sans-serif;
   overflow: hidden;
@@ -14,14 +14,15 @@
   font-size: 2.4rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #222;
+  color: #E30613;
 }
 
 .ronda,
 .contador {
   font-size: 1.4rem;
   margin-bottom: 0.8rem;
-  color: #333;
+  color: #555555;
+  font-family: 'Roboto', sans-serif;
 }
 
 .boton-jugar {
@@ -32,11 +33,17 @@
   padding: 1rem 2rem;
   font-size: 1.2rem;
   font-weight: bold;
-  background-color: #e53935;
+  background-color: #E30613;
   color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  min-height: 44px;
+  transition: background-color 0.2s;
+}
+
+.boton-jugar:hover {
+  background-color: #B8040F;
 }
 
 .circulo {
@@ -50,9 +57,10 @@
 }
 
 .circulo.activo {
-  border-color: black;
+  border-color: #222;
   transform: scale(1.2);
 }
+
 .popup {
   position: fixed;
   top: 0;
@@ -73,7 +81,7 @@
 }
 
 .popup-contenido {
-  background: #ffffff;
+  background: #FFFFFF;
   padding: 2.5rem 2rem;
   border-radius: 1.5rem;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
@@ -81,6 +89,7 @@
   max-width: 400px;
   text-align: center;
   animation: zoomIn 0.25s ease;
+  font-family: 'Roboto', sans-serif;
 }
 
 @keyframes zoomIn {
@@ -99,8 +108,9 @@
   margin-top: 1rem;
   font-size: 1rem;
   text-align: left;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #DDD;
   padding-top: 1rem;
+  font-family: 'Roboto', sans-serif;
 }
 
 .resumen-juego p {
@@ -114,20 +124,22 @@
   padding: 0.8rem 1.6rem;
   font-size: 1rem;
   font-weight: 600;
-  background-color: #e53935;
+  background-color: #E30613;
   color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  min-height: 44px;
   transition: background-color 0.2s ease-in-out;
 }
 
 .boton-cerrar:hover {
-  background-color: #d32f2f;
+  background-color: #B8040F;
 }
 
 .porcentaje {
   font-weight: bold;
+  font-family: 'Roboto', sans-serif;
 }
 
 .porcentaje.verde {
@@ -139,5 +151,5 @@
 }
 
 .porcentaje.rojo {
-  color: #E53935;
+  color: #E30613;
 }
