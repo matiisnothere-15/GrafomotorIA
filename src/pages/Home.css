@@ -1,4 +1,4 @@
-/* Logo con nombre*/
+/* Logo con nombre */
 .logo {
   display: flex;
   align-items: center;
@@ -8,11 +8,13 @@
 .nombre-logo {
   margin: 0;
   font-weight: bolder;
-  font-size: 17px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  color: #E30613;
 }
 
 .linea {
-  color: black;
+  color: #555555;
   height: 40px;
 }
 
@@ -26,9 +28,11 @@
   align-items: center;
   gap: 0.5rem;
   width: 100%;
+  min-width: 44px;
+  min-height: 44px;
 }
 .logout:hover {
-  background-color: white;
+  background-color: #FFFFFF;
   text-decoration: underline;
 }
 
@@ -41,10 +45,9 @@
 }
 
 .home-card {
-
   width: 350px;
   height: 120px;
-  background-color: white;
+  background-color: #FFFFFF;
   border-radius: 16px;
   padding: 1.25rem 1.5rem;
   text-decoration: none;
@@ -57,9 +60,8 @@
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-/* 🟧 Hover de las tarjetas */
 .home-card:hover {
-  background-color: #ffecec;
+  background-color: #FBEAEA;
   transform: translateY(-2px);
   color: #1a1a1a;
 }
@@ -74,14 +76,14 @@
 
 /* 🟨 Íconos circulares dentro de las tarjetas */
 .card-circle {
-  background-color: #fcdcdc;
+  background-color: #FBEAEA;
   border-radius: 50%;
   width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8b0000;
+  color: #E30613;
   font-size: 1.8rem;
   flex-shrink: 0;
 }
@@ -89,6 +91,7 @@
 .card-texto {
   font-size: 1.25rem;
   font-weight: 600;
+  font-family: 'Roboto', sans-serif;
   white-space: nowrap;
 }
 
@@ -132,14 +135,15 @@
   cursor: pointer;
   font-size: 0.95rem;
   color: #333;
+  font-family: 'Roboto', sans-serif;
 }
 
 .user-icon {
-  background-color: #fcdcdc;
+  background-color: #FBEAEA;
   border-radius: 50%;
   padding: 0.4rem;
   font-size: 3rem;
-  color: #8b0000;
+  color: #E30613;
 }
 
 .user-dropdown {
@@ -147,7 +151,7 @@
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  background: white;
+  background: #FFFFFF;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -162,9 +166,10 @@
   color: #333;
   text-decoration: none;
   font-size: 0.95rem;
+  font-family: 'Roboto', sans-serif;
 }
 
 .user-dropdown a:hover {
-  background-color: #ffecec;
-  color: #e50914;
+  background-color: #FBEAEA;
+  color: #E30613;
 }

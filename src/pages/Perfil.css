@@ -4,14 +4,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 .perfil-card {
-  background: #fff;
+  background: #FFFFFF;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,12 +39,14 @@
 
 .icono-perfil {
   font-size: 120px;
-  color: #ccc;
+  color: #CCCCCC;
 }
 
 .datos-personales {
   text-align: center;
   font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  color: #555555;
 }
 
 .datos-personales p {
@@ -53,6 +55,7 @@
 
 .dato strong {
   font-family: 'Poppins', sans-serif;
+  color: #E30613;
 }
 
 .perfil-modal-overlay {
@@ -61,7 +64,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,15 +72,16 @@
 }
 
 .perfil-modal {
-  background: #fff;
+  background: #FFFFFF;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   max-width: 320px;
   width: 90%;
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-foto {
@@ -89,20 +93,21 @@
 
 .modal-icon {
   font-size: 160px;
-  color: #ccc;
+  color: #CCCCCC;
 }
 
 .btn-primario {
   background-color: #E30613;
-  color: #fff;
+  color: #FFFFFF;
   border: none;
   border-radius: 8px;
   padding: 0.6em 1.2em;
   font-size: 1rem;
-  font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Roboto', sans-serif;
   cursor: pointer;
+  min-height: 44px;
 }
 
 .btn-primario:hover {
-  background-color: #c40811;
+  background-color: #B8040F;
 }

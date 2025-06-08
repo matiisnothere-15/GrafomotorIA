@@ -1,11 +1,14 @@
-body, html {
+html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
   height: 100%;
-  background-color: #fff;
+  background: url('../assets/login-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Roboto', 'Poppins';
 }
 
+/* Canvas principal */
 .canvas-container {
   position: relative;
   width: 100vw;
@@ -13,14 +16,16 @@ body, html {
   touch-action: none;
 }
 
+canvas,
 #drawing-canvas {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #fdfdfd;
+  background-color: #FFFFFF;
   touch-action: none;
 }
 
+/* Controles flotantes (botones) */
 .controls {
   position: absolute;
   bottom: 20px;
@@ -29,15 +34,24 @@ body, html {
 }
 
 button {
-  background-color: #e60023;
+  background-color: #E30613;
   color: white;
   padding: 12px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  min-height: 44px;
+  min-width: 44px;
+  transition: background-color 0.2s;
 }
 
+button:hover {
+  background-color: #B8040F;
+}
+
+/* Modelo de referencia */
 .model-container {
   position: absolute;
   top: 20px;
@@ -48,16 +62,19 @@ button {
 .model-container img {
   width: 100px;
   height: 100px;
-  border: 2px solid #00000033;
-  border-radius: 8px;
+  border: 2px solid #DDD;
+  border-radius: 10px;
+  object-fit: cover;
 }
+
+/* Resultado */
 .resultado {
   position: absolute;
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #fff6f6;
-  border: 2px solid #e60023;
+  background-color: #FFF6F6;
+  border: 2px solid #E30613;
   padding: 16px 24px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -67,29 +84,17 @@ button {
   z-index: 20;
   max-width: 90vw;
   text-align: center;
-}
-.debug-info {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: 90vw;
-  max-width: 1000px;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  font-size: 12px;
-  z-index: 1000;
-  overflow: auto;
-  max-height: 60vh;
+  font-family: 'Roboto', sans-serif;
 }
 
+/* Resultado flotante superior */
 .floating-result {
   position: absolute;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #fff;
-  border: 2px solid #e60023;
+  background: #FFFFFF;
+  border: 2px solid #E30613;
   padding: 12px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -97,19 +102,22 @@ button {
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
   z-index: 999;
+  font-family: 'Roboto', sans-serif;
 }
 
-
-canvas {
+/* Información de depuración */
+.debug-info {
   position: absolute;
-  top: 0;
-  left: 0;
-  background: #fff;
-  touch-action: none;
+  bottom: 20px;
+  left: 20px;
+  width: 90vw;
+  max-width: 1000px;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  padding: 10px;
+  font-size: 12px;
+  z-index: 1000;
+  overflow: auto;
+  max-height: 60vh;
+  font-family: 'Roboto', monospace;
 }
-.canvas-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-}
-

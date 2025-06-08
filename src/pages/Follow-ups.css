@@ -1,8 +1,8 @@
 :root {
   --color-fondo: #ffffff;
-  --color-secundario: #fbc02d;
-  --color-rojo: #e53935;
-  --color-verde: #4caf50;
+  --color-secundario: #FFB300;
+  --color-rojo: #E30613;
+  --color-verde: #4CAF50;
   --color-texto: #333;
   --sombra: 0 8px 20px rgba(0, 0, 0, 0.05);
   --borde-redondo: 1.5rem;
@@ -10,10 +10,14 @@
   --padding-horizontal: 1rem;
 }
 
+body {
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Roboto', 'Poppins';
+}
+
 .seguimientos-wrapper {
   background-size: cover;
   min-height: 100vh;
-  padding-top: 6rem;
+  padding-top: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,16 +31,21 @@
 
 .titulo-vista {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
+  color: #E30613; 
+  margin-top: 6rem;
   margin-bottom: 2rem;
-  color: var(--color-texto);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  z-index: 10;
 }
+
 
 .seguimiento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
+  gap: 1.2rem 1rem;
 }
 
 .card {
@@ -49,6 +58,7 @@
   justify-content: space-between;
   min-height: 13rem;
   transition: transform 0.2s ease;
+  font-family: 'Roboto', sans-serif;
 }
 .card:hover {
   transform: translateY(-2px);
@@ -91,6 +101,13 @@ ul li {
   color: var(--color-texto);
 }
 
+.circulo-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 .circulo-total .circulo {
   width: 5.5rem;
   height: 5.5rem;
@@ -103,7 +120,16 @@ ul li {
   font-size: 1.2rem;
   font-weight: 700;
   color: white;
+  position: relative;
 }
+.circulo-total .circulo::after {
+  content: "75%";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .leyenda-circulo {
   text-align: center;
   font-size: 0.7rem;
@@ -113,9 +139,15 @@ ul li {
 .rendimiento-simple {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  gap: 0.8rem;
+  gap: 1rem;
+}
+.rendimiento-simple div {
+  flex: 1 1 40%;
+  max-width: 6.5rem;
 }
 .rendimiento-simple img {
   width: 3.2rem;
@@ -132,7 +164,7 @@ ul li {
 
 .icono-usuario {
   font-size: 3rem;
-  color: #d40000;
+  color: var(--color-rojo);
   display: block;
   margin: 1rem auto 0;
 }
@@ -154,16 +186,21 @@ ul li {
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.8rem;
-  margin-top: 0.8rem;
+  margin-top: 1rem;
   font-size: 0.75rem;
 }
 .leyenda span::before {
   content: "● ";
 }
 .leyenda-azul { color: #2196f3; }
-.leyenda-rojo { color: #e53935; }
+.leyenda-rojo { color: var(--color-rojo); }
 .leyenda-naranjo { color: #fb8c00; }
 
+.rendimiento-reciente {
+  min-height: 13rem;
+}
+
+/* Tablet */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .seguimiento-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -193,61 +230,4 @@ ul li {
   .autonomia {
     font-size: 0.7rem;
   }
-}
-
-/* === Ajuste: tarjeta del círculo de acierto total === */
-.circulo-total {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.circulo-total .circulo {
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 50%;
-  background: conic-gradient(var(--color-verde) 75%, #ccc 0);
-  margin: auto;
-  position: relative;
-}
-
-.circulo-total .circulo::after {
-  content: "75%";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: white;
-}
-
-/* === Ajuste: separación entre filas del grid === */
-.seguimiento-grid {
-  gap: 1.2rem 1rem;
-}
-
-/* === Ajuste: espaciado de leyenda en tarjeta de líneas === */
-.leyenda {
-  margin-top: 1rem;
-}
-
-/* === Ajuste: rendimiento reciente vacío === */
-.rendimiento-reciente {
-  min-height: 13rem;
-}
-.rendimiento-simple {
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 1rem;
-}
-.rendimiento-simple div {
-  flex: 1 1 40%;
-  max-width: 6.5rem;
-}
-.rendimiento-simple span {
-  font-size: 0.75rem;
 }

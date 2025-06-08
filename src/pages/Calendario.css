@@ -3,23 +3,24 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, #f9f9f9, #eaeaea);
-  background-image: url(../assets/login-bg.jpg);
-  
+  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  background: url(../assets/login-bg.jpg) no-repeat center center fixed;
+  background-size: cover;
 }
+
 
 .calendario-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   margin-top: 50px;
+  padding-top: 10px;
 }
 
 /* === HEADER === */
 .header-fixed {
   width: 100%;
-  background-color: white;
+  background-color: #FFFFFF;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   z-index: 1000;
 }
@@ -30,40 +31,42 @@ html, body {
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
-  align-items: center; /* CENTRADO vertical */
+  align-items: center;
 }
 
 .calendario-container {
   width: 100%;
   max-width: 1100px;
-  background: white;
+  background: #FFFFFF;
   padding: 2rem;
-  border-radius: 1rem;
+  border-radius: 16px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   overflow: hidden;
 }
 
 /* === ESTILO FULLCALENDAR === */
 .fc {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .fc-toolbar-title {
-  color: #d40000;
+  color: #E30613;
   font-weight: bold;
-  font-size: 1.6rem;
-  text-transform: capitalize;
+  font-size: 24px;
   text-align: center;
   width: 100%;
+  font-family: 'Poppins', sans-serif;
 }
 
 .fc-button {
-  background-color: #d40000;
+  background-color: #E30613;
   border: none;
   padding: 0.4rem 0.75rem;
   font-size: 0.9rem;
-  border-radius: 5px;
-  color: white;
+  border-radius: 8px;
+  color: #FFFFFF;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .fc-button:hover {
@@ -72,24 +75,25 @@ html, body {
 
 .fc-button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(212, 0, 0, 0.3);
+  box-shadow: 0 0 0 2px rgba(227, 6, 19, 0.3);
 }
 
 .fc-col-header-cell-cushion {
-  color: #1a237e;
+  color: #005EB8;
   font-weight: 500;
 }
 
 .fc-timegrid-slot-label {
-  color: #444;
+  color: #555555;
   font-size: 0.8rem;
 }
 
 .fc-daygrid-event,
 .fc-timegrid-event {
   font-size: 0.85rem;
-  color: white;
-  border-radius: 6px;
+  color: #FFFFFF;
+  background-color: #005EB8;
+  border-radius: 8px;
   padding: 2px 4px;
   font-weight: 500;
 }
@@ -108,9 +112,9 @@ html, body {
 
 /* === VISTA MES - Estilo de eventos === */
 .fc-daygrid-event {
-  background-color: #007bff !important;
-  color: white !important;
-  border-radius: 5px;
+  background-color: #005EB8 !important;
+  color: #FFFFFF !important;
+  border-radius: 8px;
   padding: 2px 4px;
   font-size: 0.8rem;
   font-weight: 500;
@@ -120,14 +124,14 @@ html, body {
 }
 
 .fc-daygrid-dot-event {
-  color: white !important;
+  color: #FFFFFF !important;
   font-size: 0.8rem;
 }
 
 .fc-col-header-cell-cushion,
 .fc-daygrid-day-number,
 .fc-scrollgrid-sync-inner {
-  color: #1a237e;
+  color: #005EB8;
   font-weight: 500;
 }
 
@@ -135,17 +139,17 @@ html, body {
 @media screen and (max-width: 768px) {
   .calendario-content {
     padding: 1rem 0.5rem;
-    align-items: flex-start; /* para evitar que quede cortado */
+    align-items: flex-start;
   }
 
   .calendario-container {
     padding: 1rem;
-    border-radius: 0.75rem;
+    border-radius: 12px;
     box-shadow: 0 0 8px rgba(0,0,0,0.05);
   }
 
   .fc-toolbar-title {
-    font-size: 1.1rem !important;
+    font-size: 20px !important;
   }
 
   .fc-button {
@@ -167,27 +171,20 @@ html, body {
   }
 }
 
-
-/* === AJUSTE VISTA MENSUAL (dayGridMonth) === */
-
-/* Reduce altura de las celdas del mes */
+/* === AJUSTE VISTA MENSUAL === */
 .fc .fc-daygrid-body-natural .fc-daygrid-day {
-  min-height: 0px !important;  /* Antes suele estar sobre 80px */
-  
+  min-height: 0px !important;
 }
 
-/* Reduce padding interno */
 .fc .fc-daygrid-day-frame {
   padding: 2px !important;
 }
 
-/* Números del día más pequeños */
 .fc .fc-daygrid-day-number {
   font-size: 0.75rem;
   padding: 0 2px;
 }
 
-/* Eventos más delgados */
 .fc .fc-daygrid-event {
   font-size: 0.75rem;
   padding: 1px 2px;
@@ -195,12 +192,11 @@ html, body {
   max-height: 1.2rem;
 }
 
-/* Si usas eventos puntuales con punto en lugar de bloque */
 .fc .fc-daygrid-dot-event {
   font-size: 0.7rem;
 }
 
-/* Ajustes responsive adicionales solo para el mes */
+/* Responsive adicional */
 @media screen and (max-width: 1024px) {
   .fc .fc-daygrid-day {
     min-height: 35px !important;
@@ -216,27 +212,24 @@ html, body {
   }
 }
 
-/* === AJUSTE PARA IGUALAR SEMANA/DÍA AL TAMAÑO DE VISTA MENSUAL === */
-
-/* Altura reducida de cada bloque horario */
+/* === AJUSTE SEMANA/DÍA === */
 .fc-timegrid-slot {
   height: 28px !important;
   min-height: 28px !important;
 }
 
-/* Etiquetas de hora más pequeñas */
 .fc-timegrid-slot-label {
   font-size: 0.7rem;
   padding: 1px 3px;
 }
 
-/* Evento compacto (igual que en vista mensual) */
 .fc-timegrid-event {
   font-size: 0.7rem;
   padding: 1px 3px;
   line-height: 1rem;
   max-height: 1.2rem;
-  border-radius: 4px;
+  border-radius: 6px;
+  background-color: #005EB8;
 }
 
 .fc-timegrid-event .fc-event-time,
@@ -244,13 +237,11 @@ html, body {
   font-size: 0.7rem;
 }
 
-/* Ocupa menos alto visual total en semana/día */
 .fc-timegrid-body {
-  max-height: 550px !important; /* igual que vista mensual aprox */
+  max-height: 550px !important;
   overflow-y: auto;
 }
 
-/* Encabezados y botones igual que en mes */
 .fc-toolbar-title {
   font-size: 1.1rem !important;
 }
