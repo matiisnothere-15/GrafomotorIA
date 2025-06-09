@@ -5,4 +5,5 @@ export interface EvaluacionEscala {
   resultado: JSON;
   puntaje: number;
   id_paciente: number;
+  id_ejercicio: number;
 }
