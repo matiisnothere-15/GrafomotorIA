@@ -1,0 +1,108 @@
+/* Fullscreen canvas */
+.trazado-fullscreen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  overflow: hidden;
+  font-family: 'Poppins', 'Roboto', sans-serif;
+}
+
+/* Contenedor general */
+.trazado-contenido {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Título sobre canvas */
+.titulo-ejercicio {
+  position: absolute;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1.2rem;
+  border-radius: 12px;
+  z-index: 10;
+  text-align: center;
+}
+
+/* Botones flotantes */
+.botones {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.btn-rojo {
+  background-color: #E30613;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Resultado de precisión */
+.resultado {
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: white;
+}
+
+.resultado.verde {
+  color: #4caf50;
+}
+.resultado.amarillo {
+  color: #ffc107;
+}
+.resultado.rojo {
+  color: #E30613;
+}
+
+/* Pop-up final */
+.popup-final {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-contenido {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.resultado-final {
+  margin-top: 1rem;
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}

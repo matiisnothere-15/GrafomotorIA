@@ -10,6 +10,7 @@ import PlanTratamientoPage from '../pages/PlanTratamiento';
 import CopiaFigura from '../pages/CopiaFigura';
 import AyudaSoporte from '../pages/AyudaSoporte';
 import Sesion from '../pages/Sesion';
+import TrazadoGuiado from '../pages/TrazadoGuiado';
 import Calendario from '../pages/Calendario';
 import Seguimientos from '../pages/Follow-ups';
 import Perfil from '../pages/Perfil';
@@ -32,6 +33,7 @@ function AppRoutes() {
       <Route path="/reportes" element={<PrivateRoute><Reportes /></PrivateRoute>} />
       <Route path="/PlanTratamiento" element={<PrivateRoute><PlanTratamientoPage /></PrivateRoute>} />
       <Route path="/actividad/CopiaFigura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
+       <Route path="/actividad/trazado-guiado" element={<PrivateRoute><TrazadoGuiado /></PrivateRoute>} />
       <Route path="/AyudaSoporte" element={<PrivateRoute><AyudaSoporte /></PrivateRoute>} />
       <Route path="/Sesion" element={<PrivateRoute><Sesion /></PrivateRoute>} />
       <Route path="/Calendario" element={<PrivateRoute><Calendario /></PrivateRoute>} />

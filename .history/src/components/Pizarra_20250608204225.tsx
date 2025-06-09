@@ -7,7 +7,6 @@ interface PizarraProps {
   onFinishDraw?: (coords: { x: number; y: number }[]) => void;
   onModeloTransformado?: (coords: { x: number; y: number }[]) => void;
   coordsModelo?: [number, number][];
-  colorModelo?: string;
 }
 
 const Pizarra: React.FC<PizarraProps> = ({
@@ -16,8 +15,7 @@ const Pizarra: React.FC<PizarraProps> = ({
   background = '#fff',
   onFinishDraw,
   onModeloTransformado,
-  coordsModelo = [],
-  colorModelo = '#aaaaaa'
+  coordsModelo = []
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -32,21 +30,9 @@ const Pizarra: React.FC<PizarraProps> = ({
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const prepare = () => {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctxRef.current = ctx;
-      drawModeloCentrado(ctx);
-    };
 
     ctxRef.current = ctx;
     drawModeloCentrado(ctx);
-    prepare();
-    window.addEventListener('resize', prepare);
-    return () => window.removeEventListener('resize', prepare);
   }, [coordsModelo]);
 
   useEffect(() => {
@@ -96,7 +82,6 @@ const Pizarra: React.FC<PizarraProps> = ({
     coordsTransformadas.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
     ctx.closePath();
     ctx.strokeStyle = '#aaaaaa';
-    ctx.strokeStyle = colorModelo;
     ctx.lineWidth = 4;
     ctx.stroke();
 
@@ -146,8 +131,8 @@ const Pizarra: React.FC<PizarraProps> = ({
       onPointerMove={draw}
       onPointerUp={stopDrawing}
       style={{
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         background,
         touchAction: 'none',
         display: 'block'
