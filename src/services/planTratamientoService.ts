@@ -1,18 +1,17 @@
 import { BASE_URL } from "../config.ts";
+import type { PlanTratamiento } from "../models/PlanTratamiento";
 
-// Obtener token desde sessionStorage
 const getToken = () => sessionStorage.getItem("token") || "";
 
-// Obtener todos los planes de tratamiento
 export const obtenerPlanesTratamiento = async () => {
   try {
     const res = await fetch(`${BASE_URL}/api/planes/listarplanes`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
       },
-    }) as Response;
+    });
 
     if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 
@@ -26,25 +25,27 @@ export const obtenerPlanesTratamiento = async () => {
 };
 
 // Crear un nuevo plan de tratamiento
-export const crearPlanTratamiento = async (plan) => {
-  // Validación mínima
-  if (!plan || !plan.fecha_inicio || !plan.nombre || !plan.rut) {
+export const crearPlanTratamiento = async (plan: PlanTratamiento) => {
+  // Validación mínima basada en backend
+  if (!plan || !plan.fecha_inicio || !plan.id_paciente || !plan.id_usuario) {
     throw new Error("❌ Faltan campos obligatorios.");
   }
 
   try {
     const res = await fetch(`${BASE_URL}/api/planes/crearplanes`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
       },
       body: JSON.stringify(plan),
-    }) as Response;
+    });
 
     if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 
-    console.log("✅ Plan creado:", plan);
+    const data = await res.json();
+    console.log("✅ Plan creado:", data);
+    return data;
   } catch (error) {
     console.error("❌ Error al crear el plan:", error);
     throw error;

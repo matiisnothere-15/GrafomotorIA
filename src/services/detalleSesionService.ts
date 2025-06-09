@@ -2,7 +2,7 @@ import { BASE_URL } from "../config";
 import type { DetalleSesion } from "../models/DetalleSesion";
 
 const getHeaders = (): HeadersInit => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return {
     "Content-Type": "application/json",
     ...(token && { Authorization: `Bearer ${token}` }),
