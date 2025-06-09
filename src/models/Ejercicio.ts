@@ -4,4 +4,5 @@ export interface Ejercicio {
   descripcion: string;
   imagen_ejercicio: string;
   tipo_ejercicio: string;
+  nivel_dificultad: string;
 }
