@@ -42,6 +42,7 @@ npx create-vite .
 ### 3. Instala las dependencias
 ```bash
 npm install
+npm install react-select
 ```
 
 ### 4. Ejecuta la app

@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import './Follow-ups.css';
 import { FaUserCircle } from 'react-icons/fa';
 import figura from '../assets/ejercicios/copia-figuras.png';
 import laberinto from '../assets/ejercicios/seguir-laberinto.png';
+import type { Paciente } from '../models/Paciente';
+import type { SeguimientoProgreso } from '../models/SeguimientoProgreso';
+import { BASE_URL } from '../config';
+import Select from 'react-select';
 
 const aciertosEjercicio = [
   { nombre: 'Trazado Guiado', porcentaje: 75 },
@@ -19,14 +23,131 @@ const progresoTratamiento = [
   { nombre: 'Visomotora', porcentaje: 84 },
 ];
 
+
 const Seguimientos: React.FC = () => {
-  const aciertoTotal = 75;
+  const [pacientes, setPacientes] = useState<Paciente[]>([]);
+  const [seguimientos, setSeguimientos] = useState<SeguimientoProgreso[]>([]);
+  const [pacienteSeleccionado, setPacienteSeleccionado] = useState<string>('');
+  const [fechaDesde, setFechaDesde] = useState<string>('');
+  const [fechaHasta, setFechaHasta] = useState<string>('');
+  const [nombrePaciente, setNombrePaciente] = useState<string>('');
+  const [aciertoTotal, setAciertoTotal] = useState<number>(75);
+  const opcionesPacientes = pacientes.map((p) => ({
+    value: p.id_paciente,
+    label: `${p.nombre} ${p.apellido}`,
+  }));
+
+  useEffect(() => {
+    const fetchPacientes = async () => {
+      try {
+        const token = sessionStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/api/pacientes/listarpacientes`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        console.log('📦 Pacientes recibidos:', data);  // <-- AGREGA ESTO
+        setPacientes(data);
+      } catch (error) {
+        console.error('❌ Error al cargar pacientes:', error);
+      }
+    };
+
+    fetchPacientes();
+  }, []);
+
+
+  const handleBuscar = async () => {
+    try {
+      // Extraer ID del formato "Nombre Apellido | 4"
+      const idExtraido = pacienteSeleccionado.split("|")[1]?.trim();
+      const id = idExtraido ? parseInt(idExtraido) : null;
+
+      const token = sessionStorage.getItem("token");
+      const res = await fetch(`${BASE_URL}/api/seguimientos/listarseguimientos`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data: SeguimientoProgreso[] = await res.json();
+
+      const filtrado = data.filter((s) => {
+        const coincidePaciente = id ? s.id_paciente === id : true;
+        const coincideFecha = (!fechaDesde || s.fecha >= fechaDesde) &&
+                              (!fechaHasta || s.fecha <= fechaHasta);
+
+        return coincidePaciente && coincideFecha;
+      });
+
+      setSeguimientos(filtrado);
+
+      const pac = pacientes.find(p => p.id_paciente === id);
+      if (pac) {
+        setNombrePaciente(`${pac.nombre} ${pac.apellido}`);
+      }
+
+      
+      // Calcular aciertoTotal si quieres mantenerlo dinámico
+      const promedio = filtrado.length
+        ? Math.round(filtrado.reduce((acc, s) => acc + s.nivel_logro, 0) / filtrado.length)
+        : 0;
+      setAciertoTotal(promedio);
+      
+    } catch (error) {
+      console.error('Error al filtrar seguimientos:', error);
+    }
+  };
+
 
   return (
     <div className="seguimientos-wrapper">
       <Header />
       <main className="seguimientos-content">
         <h2 className="titulo-vista">Seguimiento de Progreso</h2>
+        
+        {/*Filtro funcional*/}
+        <div className="filtros-container">
+          <div className="filtros-row">
+            <div className="filtros">
+              <label>Paciente:</label>
+              <Select
+                className="select-paciente"
+                options={pacientes.map((p) => ({
+                  value: p.id_paciente,
+                  label: `${p.nombre} ${p.apellido}`,
+                }))}
+                onChange={(opcion) => {
+                  if (opcion) {
+                    setPacienteSeleccionado(String(opcion.value));
+                    const pac = pacientes.find(p => p.id_paciente === opcion.value);
+                    if (pac) setNombrePaciente(`${pac.nombre} ${pac.apellido}`);
+                  } else {
+                    setPacienteSeleccionado('');
+                    setNombrePaciente('');
+                  }
+                }}
+                placeholder="Buscar paciente..."
+                isClearable
+              />
+
+              <label>Desde:</label>
+              <input type="date" value={fechaDesde} onChange={(e) => setFechaDesde(e.target.value)} />
+
+              <label>Hasta:</label>
+              <input type="date" value={fechaHasta} onChange={(e) => setFechaHasta(e.target.value)} />
+
+              <button className="btn-buscar" onClick={handleBuscar}>Buscar</button>
+            </div>
+
+            {nombrePaciente && (
+              <div className="paciente-lateral">
+                <p>Paciente: <strong>{nombrePaciente}</strong></p>
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="seguimiento-grid">
           {/* FILA SUPERIOR */}
