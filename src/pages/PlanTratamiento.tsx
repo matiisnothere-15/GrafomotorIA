@@ -4,6 +4,9 @@ import './PlanTratamiento.css';
 
 const PlanTratamientoPage: React.FC = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [modoLectura, setModoLectura] = useState(false);
+  const [tituloModal, setTituloModal] = useState('Nuevo Plan de Tratamiento');
+
   const [planes, setPlanes] = useState<any[]>([]);
   const [filtroPaciente, setFiltroPaciente] = useState('todos');
 
@@ -47,10 +50,10 @@ const PlanTratamientoPage: React.FC = () => {
       {
         id_plan: 3,
         paciente: 'Lucía Gutiérrez',
-        nombre: 'Terapia Coordinación Motora',
+        nombre: 'Terapia Coordinación',
         edad: 7,
         rut: '21.234.412-8',
-        patologia: 'Retraso en desarrollo psicomotor',
+        patologia: 'Retraso en desarrollo',
         fecha_inicio: '2025-05-15',
         fecha_fin: '2025-08-15',
         estado: 'En Tratamiento'
@@ -84,6 +87,48 @@ const PlanTratamientoPage: React.FC = () => {
     cargarPlanes();
   };
 
+  const verPlan = (paciente: string) => {
+    const plan = planes.find(p => p.paciente === paciente);
+    if (plan) {
+      setNuevoPlan({
+        nombre: plan.nombre,
+        paciente: plan.paciente,
+        edad: plan.edad.toString(),
+        rut: plan.rut,
+        patologia: plan.patologia,
+        fecha_inicio: plan.fecha_inicio,
+        fecha_fin: plan.fecha_fin,
+        periodicidad: 'Cada 2 semanas',
+        objetivo_cortoplazo: 'Mejorar coordinación motora fina',
+        objetivo_largoplazo: 'Alcanzar independencia funcional en tareas básicas'
+      });
+      setTituloModal('Plan de Tratamiento');
+      setModoLectura(true);
+      setMostrarModal(true);
+    }
+  };
+
+  const editarPlan = (paciente: string) => {
+    const plan = planes.find(p => p.paciente === paciente);
+    if (plan) {
+      setNuevoPlan({
+        nombre: plan.nombre,
+        paciente: plan.paciente,
+        edad: plan.edad.toString(),
+        rut: plan.rut,
+        patologia: plan.patologia,
+        fecha_inicio: plan.fecha_inicio,
+        fecha_fin: plan.fecha_fin,
+        periodicidad: 'Cada 2 semanas',
+        objetivo_cortoplazo: 'Mejorar coordinación motora fina',
+        objetivo_largoplazo: 'Alcanzar independencia funcional en tareas básicas'
+      });
+      setTituloModal('Editar Plan de Tratamiento');
+      setModoLectura(false);
+      setMostrarModal(true);
+    }
+  };
+
   const planesFiltrados = planes.filter(
     p => filtroPaciente === 'todos' || p.paciente === filtroPaciente
   );
@@ -92,10 +137,9 @@ const PlanTratamientoPage: React.FC = () => {
 
   return (
     <div className="plan-wrapper">
-        
-        <Header />
+      <Header />
       <main className="plan-content">
-        <h2>Planes de Tratamiento</h2>
+        <h2 className="titulo-plan">Planes de Tratamiento</h2>
 
         <div className="filtro-container">
           <select
@@ -135,10 +179,9 @@ const PlanTratamientoPage: React.FC = () => {
                 <td>{p.fecha_inicio}</td>
                 <td>{p.fecha_fin}</td>
                 <td>{p.estado}</td>
-                <td>
-                  <button className="btn-nuevo" onClick={() => alert(`Gestionar plan ID ${p.id_plan}`)}>
-                    Gestionar
-                  </button>
+                <td className="acciones">
+                  <button className="btn-icono" title="Ver Plan" onClick={() => verPlan(p.paciente)}>👁️</button>
+                  <button className="btn-icono" title="Editar Plan" onClick={() => editarPlan(p.paciente)}>✏️</button>
                 </td>
               </tr>
             ))}
@@ -146,7 +189,26 @@ const PlanTratamientoPage: React.FC = () => {
         </table>
 
         <div className="plan-footer">
-          <button className="btn-nuevo" onClick={() => setMostrarModal(true)}>
+          <button
+            className="btn-nuevo"
+            onClick={() => {
+              setTituloModal('Nuevo Plan de Tratamiento');
+              setModoLectura(false);
+              setMostrarModal(true);
+              setNuevoPlan({
+                nombre: '',
+                paciente: '',
+                edad: '',
+                rut: '',
+                patologia: '',
+                fecha_inicio: '',
+                fecha_fin: '',
+                periodicidad: '',
+                objetivo_cortoplazo: '',
+                objetivo_largoplazo: ''
+              });
+            }}
+          >
             + Nuevo Tratamiento
           </button>
         </div>
@@ -154,21 +216,28 @@ const PlanTratamientoPage: React.FC = () => {
         {mostrarModal && (
           <div className="modal">
             <div className="modal-contenido">
-              <h3>Nuevo Plan de Tratamiento</h3>
-              <input name="paciente" placeholder="Nombre del paciente" onChange={handleChange} />
-              <input name="nombre" placeholder="Nombre del plan" onChange={handleChange} />
-              <input name="edad" type="number" placeholder="Edad" onChange={handleChange} />
-              <input name="rut" placeholder="RUT" onChange={handleChange} />
-              <input name="patologia" placeholder="Patología" onChange={handleChange} />
-              <input name="fecha_inicio" type="date" onChange={handleChange} />
-              <input name="fecha_fin" type="date" onChange={handleChange} />
-              <input name="periodicidad" placeholder="Periodicidad" onChange={handleChange} />
-              <textarea name="objetivo_cortoplazo" placeholder="Objetivo a corto plazo" onChange={handleChange} />
-              <textarea name="objetivo_largoplazo" placeholder="Objetivo a largo plazo" onChange={handleChange} />
-              <div className="modal-acciones">
-                <button onClick={handleGuardar}>Guardar</button>
-                <button onClick={() => setMostrarModal(false)}>Cancelar</button>
-              </div>
+              <h3>{tituloModal}</h3>
+              <input name="paciente"placeholder="Nombre del paciente"value={nuevoPlan.paciente}onChange={handleChange}readOnly={modoLectura}/>
+              <input name="nombre" placeholder="Nombre del plan" value={nuevoPlan.nombre} onChange={handleChange} readOnly={modoLectura} />
+              <input name="edad" type="number" placeholder="Edad" value={nuevoPlan.edad} onChange={handleChange} readOnly={modoLectura} />
+              <input name="rut" placeholder="RUT" value={nuevoPlan.rut} onChange={handleChange} readOnly={modoLectura} />
+              <input name="patologia" placeholder="Patología" value={nuevoPlan.patologia} onChange={handleChange} readOnly={modoLectura} />
+              <input name="fecha_inicio" type="date" value={nuevoPlan.fecha_inicio} onChange={handleChange} readOnly={modoLectura} />
+              <input name="fecha_fin" type="date" value={nuevoPlan.fecha_fin} onChange={handleChange} readOnly={modoLectura} />
+              <input name="periodicidad" placeholder="Periodicidad" value={nuevoPlan.periodicidad} onChange={handleChange} readOnly={modoLectura} />
+              <textarea name="objetivo_cortoplazo" placeholder="Objetivo a corto plazo" value={nuevoPlan.objetivo_cortoplazo} onChange={handleChange} readOnly={modoLectura} />
+              <textarea name="objetivo_largoplazo" placeholder="Objetivo a largo plazo" value={nuevoPlan.objetivo_largoplazo} onChange={handleChange} readOnly={modoLectura} />
+
+              {modoLectura ? (
+                <div className="modal-acciones">
+                  <button onClick={() => setMostrarModal(false)}>Cerrar</button>
+                </div>
+              ) : (
+                <div className="modal-acciones">
+                  <button onClick={handleGuardar}>Guardar</button>
+                  <button onClick={() => setMostrarModal(false)}>Cancelar</button>
+                </div>
+              )}
             </div>
           </div>
         )}

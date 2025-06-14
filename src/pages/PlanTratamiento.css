@@ -202,3 +202,33 @@
     padding: 10px;
   }
 }
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-icono {
+  background-color: #E30613;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icono:hover {
+  background-color: #c80510;
+}
+.titulo-plan {
+  color: #E30613; 
+  font-weight: 700;
+}
