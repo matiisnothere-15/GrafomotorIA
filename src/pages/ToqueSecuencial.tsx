@@ -22,7 +22,11 @@ const ToqueSecuencial: React.FC = () => {
   const [rondasCompletadas, setRondasCompletadas] = useState(0);
 
   const intervaloRef = useRef<NodeJS.Timeout | null>(null);
-  const audioClick = new Audio(click);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio(click);
+  }, []);
 
   const generarPaso = () => Math.floor(Math.random() * cantidadCirculos);
 
@@ -32,6 +36,7 @@ const ToqueSecuencial: React.FC = () => {
     const margen = 10;
     const separacion = 90;
     const maxIntentos = 1000;
+    const offsetSuperior = 120; // evita cubrir la cabecera
     let intentos = 0;
 
     for (let i = 0; i < cantidadCirculos; i++) {
@@ -40,7 +45,7 @@ const ToqueSecuencial: React.FC = () => {
 
       while (!valido && intentos < maxIntentos) {
         x = Math.random() * (window.innerWidth - diametro - 2 * margen) + margen;
-        y = Math.random() * (window.innerHeight - diametro - 2 * margen) + margen;
+        y = Math.random() * (window.innerHeight - diametro - 2 * margen - offsetSuperior) + margen + offsetSuperior;
 
         valido = !nuevas.some(pos => {
           const dx = parseFloat(pos.left) - x;
@@ -58,7 +63,9 @@ const ToqueSecuencial: React.FC = () => {
   };
 
   const mostrarSecuencia = async (seq: number[]) => {
+    if (intervaloRef.current) clearInterval(intervaloRef.current);
     setMostrandoSecuencia(true);
+    await new Promise(res => setTimeout(res, 2000));
     for (const i of seq) {
       setActivo(i);
       await new Promise(res => setTimeout(res, 600));
@@ -100,6 +107,7 @@ const ToqueSecuencial: React.FC = () => {
   };
 
   const avanzarRonda = async () => {
+    if (intervaloRef.current) clearInterval(intervaloRef.current);
     if (tiempoInicioRonda) {
       const fin = Date.now();
       const duracion = (fin - tiempoInicioRonda) / 1000;
@@ -137,7 +145,10 @@ const ToqueSecuencial: React.FC = () => {
 
   const manejarClick = async (index: number) => {
     if (!jugando || mostrandoSecuencia) return;
-    audioClick.play();
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
     const nuevoInput = [...usuarioInput, index];
     setUsuarioInput(nuevoInput);
 
@@ -160,9 +171,11 @@ const ToqueSecuencial: React.FC = () => {
 
   return (
     <div className="toque-wrapper">
-      <h2 className="titulo">Toque Secuencial</h2>
-      <p className="ronda">Ronda: {ronda}</p>
-      <p className="contador">Tiempo: {tiempo}s</p>
+      {!jugando && <h2 className="titulo">Toque Secuencial</h2>}
+      <div className={`info-superior ${jugando ? 'jugando' : ''}`}>
+        <p className="ronda">Ronda: {ronda}</p>
+        <p className="contador">Tiempo: {tiempo}s</p>
+      </div>
 
       {jugando &&
         Array.from({ length: cantidadCirculos }).map((_, i) => (

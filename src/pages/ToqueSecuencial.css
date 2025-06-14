@@ -16,6 +16,20 @@
   margin-bottom: 0.5rem;
   color: #E30613;
 }
+.info-superior.jugando {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+  text-align: right;
+  display: flex;
+  gap: 1rem;
+}
+
+.info-superior.jugando .ronda,
+.info-superior.jugando .contador {
+  margin-bottom: 0;
+}
 
 .ronda,
 .contador {
