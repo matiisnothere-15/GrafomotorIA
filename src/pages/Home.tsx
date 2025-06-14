@@ -20,7 +20,7 @@ const opciones = [
   { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: '/PlanTratamiento' },
   { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/Seguimientos' },
   { icono: <FaFileAlt />, texto: 'Reportes e informes', ruta: '/reportes' },
-  { icono: <FaInfoCircle />, texto: 'Ayuda y soporte', ruta: '/AyudaSoporte' }
+  { icono: <FaInfoCircle />, texto: 'Contactanos', ruta: '/contactanos' }
 ];
 
 const Home: React.FC = () => {
