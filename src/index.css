@@ -17,6 +17,7 @@
   box-sizing: border-box;
 }
 
+
 html, body {
   margin: 0;
   padding: 0;
@@ -77,4 +78,243 @@ button:focus-visible {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+/* -----------------🌙 MODO OSCURO GENERAL ----------------- */
+body.dark-mode .black-panel {
+  background-color: #1e1e1e;
+  color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .black-panel input,
+body.dark-mode .black-panel select,
+body.dark-mode .black-panel textarea {
+  background-color: white !important;
+  color: black !important;
+  border-color: #ccc !important;
+}
+
+
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+body.dark-mode .login-header,
+body.dark-mode .config-form,
+body.dark-mode .user-dropdown,
+body.dark-mode .form-group,
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #1e1e1e !important;
+  color: white !important;
+  border-color: #333 !important;
+}
+body.dark-mode .home-card {
+  background-color: #1e1e1e !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+body.dark-mode .sesion-form input,
+body.dark-mode .sesion-form textarea,
+body.dark-mode .sesion-form select {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+}
+
+body.dark-mode .login-header {
+  color: rgb(255, 255, 255);
+}
+
+body.dark-mode .login-header .nombre-logo {
+  color: #E30613 !important; 
+}
+
+body.dark-mode .user-img {
+  filter: none !important; 
+}
+/* GENERAL: modo oscuro */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+body.dark-mode .login-header {
+  color: inherit;
+}
+
+body.dark-mode .nombre-logo {
+  color: #E30613 !important; 
+}
+
+body.dark-mode .user-img {
+  filter: none !important;
+  background-color: white; 
+  border-radius: 50%;
+}
+
+body.dark-mode .user-label span {
+  color: white !important;
+}
+
+body.dark-mode .user-dropdown {
+  background-color: #2a2a2a !important;
+}
+
+body.dark-mode .user-dropdown a,
+body.dark-mode .user-dropdown button {
+  color: white !important;
+}
+
+body.dark-mode .user-dropdown svg {
+  filter: brightness(1.5);
+}
+
+body.dark-mode .white-panel {
+  background-color: white !important;
+  color: black !important;
+}
+
+body.dark-mode .white-panel input,
+body.dark-mode .white-panel select,
+body.dark-mode .white-panel textarea {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+}
+
+body.dark-mode .progreso-form label,
+body.dark-mode .progreso-form option {
+  background-color: white !important;
+  color: black !important;
+  border-color: #ccc !important;
+}
+body.dark-mode .filtros-progreso input,
+body.dark-mode .filtros-progreso select,
+body.dark-mode .filtros-progreso label,
+body.dark-mode .filtros-progreso .select-paciente {
+  background-color: white !important;
+  color: black !important;
+  border-color: #ccc !important;
+}
+
+body.dark-mode .filtros-progreso .select-paciente input {
+  color: black !important;
+}
+/* ========== FIX para vista Reportes e Informes en modo oscuro ========== */
+
+body.dark-mode .reportes-page-wrapper {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+}
+body.dark-mode .reportes-page-wrapper h1 {
+  color: #e30613 !important;  
+}
+
+body.dark-mode .reportes-page-wrapper table,
+body.dark-mode .reportes-page-wrapper th,
+body.dark-mode .reportes-page-wrapper td {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border-color: #ccc !important;
+}
+
+body.dark-mode .reportes-page-wrapper select {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border: 1px solid #ccc !important;
+}
+
+body.dark-mode .btn-descargar-todos {
+  background-color: #e50914 !important;
+  color: white !important;
+  border: none !important;
+}
+
+
+body.dark-mode .btn-ver-informe {
+  background-color: #0055cc !important;
+  color: white !important;
+  border: none !important;
+}
+body.dark-mode .estado-enevaluación {
+  background-color: #f4a261 !important;
+  color: white !important;
+}
+body.dark-mode .estado-entratamiento {
+  background-color: #2a9d8f !important;
+  color: white !important;
+}
+body.dark-mode .estado-altamédica {
+  background-color: #6c5ce7 !important;
+  color: white !important;
+}
+body.dark-mode .estado-enseguimiento {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+body.dark-mode .modal-content {
+  background-color: white !important;
+  color: black !important;
+}
+
+body.dark-mode .modal-content input,
+body.dark-mode .modal-content textarea {
+  background-color: #f9f9f9 !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+}
+
+body.dark-mode .modal-footer button {
+  background-color: #e50914 !important;
+  color: white !important;
+  border: none !important;
+}
+
+body.dark-mode .modal-close {
+  color: #1a1a1a !important;
+}
+
+body.dark-mode .reportes-page-wrapper th {
+  background-color: #e50914 !important;
+  color: white !important;
+}
+body.dark-mode .reportes-page-wrapper select {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border: 1px solid #e50914 !important;
+  border-radius: 8px !important;
+}
+/* Badges de estado en modo oscuro */
+body.dark-mode .estado-enevaluación {
+  background-color: #e9b10a !important;
+  color: white !important;
+}
+
+body.dark-mode .estado-entratamiento {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+body.dark-mode .estado-altamédica {
+  background-color: #7e57c2 !important;
+  color: white !important;
+}
+
+body.dark-mode .estado-enseguimiento {
+  background-color: #007bff !important;
+  color: white !important;
+}
+/* 🌙 Evitar modo oscuro en vista Contáctanos */
+body.dark-mode .contacto-wrapper input,
+body.dark-mode .contacto-wrapper textarea {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
 }

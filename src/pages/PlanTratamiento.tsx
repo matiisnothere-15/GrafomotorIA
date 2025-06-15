@@ -138,7 +138,7 @@ const PlanTratamientoPage: React.FC = () => {
   return (
     <div className="plan-wrapper">
       <Header />
-      <main className="plan-content">
+      <main className="plan-content white-panel">
         <h2 className="titulo-plan">Planes de Tratamiento</h2>
 
         <div className="filtro-container">

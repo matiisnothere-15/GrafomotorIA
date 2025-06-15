@@ -70,7 +70,7 @@ const Header: React.FC = () => {
           {menuOpen && (
             <div className="user-dropdown">
               <Link to="/perfil"><FaUser /> Perfil</Link>
-              <Link to="/ajustes"><FaCog /> Ajustes</Link>
+              <Link to="/configuracion"><FaCog /> Configuración</Link>
               <button onClick={handleLogout} className="logout">
                 <RiLogoutBoxLine /> Salir
               </button>
