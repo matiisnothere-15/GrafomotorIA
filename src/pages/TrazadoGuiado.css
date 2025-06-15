@@ -43,6 +43,7 @@
   z-index: 10;
 }
 
+/* Botón rojo principal */
 .btn-rojo {
   background-color: #E30613;
   color: #fff;
@@ -56,23 +57,27 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Resultado de precisión */
+/* Resultado de precisión (fondo dinámico) */
 .resultado {
   font-weight: bold;
   font-size: 1.2rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 8px;
-  background: white;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .resultado.verde {
-  color: #4caf50;
+  background-color: #4caf50;
 }
+
 .resultado.amarillo {
-  color: #ffc107;
+  background-color: #ffc107;
 }
+
 .resultado.rojo {
-  color: #E30613;
+  background-color: #E30613;
 }
 
 /* Pop-up final */
@@ -98,11 +103,21 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
+/* Resultado final del ejercicio */
 .resultado-final {
   margin-top: 1rem;
   background: #fff;
   padding: 1rem 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Mensaje de error */
+.mensaje-error {
+  margin-top: 1rem;
+  color: #E30613;
+  font-weight: bold;
+  font-size: 1rem;
   text-align: center;
 }
