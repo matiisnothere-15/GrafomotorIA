@@ -32,7 +32,7 @@ const Sesion: React.FC = () => {
   }, []);
 
   const opciones = [
-    { icono: '📄', texto: 'Ver Sesiones', ruta: '/sesiones' },
+    { icono: '📄', texto: 'Ver Sesiones', ruta: '/ver-sesiones' },
     { icono: '📝', texto: 'Evaluaciones', ruta: '/evaluaciones' },
     { icono: '📊', texto: 'Progreso', ruta: '/progreso' },
     { icono: '🏠', texto: 'Volver al Inicio', ruta: '/' }

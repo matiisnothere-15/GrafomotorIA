@@ -17,7 +17,7 @@ import Perfil from '../pages/Perfil';
 import PrivateRoute from '../components/PrivateRoute';
 import ToqueSecuencial from '../pages/ToqueSecuencial';
 import Configuracion from '../pages/Configuracion';
-
+import VerSesiones from '../pages/VerSesiones';
 
 
 function AppRoutes() {
@@ -40,6 +40,7 @@ function AppRoutes() {
       <Route path="/Sesion" element={<PrivateRoute><Sesion /></PrivateRoute>} />
       <Route path="/Calendario" element={<PrivateRoute><Calendario /></PrivateRoute>} />
       <Route path="/Seguimientos" element={<PrivateRoute><Seguimientos /></PrivateRoute>} />
+      <Route path="/ver-sesiones" element={<VerSesiones />} />
       <Route path="/actividad/toque-secuencial" element={<ToqueSecuencial />} />
       <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
       <Route path="/configuracion" element={<PrivateRoute><Configuracion /></PrivateRoute>} />
