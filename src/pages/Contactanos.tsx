@@ -31,7 +31,7 @@ const Contactanos: React.FC = () => {
   }, [mostrarModal]);
 
   return (
-    <div className="contact-wrapper">
+    <div className="contacto-wrapper">
       <Header />
 
       <main className="contact-content">

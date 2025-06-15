@@ -110,7 +110,7 @@ const Seguimientos: React.FC = () => {
         {/*Filtro funcional*/}
         <div className="filtros-container">
           <div className="filtros-row">
-            <div className="filtros">
+            <div className="filtros filtros-progreso">
               <label>Paciente:</label>
               <Select
                 className="select-paciente"
