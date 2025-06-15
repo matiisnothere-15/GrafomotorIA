@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Pizarra from '../components/Pizarra';
 import './TrazadoGuiado.css';
 
-
-
 const interpolarLinea = (puntos: [number, number][], paso = 0.02): [number, number][] => {
   const resultado: [number, number][] = [];
   for (let i = 0; i < puntos.length - 1; i++) {
@@ -68,14 +66,13 @@ const TrazadoGuiado: React.FC = () => {
     if (habilitado) setCoords(p);
   };
 
-  // Precisión más amigable (75%) pero no tan permisiva
   const calcularPrecision = (
     usuario: { x: number; y: number }[],
     modelo: { x: number; y: number }[]
   ): number => {
     if (usuario.length < 10 || modelo.length < 10) return 0;
 
-    const umbral = 25;
+    const umbral = 35;
     let puntosCubiertos = 0;
 
     modelo.forEach(puntoM => {
@@ -90,7 +87,6 @@ const TrazadoGuiado: React.FC = () => {
     const cobertura = puntosCubiertos / modelo.length;
     let score = cobertura * 100;
 
-    // Penalización si hay mucha desviación promedio
     const desviacion = usuario.reduce((acum, puntoU) => {
       const minDist = modelo.reduce((min, puntoM) => {
         const dx = puntoU.x - puntoM.x;
@@ -101,7 +97,7 @@ const TrazadoGuiado: React.FC = () => {
       return acum + minDist;
     }, 0) / usuario.length;
 
-    const factor = 1 - Math.min(desviacion / 40, 0.4); // suavizado
+    const factor = 1 - Math.min(desviacion / 60, 0.3);
     score *= factor;
 
     return Math.max(0, Math.round(score));
@@ -110,7 +106,7 @@ const TrazadoGuiado: React.FC = () => {
   const finalizarEtapa = () => {
     setHabilitado(false);
     const tiempoFin = Date.now();
-    const duracion = Math.round((tiempoFin - tiempoInicio) / 1000); // segundos
+    const duracion = Math.round((tiempoFin - tiempoInicio) / 1000);
 
     if (coords.length && modeloT.length) {
       const puntaje = calcularPrecision(coords, modeloT);
@@ -175,7 +171,7 @@ const TrazadoGuiado: React.FC = () => {
             onFinishDraw={handleFinishDraw}
             onModeloTransformado={setModeloT}
             coordsModelo={modeloActual}
-
+            cerrarTrazo={false}
           />
         </div>
 

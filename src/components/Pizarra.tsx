@@ -8,6 +8,8 @@ interface PizarraProps {
   onModeloTransformado?: (coords: { x: number; y: number }[]) => void;
   coordsModelo?: [number, number][];
   colorModelo?: string;
+  cerrarTrazo?: boolean;
+  debug?: boolean;
 }
 
 const Pizarra: React.FC<PizarraProps> = ({
@@ -17,7 +19,9 @@ const Pizarra: React.FC<PizarraProps> = ({
   onFinishDraw,
   onModeloTransformado,
   coordsModelo = [],
-  colorModelo = '#aaaaaa'
+  colorModelo = '#aaaaaa',
+  cerrarTrazo = true,
+  debug = false
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -27,48 +31,35 @@ const Pizarra: React.FC<PizarraProps> = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const prepare = () => {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
 
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctxRef.current = ctx;
-      drawModeloCentrado(ctx);
-    };
+    // High DPI support (anti-aliasing real)
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    ctx.scale(dpr, dpr);
 
     ctxRef.current = ctx;
-    drawModeloCentrado(ctx);
-    prepare();
-    window.addEventListener('resize', prepare);
-    return () => window.removeEventListener('resize', prepare);
-  }, [coordsModelo]);
-
-  useEffect(() => {
-    const handleGlobalPointerUp = () => {
-      if (isDrawing) stopDrawing();
-    };
-    window.addEventListener('pointerup', handleGlobalPointerUp);
-    return () => window.removeEventListener('pointerup', handleGlobalPointerUp);
-  }, [isDrawing]);
+    drawModeloCentrado(ctx, cerrarTrazo);
+  }, [coordsModelo, cerrarTrazo]);
 
   const getBoundingBox = (coords: [number, number][]) => {
-    const xs = coords.map(p => p[0]);
-    const ys = coords.map(p => p[1]);
+    const xs = coords.map(c => c[0]);
+    const ys = coords.map(c => c[1]);
     return {
       minX: Math.min(...xs),
       maxX: Math.max(...xs),
       minY: Math.min(...ys),
-      maxY: Math.max(...ys),
+      maxY: Math.max(...ys)
     };
   };
 
-  const drawModeloCentrado = (ctx: CanvasRenderingContext2D) => {
+  const drawModeloCentrado = (ctx: CanvasRenderingContext2D, cerrar: boolean) => {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -79,26 +70,46 @@ const Pizarra: React.FC<PizarraProps> = ({
     const modelHeight = bbox.maxY - bbox.minY;
 
     const scale = Math.min(
-      ctx.canvas.width * 0.6 / modelWidth,
-      ctx.canvas.height * 0.6 / modelHeight
+      window.innerWidth * 0.6 / modelWidth,
+      window.innerHeight * 0.6 / modelHeight
     );
 
-    const offsetX = (ctx.canvas.width - modelWidth * scale) / 2;
-    const offsetY = (ctx.canvas.height - modelHeight * scale) / 2;
+    const offsetX = (window.innerWidth - modelWidth * scale) / 2;
+    const offsetY = (window.innerHeight - modelHeight * scale) / 2;
 
     const transformX = (x: number) => (x - bbox.minX) * scale + offsetX;
     const transformY = (y: number) => (y - bbox.minY) * scale + offsetY;
 
-    const coordsTransformadas = coordsModelo.map(([x, y]) => ({ x: transformX(x), y: transformY(y) }));
+    const coordsTransformadas = coordsModelo.map(([x, y]) => ({
+      x: transformX(x),
+      y: transformY(y)
+    }));
 
     ctx.beginPath();
     ctx.moveTo(coordsTransformadas[0].x, coordsTransformadas[0].y);
-    coordsTransformadas.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
-    ctx.closePath();
-    ctx.strokeStyle = '#aaaaaa';
+    for (let i = 1; i < coordsTransformadas.length - 1; i++) {
+      const p1 = coordsTransformadas[i];
+      const p2 = coordsTransformadas[i + 1];
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+      ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+    }
+    const last = coordsTransformadas[coordsTransformadas.length - 1];
+    ctx.lineTo(last.x, last.y);
+    if (cerrar) ctx.closePath();
     ctx.strokeStyle = colorModelo;
     ctx.lineWidth = 4;
     ctx.stroke();
+
+    if (debug) {
+      ctx.strokeStyle = 'rgba(0,0,255,0.4)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(offsetX, offsetY, modelWidth * scale, modelHeight * scale);
+      ctx.fillStyle = 'rgba(255,0,0,0.5)';
+      ctx.beginPath();
+      ctx.arc(window.innerWidth / 2, window.innerHeight / 2, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
 
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
@@ -110,8 +121,8 @@ const Pizarra: React.FC<PizarraProps> = ({
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     return {
-      x: Math.round(e.clientX - rect.left),
-      y: Math.round(e.clientY - rect.top)
+      x: (e.clientX - rect.left),
+      y: (e.clientY - rect.top)
     };
   };
 
@@ -128,13 +139,19 @@ const Pizarra: React.FC<PizarraProps> = ({
   const draw = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!isDrawing || !ctxRef.current) return;
     const pos = getExactPos(e);
-    ctxRef.current.lineTo(pos.x, pos.y);
-    ctxRef.current.stroke();
+    const ctx = ctxRef.current;
+    const prev = coordsRef.current[coordsRef.current.length - 1];
+    if (prev) {
+      const midX = (prev.x + pos.x) / 2;
+      const midY = (prev.y + pos.y) / 2;
+      ctx.quadraticCurveTo(prev.x, prev.y, midX, midY);
+      ctx.stroke();
+    }
     coordsRef.current.push(pos);
   };
 
   const stopDrawing = () => {
-    ctxRef.current?.closePath();
+    if (cerrarTrazo) ctxRef.current?.closePath();
     setIsDrawing(false);
     if (onFinishDraw) onFinishDraw(coordsRef.current);
   };
@@ -146,8 +163,8 @@ const Pizarra: React.FC<PizarraProps> = ({
       onPointerMove={draw}
       onPointerUp={stopDrawing}
       style={{
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         background,
         touchAction: 'none',
         display: 'block'
