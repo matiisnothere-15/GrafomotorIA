@@ -41,7 +41,7 @@ const Seguimientos: React.FC = () => {
     const fetchPacientes = async () => {
       try {
         const token = sessionStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/api/pacientes/listarpacientes`, {
+        const res = await fetch(`${BASE_URL}pacientes/listarpacientes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -66,7 +66,7 @@ const Seguimientos: React.FC = () => {
       const id = idExtraido ? parseInt(idExtraido) : null;
 
       const token = sessionStorage.getItem("token");
-      const res = await fetch(`${BASE_URL}/api/seguimientos/listarseguimientos`, {
+      const res = await fetch(`${BASE_URL}/seguimientos/listarseguimientos`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

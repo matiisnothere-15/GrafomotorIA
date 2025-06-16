@@ -3,7 +3,7 @@ import type { Paciente } from "../models/Paciente.ts";
 
 export const getPacientes = async (): Promise<Paciente[]> => {
   const token = sessionStorage.getItem("token");
-  const res = await fetch(`${BASE_URL}/api/pacientes/listarpacientes`, {
+  const res = await fetch(`${BASE_URL}/pacientes/listarpacientes`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
