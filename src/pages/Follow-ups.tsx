@@ -41,7 +41,7 @@ const Seguimientos: React.FC = () => {
     const fetchPacientes = async () => {
       try {
         const token = sessionStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}pacientes/listarpacientes`, {
+        const res = await fetch(`${BASE_URL}/pacientes/listarpacientes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
