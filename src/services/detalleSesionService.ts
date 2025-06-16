@@ -10,7 +10,7 @@ const getHeaders = (): HeadersInit => {
 };
 
 export const obtenerDetallesSesion = async (): Promise<DetalleSesion[]> => {
-  const res = await fetch(`${BASE_URL}/api/detalles/listardetalles`, {
+  const res = await fetch(`${BASE_URL}/detalles/listardetalles`, {
     headers: getHeaders(),
   });
   if (!res.ok) throw new Error("Error al obtener los detalles de sesión");
@@ -18,7 +18,7 @@ export const obtenerDetallesSesion = async (): Promise<DetalleSesion[]> => {
 };
 
 export const obtenerDetalleSesionPorId = async (id: number): Promise<DetalleSesion> => {
-  const res = await fetch(`${BASE_URL}/api/detalles/mostrardetalles/${id}`, {
+  const res = await fetch(`${BASE_URL}/detalles/mostrardetalles/${id}`, {
     headers: getHeaders(),
   });
   if (!res.ok) throw new Error("Detalle de sesión no encontrado");
@@ -26,7 +26,7 @@ export const obtenerDetalleSesionPorId = async (id: number): Promise<DetalleSesi
 };
 
 export const crearDetalleSesion = async (data: DetalleSesion) => {
-  const res = await fetch(`${BASE_URL}/api/detalles/creardetalles`, {
+  const res = await fetch(`${BASE_URL}/detalles/creardetalles`, {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify(data),
@@ -36,7 +36,7 @@ export const crearDetalleSesion = async (data: DetalleSesion) => {
 };
 
 export const actualizarDetalleSesion = async (id: number, data: DetalleSesion) => {
-  const res = await fetch(`${BASE_URL}/api/detalles/actualizardetalles/${id}`, {
+  const res = await fetch(`${BASE_URL}/detalles/actualizardetalles/${id}`, {
     method: "PUT",
     headers: getHeaders(),
     body: JSON.stringify(data),
@@ -46,7 +46,7 @@ export const actualizarDetalleSesion = async (id: number, data: DetalleSesion) =
 };
 
 export const eliminarDetalleSesion = async (id: number) => {
-  const res = await fetch(`${BASE_URL}/api/detalles/eliminardetalles/${id}`, {
+  const res = await fetch(`${BASE_URL}/detalles/eliminardetalles/${id}`, {
     method: "DELETE",
     headers: getHeaders(),
   });

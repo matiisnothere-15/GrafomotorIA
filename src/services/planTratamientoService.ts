@@ -5,7 +5,7 @@ const getToken = () => sessionStorage.getItem("token") || "";
 
 export const obtenerPlanesTratamiento = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/api/planes/listarplanes`, {
+    const res = await fetch(`${BASE_URL}/planes/listarplanes`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const crearPlanTratamiento = async (plan: PlanTratamiento) => {
   }
 
   try {
-    const res = await fetch(`${BASE_URL}/api/planes/crearplanes`, {
+    const res = await fetch(`${BASE_URL}/planes/crearplanes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
