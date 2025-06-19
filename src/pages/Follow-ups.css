@@ -19,7 +19,7 @@ body {
   min-height: 100vh;
   padding-top: 250px;
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
   align-items: center;
 }
 
@@ -295,6 +295,23 @@ ul li {
   z-index: 10;
 }
 
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 👈 fuerza 4 por fila */
+  gap: 1.5rem;
+  width: 100%;
+}
 
-
+.inicial-circulo {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background-color: var(--color-rojo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  margin: 0 auto 1rem auto;
+}
 

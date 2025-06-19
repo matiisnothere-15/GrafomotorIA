@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import './Follow-ups.css';
-import { FaUserCircle } from 'react-icons/fa';
 import figura from '../assets/ejercicios/copia-figuras.png';
 import laberinto from '../assets/ejercicios/seguir-laberinto.png';
 import type { Paciente } from '../models/Paciente';
 import type { SeguimientoProgreso } from '../models/SeguimientoProgreso';
+import type { PlanTratamiento } from '../models/PlanTratamiento';
 import { BASE_URL } from '../config';
 import Select from 'react-select';
+import { getPacientes } from '../services/pacienteService';
 
 const aciertosEjercicio = [
   { nombre: 'Trazado Guiado', porcentaje: 75 },
@@ -23,7 +24,6 @@ const progresoTratamiento = [
   { nombre: 'Visomotora', porcentaje: 84 },
 ];
 
-
 const Seguimientos: React.FC = () => {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [seguimientos, setSeguimientos] = useState<SeguimientoProgreso[]>([]);
@@ -32,82 +32,74 @@ const Seguimientos: React.FC = () => {
   const [fechaHasta, setFechaHasta] = useState<string>('');
   const [nombrePaciente, setNombrePaciente] = useState<string>('');
   const [aciertoTotal, setAciertoTotal] = useState<number>(75);
-  const opcionesPacientes = pacientes.map((p) => ({
-    value: p.id_paciente,
-    label: `${p.nombre} ${p.apellido}`,
-  }));
+  const [objetivoCorto, setObjetivoCorto] = useState<string>('');
+  const [objetivoLargo, setObjetivoLargo] = useState<string>('');
 
   useEffect(() => {
     const fetchPacientes = async () => {
-      try {
-        const token = sessionStorage.getItem('token');
-        const res = await fetch(`${BASE_URL}/pacientes/listarpacientes`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await res.json();
-        console.log('📦 Pacientes recibidos:', data);  // <-- AGREGA ESTO
-        setPacientes(data);
-      } catch (error) {
-        console.error('❌ Error al cargar pacientes:', error);
-      }
+      {/*hacer pa too OK*/}
+      const rest = await getPacientes()
+      setPacientes(rest)
     };
-
     fetchPacientes();
   }, []);
 
-
   const handleBuscar = async () => {
     try {
-      // Extraer ID del formato "Nombre Apellido | 4"
-      const idExtraido = pacienteSeleccionado.split("|")[1]?.trim();
+      const idExtraido = pacienteSeleccionado.split('|')[1]?.trim();
       const id = idExtraido ? parseInt(idExtraido) : null;
 
-      const token = sessionStorage.getItem("token");
+      const token = sessionStorage.getItem('token');
       const res = await fetch(`${BASE_URL}/seguimientos/listarseguimientos`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data: SeguimientoProgreso[] = await res.json();
 
       const filtrado = data.filter((s) => {
         const coincidePaciente = id ? s.id_paciente === id : true;
-        const coincideFecha = (!fechaDesde || s.fecha >= fechaDesde) &&
-                              (!fechaHasta || s.fecha <= fechaHasta);
-
+        const coincideFecha = (!fechaDesde || s.fecha >= fechaDesde) && (!fechaHasta || s.fecha <= fechaHasta);
         return coincidePaciente && coincideFecha;
       });
 
       setSeguimientos(filtrado);
 
-      const pac = pacientes.find(p => p.id_paciente === id);
+      const pac = pacientes.find((p) => p.id_paciente === id);
       if (pac) {
         setNombrePaciente(`${pac.nombre} ${pac.apellido}`);
       }
 
-      
-      // Calcular aciertoTotal si quieres mantenerlo dinámico
+      const resPlanes = await fetch(`${BASE_URL}/api/planes/listarplanes`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const planes = await resPlanes.json();
+      const planesPaciente = planes.filter((p) => p.id_paciente === id);
+      const planReciente = planesPaciente.sort(
+        (a, b) => new Date(b.fecha_inicio).getTime() - new Date(a.fecha_inicio).getTime()
+      )[0];
+
+      if (planReciente) {
+        setObjetivoCorto(planReciente.objetivo_cortoplazo);
+        setObjetivoLargo(planReciente.objetivo_largoplazo);
+      } else {
+        setObjetivoCorto('No hay objetivo definido');
+        setObjetivoLargo('No hay objetivo definido');
+      }
+
       const promedio = filtrado.length
         ? Math.round(filtrado.reduce((acc, s) => acc + s.nivel_logro, 0) / filtrado.length)
         : 0;
       setAciertoTotal(promedio);
-      
     } catch (error) {
       console.error('Error al filtrar seguimientos:', error);
     }
   };
-
-
   return (
+    
     <div className="seguimientos-wrapper">
       <Header />
       <main className="seguimientos-content">
-        <h2 className="titulo-vista">Seguimiento de Progreso</h2>
-        
-        {/*Filtro funcional*/}
+        <h2 className="titulo-vista">Seguimiento del Paciente</h2>
+
         <div className="filtros-container">
           <div className="filtros-row">
             <div className="filtros filtros-progreso">
@@ -121,7 +113,7 @@ const Seguimientos: React.FC = () => {
                 onChange={(opcion) => {
                   if (opcion) {
                     setPacienteSeleccionado(String(opcion.value));
-                    const pac = pacientes.find(p => p.id_paciente === opcion.value);
+                    const pac = pacientes.find((p) => p.id_paciente === opcion.value);
                     if (pac) setNombrePaciente(`${pac.nombre} ${pac.apellido}`);
                   } else {
                     setPacienteSeleccionado('');
@@ -131,26 +123,24 @@ const Seguimientos: React.FC = () => {
                 placeholder="Buscar paciente..."
                 isClearable
               />
-
               <label>Desde:</label>
               <input type="date" value={fechaDesde} onChange={(e) => setFechaDesde(e.target.value)} />
-
               <label>Hasta:</label>
               <input type="date" value={fechaHasta} onChange={(e) => setFechaHasta(e.target.value)} />
-
               <button className="btn-buscar" onClick={handleBuscar}>Buscar</button>
             </div>
-
-            {nombrePaciente && (
-              <div className="paciente-lateral">
-                <p>Paciente: <strong>{nombrePaciente}</strong></p>
-              </div>
-            )}
           </div>
         </div>
 
-        <div className="seguimiento-grid">
-          {/* FILA SUPERIOR */}
+        <div className="grid-dashboard">
+          <div className="card ficha-paciente">
+            <div className="inicial-circulo">{nombrePaciente.charAt(0)}</div>
+            <h3>{nombrePaciente}</h3>
+            <p>Diagnóstico visible tras conexión real</p>
+            <p>Nivel de Autonomía</p>
+            <div className="autonomia moderado">Moderado</div>
+          </div>
+
           <div className="card linea">
             <h3>Progreso del Paciente</h3>
             <div className="grafico-lineas">[Gráfico dinámico aquí]</div>
@@ -180,20 +170,23 @@ const Seguimientos: React.FC = () => {
             </ul>
           </div>
 
+          <div className="card objetivos-plan">
+            <h3>Objetivos del Plan</h3>
+            <p><strong>Corto Plazo:</strong> {objetivoCorto}</p>
+            <p><strong>Largo Plazo:</strong> {objetivoLargo}</p>
+          </div>
+
           <div className="card circulo-total">
             <h3>Porcentaje de acierto total</h3>
             <div
               className="circulo"
-              style={{
-                background: `conic-gradient(var(--color-verde) ${aciertoTotal}%, #ccc 0)`
-              }}
+              style={{ background: `conic-gradient(var(--color-verde) ${aciertoTotal}%, #ccc 0)` }}
             >
               {aciertoTotal}%
             </div>
             <p className="leyenda-circulo">+60%: bien • -60%: alerta</p>
           </div>
 
-          {/* FILA INFERIOR */}
           <div className="card rendimiento-reciente">
             <h3>Rendimiento Reciente</h3>
             <div className="rendimiento-simple">
@@ -228,17 +221,10 @@ const Seguimientos: React.FC = () => {
               ))}
             </ul>
           </div>
-
-          <div className="card ficha-paciente">
-            <FaUserCircle className="icono-usuario" />
-            <h3>Me llamo Ryan</h3>
-            <p>TEA</p>
-            <p>Nivel de Autonomía</p>
-            <div className="autonomia moderado">Moderado</div>
-          </div>
         </div>
       </main>
     </div>
+
   );
 };
 
