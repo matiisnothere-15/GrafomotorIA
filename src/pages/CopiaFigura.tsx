@@ -3,6 +3,7 @@ import Pizarra from '../components/Pizarra';
 import { modeloCirculo } from '../components/FiguraModelo';
 import type { EvaluacionEscala} from '../models/EvaluacionEscala';
 import { crearEvaluacionEscala } from '../services/evaluacionEscalaService';
+import Stars from '../components/Stars';
 
 const CopiaFigura: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
@@ -166,7 +167,7 @@ const CopiaFigura: React.FC = () => {
             zIndex: 4
           }}
         >
-          Precisión: {puntuacion}%
+          <Stars porcentaje={puntuacion}></Stars>
         </div>
       )}
     </div>

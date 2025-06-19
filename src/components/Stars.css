@@ -1,0 +1,8 @@
+.valoracion {
+    display: flex;
+    gap: 4px;
+}
+
+.borde {
+    border: 1px solid black;
+}
