@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Pizarra from '../components/Pizarra';
+import Stars from '../components/Stars';
 import './TrazadoGuiado.css';
 
 const interpolarLinea = (puntos: [number, number][], paso = 0.02): [number, number][] => {
@@ -183,7 +184,7 @@ const TrazadoGuiado: React.FC = () => {
           ) : etapa < figuras.length - 1 ? (
             <>
               <div className={`resultado ${colorClass}`}>
-                Precisión: {puntuacion}%
+                <Stars porcentaje={puntuacion}></Stars>
               </div>
               <button className="btn-rojo" onClick={continuar}>
                 Continuar
@@ -199,8 +200,10 @@ const TrazadoGuiado: React.FC = () => {
               ))}
               <p>
                 <strong>
-                  Promedio Total:{' '}
-                  {Math.round(resultados.reduce((a, b) => a + b.precision, 0) / resultados.length)}%
+                  Promedio Total{' '}
+                  <div className='ctn-stars'>
+                    <Stars porcentaje={Math.round(resultados.reduce((a, b) => a + b.precision, 0) / resultados.length)}></Stars>
+                  </div>
                 </strong>
               </p>
               <button className="btn-rojo" onClick={() => setMostrarPopup(true)}>

@@ -157,13 +157,22 @@
 }
 
 .porcentaje.verde {
-  color: #4CAF50;
+  width: fit-content;
+  padding: 3px;
+  border-radius: 4px;
+  background-color: #4CAF50;
 }
 
 .porcentaje.amarillo {
-  color: #FFB300;
+  width: fit-content;
+  padding: 3px;
+  border-radius: 4px;
+  background-color: #FFB300;
 }
 
 .porcentaje.rojo {
-  color: #E30613;
+  width: fit-content;
+  padding: 3px;
+  border-radius: 4px;
+  background-color: #E30613;
 }

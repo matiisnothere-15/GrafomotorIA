@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './ToqueSecuencial.css';
 import click from '../assets/sonidos/click.mp3';
+import Stars from '../components/Stars';
 
 const coloresBase = ['#FF4C4C', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4'];
 
@@ -208,7 +209,7 @@ const ToqueSecuencial: React.FC = () => {
               const exactitud = rondasCompletadas / (rondasCompletadas + reintentos);
               const eficiencia = 1 - tiempoTotal / tiempoMax;
               const porcentajeNum = Math.max(0, Math.min(100, exactitud * 100 * eficiencia));
-              const porcentaje = porcentajeNum.toFixed(1);
+              //const porcentaje = porcentajeNum.toFixed(1);
 
               let color = 'rojo';
               if (porcentajeNum >= 80) color = 'verde';
@@ -219,7 +220,7 @@ const ToqueSecuencial: React.FC = () => {
                   <p><strong>Tiempo total:</strong> {tiempoTotal.toFixed(1)}s</p>
                   <p><strong>Rondas completadas:</strong> {rondasCompletadas}</p>
                   <p><strong>Veces que reiniciaste:</strong> {reintentos}</p>
-                  <p><strong>Porcentaje de aciertos:</strong> <span className={`porcentaje ${color}`}>{porcentaje}%</span></p>
+                  <p><div className={`porcentaje ${color}`}><Stars porcentaje={porcentajeNum}></Stars></div></p>
                 </div>
               );
             })()}
