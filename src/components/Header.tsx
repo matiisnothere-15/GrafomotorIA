@@ -16,28 +16,30 @@ const Header: React.FC = () => {
   const mostrarUsuario = !ocultarMenuUsuario.includes(location.pathname);
 
   useEffect(() => {
+    const cargarFoto = () => {
+    const almacenada = localStorage.getItem('fotoPerfil') || sessionStorage.getItem('imagen');
+      setFoto(almacenada);
+    };
+
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
       }
     };
 
-    const cargarFoto = () => {
-      const almacenada = localStorage.getItem('fotoPerfil') || sessionStorage.getItem('fotoPerfil');
-      setFoto(almacenada);
-    };
-
     cargarFoto();
+    window.addEventListener('fotoCambio', cargarFoto);
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('fotoCambio', cargarFoto);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
   const handleLogout = () => {
     sessionStorage.clear();
+    localStorage.removeItem("fotoPerfil");
     navigate('/');
   };
 
@@ -59,7 +61,7 @@ const Header: React.FC = () => {
         <div className="user-container" ref={dropdownRef}>
           <div className="user-label" onClick={() => setMenuOpen(!menuOpen)}>
             <span>Hola, {sessionStorage.getItem("nombre") || "Usuario"}</span>
-            <div className="perfil-link" onClick={() => setMenuOpen(!menuOpen)}>
+            <div className="perfil-link">
               {foto ? (
                 <img src={foto} alt="Foto de perfil" className="user-img" />
               ) : (
