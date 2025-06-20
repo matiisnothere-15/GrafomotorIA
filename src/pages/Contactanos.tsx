@@ -15,12 +15,28 @@ const Contactanos: React.FC = () => {
     setFormulario({ ...formulario, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Formulario enviado:', formulario);
-    setFormulario({ nombre: '', correo: '', mensaje: '' });
-    setMostrarModal(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formulario),
+      });
+
+      if (response.ok) {
+        setFormulario({ nombre: '', correo: '', mensaje: '' });
+        setMostrarModal(true);
+      } else {
+        alert("Error al enviar el mensaje. Intenta nuevamente.");
+      }
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      alert("Hubo un error en la conexión.");
+    }
   };
+
 
   // Oculta el mensaje automáticamente después de 4 segundos
   useEffect(() => {
