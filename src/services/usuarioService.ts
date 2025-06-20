@@ -1,4 +1,3 @@
-
 import { BASE_URL } from "../config.ts";
 
 interface LoginResponse {
@@ -6,7 +5,10 @@ interface LoginResponse {
   nombre: string;
   apellido: string;
   tipo_usuario: string;
+  id_usuario: number;
+  imagen: string | null; 
 }
+
 
 export const loginUsuario = async (
   email: string,
@@ -34,15 +36,15 @@ export const loginUsuario = async (
   sessionStorage.setItem("nombre", respuesta.nombre);
   sessionStorage.setItem("apellido", respuesta.apellido);
   sessionStorage.setItem("tipo_usuario", respuesta.tipo_usuario);
+  sessionStorage.setItem("id_usuario", respuesta.id_usuario.toString());
+  sessionStorage.setItem("imagen", respuesta.imagen || "");
 
   return respuesta;
 };
 
 
 export const enviarCodigo = async (correo: string) => {
-  const data = {
-    correo: correo
-  }
+  const data = { correo };
 
   try {
     const res = await fetch(`${BASE_URL}/usuarios/solicitar-codigo`, {
@@ -54,25 +56,21 @@ export const enviarCodigo = async (correo: string) => {
       body: JSON.stringify(data),
     });
 
-    if(res.status == 404) {
+    if (res.status === 404) {
       const respuesta = await res.json();
       return respuesta;
     } else {
       return true;
     }
-
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return false;
   }
-}
+};
 
 export const verificarCodigo = async (correo: string, codigo: string) => {
-  const data = {
-    correo: correo,
-    codigo: codigo
-  }
-  
+  const data = { correo, codigo };
+
   try {
     const res = await fetch(`${BASE_URL}/usuarios/verificar-codigo`, {
       method: "POST",
@@ -83,24 +81,20 @@ export const verificarCodigo = async (correo: string, codigo: string) => {
       body: JSON.stringify(data),
     });
 
-    if(res.status == 400) {
+    if (res.status === 400) {
       const respuesta = await res.json();
       return respuesta;
     } else {
       return true;
     }
-
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return false;
   }
-}
+};
 
 export const cambiarContrasena = async (correo: string, contrasena: string) => {
-  const data = {
-    correo: correo,
-    contrasena: contrasena
-  }
+  const data = { correo, contrasena };
 
   try {
     const res = await fetch(`${BASE_URL}/usuarios/resetear-contrasena`, {
@@ -112,15 +106,30 @@ export const cambiarContrasena = async (correo: string, contrasena: string) => {
       body: JSON.stringify(data),
     });
 
-    if(res.status == 400 || res.status == 404 || res.status == 401) {
+    if ([400, 404, 401].includes(res.status)) {
       const respuesta = await res.json();
       return respuesta;
     } else {
       return true;
     }
-
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return false;
   }
-}
+};
+
+export const actualizarImagenUsuario = async (id_usuario: number, imagenBase64: string) => {
+  const token = sessionStorage.getItem("token");
+
+  const res = await fetch(`${BASE_URL}/usuarios/${id_usuario}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ imagen: imagenBase64 }),
+  });
+
+  if (!res.ok) throw new Error("Error al actualizar imagen");
+  return await res.json();
+};
