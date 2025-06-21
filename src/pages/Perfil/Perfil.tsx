@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Header from '../components/Header';
+import Header from '../../components/Header';
 import { FaUserCircle } from 'react-icons/fa';
 import imageCompression from 'browser-image-compression';
-import { actualizarImagenUsuario } from '../services/usuarioService';
+import { actualizarImagenUsuario } from '../../services/usuarioService';
 import './Login.css';
 import './Perfil.css';
 

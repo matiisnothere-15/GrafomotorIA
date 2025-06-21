@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import './Follow-ups.css';
-import figura from '../assets/ejercicios/copia-figuras.png';
-import laberinto from '../assets/ejercicios/seguir-laberinto.png';
-import type { Paciente } from '../models/Paciente';
-import type { SeguimientoProgreso } from '../models/SeguimientoProgreso';
-import type { PlanTratamiento } from '../models/PlanTratamiento';
-import { BASE_URL } from '../config';
+import Header from '../../components/Header';
+import './seguimiento.css';
+import figura from '../../assets/ejercicios/copia-figuras.png';
+import laberinto from '../../assets/ejercicios/seguir-laberinto.png';
+import type { Paciente } from '../../models/Paciente';
+import type { SeguimientoProgreso } from '../../models/SeguimientoProgreso';
+import type { PlanTratamiento } from '../../models/PlanTratamiento';
+import { BASE_URL } from '../../config';
 import Select from 'react-select';
-import { getPacientes } from '../services/pacienteService';
+import { getPacientes } from '../../services/pacienteService';
+
 
 const aciertosEjercicio = [
   { nombre: 'Trazado Guiado', porcentaje: 75 },

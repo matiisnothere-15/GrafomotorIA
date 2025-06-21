@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-//import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../components/Header';
+import { enviarCodigo, verificarCodigo, cambiarContrasena } from '../../services/usuarioService';
 import './Login.css';
 import './PasswordRecovery.css';
-import Header from '../components/Header';
-import { enviarCodigo, verificarCodigo, cambiarContrasena } from '../services/usuarioService';
-import { useNavigate } from 'react-router-dom';
+
 
 const PasswordRecovery: React.FC = () => {
   const [email, setEmail] = useState('');

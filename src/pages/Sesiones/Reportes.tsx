@@ -1,6 +1,6 @@
 // src/pages/Reportes.tsx
 import React, { useState } from 'react';
-import Header from '../components/Header';
+import Header from '../../components/Header';
 import { FaFileAlt, FaEye } from 'react-icons/fa';
 import './Reportes.css';
 

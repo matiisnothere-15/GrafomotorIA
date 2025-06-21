@@ -1,23 +1,39 @@
 import { Routes, Route } from 'react-router-dom';
-import Login from '../pages/Login';
-import PasswordRecovery from '../pages/PasswordRecovery';
-// import RestablecerContrasena from '../pages/RestablecerContrasena';
 
-import Home from '../pages/Home';
-import Actividades from '../pages/Actividades';
-import Reportes from '../pages/Reportes';
-import PlanTratamientoPage from '../pages/PlanTratamiento';
-import CopiaFigura from '../pages/CopiaFigura';
-import Contactanos from '../pages/Contactanos';
-import Sesion from '../pages/Sesion';
-import TrazadoGuiado from '../pages/TrazadoGuiado';
-import Calendario from '../pages/Calendario';
-import Seguimientos from '../pages/Follow-ups';
-import Perfil from '../pages/Perfil';
+// Auth
+import Login from '../pages/Auth/Login';
+import PasswordRecovery from '../pages/Auth/PasswordRecovery';
+// import RestablecerContrasena from '../pages/Auth/RestablecerContrasena';
+
+// Dashboard
+import Home from '../pages/Home/Home';
+import Seguimientos from '../pages/Sesiones/seguimiento';
+
+// Actividades
+import Actividades from '../pages/Actividades/Actividades';
+import CopiaFigura from '../pages/Actividades/CopiaFigura';
+import TrazadoGuiado from '../pages/Actividades/TrazadoGuiado';
+import ToqueSecuencial from '../pages/Actividades/ToqueSecuencial';
+
+// Sesiones
+import Sesion from '../pages/Sesiones/Sesion';
+import Reportes from '../pages/Sesiones/Reportes';
+
+// Plan de Tratamiento
+import PlanTratamientoPage from '../pages/Plantratamiento/PlanTratamiento';
+
+// Calendario
+import Calendario from '../pages/Calendario/Calendario';
+import VerSesiones from '../pages/Calendario/VerSesiones';
+
+// Perfil y Config
+import Perfil from '../pages/Perfil/Perfil';
+import Configuracion from '../pages/configuracion/Configuracion';
+import Contactanos from '../pages/Contacto/Contactanos';
+
+// Componente de autenticación
 import PrivateRoute from '../components/PrivateRoute';
-import ToqueSecuencial from '../pages/ToqueSecuencial';
-import Configuracion from '../pages/Configuracion';
-import VerSesiones from '../pages/VerSesiones';
+
 
 
 function AppRoutes() {

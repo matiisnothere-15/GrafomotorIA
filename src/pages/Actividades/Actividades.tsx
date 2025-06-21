@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Login.css';
 import './Activity.css';
-import Header from '../components/Header';
+import Header from '../../components/Header';
 import { Link } from 'react-router-dom';
 
 import figura from '../assets/ejercicios/copia-figuras.png';
