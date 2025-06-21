@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import './Login.css';
-import './Activity.css';
+import '../Auth/Login.css';
+import './Actividades.css';
 import Header from '../../components/Header';
 import { Link } from 'react-router-dom';
 
-import figura from '../assets/ejercicios/copia-figuras.png';
-import trazado from '../assets/ejercicios/trazado-guiado.png';
-import toque from '../assets/ejercicios/toque-secuencial.png';
-import seleccion from '../assets/ejercicios/seleccion-guiada.png';
-import conexiones from '../assets/ejercicios/conexiones.png';
-import laberinto from '../assets/ejercicios/seguir-laberinto.png';
+import figura from '../../assets/ejercicios/copia-figuras.png';
+import trazado from '../../assets/ejercicios/trazado-guiado.png';
+import toque from '../../assets/ejercicios/toque-secuencial.png';
+import seleccion from '../../assets/ejercicios/seleccion-guiada.png';
+import conexiones from '../../assets/ejercicios/conexiones.png';
+import laberinto from '../../assets/ejercicios/seguir-laberinto.png';
 
 const actividades = [
   { nombre: 'Copia de Figuras', icono: figura, categoria: 'Motricidad Fina', ruta: '/actividad/CopiaFigura' },

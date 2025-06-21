@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  background: url(../assets/login-bg.jpg) no-repeat center center fixed;
+  background: url(../../assets/login-bg.jpg) no-repeat center center fixed;
   background-size: cover;
 }
 

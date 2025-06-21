@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Login.css';
+import '../Auth/Login.css';
 import './Home.css';
 import Header from '../../components/Header'; 
 import {

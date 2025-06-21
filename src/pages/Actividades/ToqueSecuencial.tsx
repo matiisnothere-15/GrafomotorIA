@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './ToqueSecuencial.css';
-import click from '../assets/sonidos/click.mp3';
+import click from '../../assets/sonidos/click.mp3';
 import Stars from '../../components/Stars';
 
 const coloresBase = ['#FF4C4C', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4'];
