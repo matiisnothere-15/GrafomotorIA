@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
-import Header from '../components/Header';
+import LoginForm from '../../components/LoginForm';
+import Header from '../../components/Header';
 import './Login.css';
-import { loginUsuario } from '../services/usuarioService';
+import { loginUsuario } from '../../services/usuarioService';
+
 
 const Login: React.FC = () => {
 

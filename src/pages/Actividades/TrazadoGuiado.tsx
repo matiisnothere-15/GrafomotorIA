@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Pizarra from '../components/Pizarra';
-import Stars from '../components/Stars';
+import Pizarra from '../../components/Pizarra';
+import Stars from '../../components/Stars';
 import './TrazadoGuiado.css';
 
 const interpolarLinea = (puntos: [number, number][], paso = 0.02): [number, number][] => {
