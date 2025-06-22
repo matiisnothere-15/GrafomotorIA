@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import './PlanTratamiento.css';
+import { obtenerPlanesTratamiento, crearPlanTratamiento } from '../../services/planTratamientoService';
+import type { PlanTratamiento } from '../../models/PlanTratamiento';
+
 
 const PlanTratamientoPage: React.FC = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -11,8 +14,9 @@ const PlanTratamientoPage: React.FC = () => {
   const [filtroPaciente, setFiltroPaciente] = useState('todos');
 
   const [nuevoPlan, setNuevoPlan] = useState({
-    nombre: '',
     paciente: '',
+    nombre_paciente: '',
+    nombre: '',
     edad: '',
     rut: '',
     patologia: '',
@@ -23,84 +27,89 @@ const PlanTratamientoPage: React.FC = () => {
     objetivo_largoplazo: ''
   });
 
+
+  const calcularEdad = (fechaNacimiento: string) => {
+    const hoy = new Date();
+    const nacimiento = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const m = hoy.getMonth() - nacimiento.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    return edad;
+  };
+
   const cargarPlanes = async () => {
-    const data = [
-      {
-        id_plan: 1,
-        paciente: 'Juana Díaz',
-        nombre: 'Plan Rehabilitación',
-        edad: 8,
-        rut: '21.398.234-0',
-        patologia: 'Dificultad motora fina',
-        fecha_inicio: '2025-05-10',
-        fecha_fin: '2025-08-10',
-        estado: 'En Tratamiento'
-      },
-      {
-        id_plan: 2,
-        paciente: 'Esteban Peral',
-        nombre: 'Estimulación Motora I',
-        edad: 10,
-        rut: '19.123.710-5',
-        patologia: 'Trastorno del desarrollo',
-        fecha_inicio: '2025-04-01',
-        fecha_fin: '2025-07-01',
-        estado: 'En Evaluación'
-      },
-      {
-        id_plan: 3,
-        paciente: 'Lucía Gutiérrez',
-        nombre: 'Terapia Coordinación',
-        edad: 7,
-        rut: '21.234.412-8',
-        patologia: 'Retraso en desarrollo',
-        fecha_inicio: '2025-05-15',
-        fecha_fin: '2025-08-15',
-        estado: 'En Tratamiento'
-      },
-      {
-        id_plan: 4,
-        paciente: 'Sofía Valencia',
-        nombre: 'Estimulación Temprana',
-        edad: 5,
-        rut: '23.049.324-K',
-        patologia: 'Trastorno del lenguaje',
-        fecha_inicio: '2025-06-01',
-        fecha_fin: '2025-09-01',
-        estado: 'En Evaluación'
-      }
-    ];
-    setPlanes(data);
+    try {
+      const data = await obtenerPlanesTratamiento();
+      const transformado = data.map((p: any) => ({
+        id_plan: p.id_plan,
+        paciente: `${p.nombre} ${p.apellido}`,
+        id_paciente: p.id_paciente,
+        nombre: "Plan Terapéutico",
+        edad: calcularEdad(p.fecha_nacimiento),
+        rut: p.rut,
+        patologia: p.diagnostico,
+        fecha_inicio: p.fecha_inicio,
+        fecha_fin: p.fecha_fin,
+        periodicidad: p.periodicidad,
+        objetivo_cortoplazo: p.objetivo_cortoplazo,
+        objetivo_largoplazo: p.objetivo_largoplazo,
+        estado: "En Tratamiento"
+      }));
+
+      setPlanes(transformado);
+    } catch (error) {
+      console.error("Error al cargar los planes:", error);
+    }
   };
 
   useEffect(() => {
     cargarPlanes();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setNuevoPlan({ ...nuevoPlan, [e.target.name]: e.target.value });
   };
 
-  const handleGuardar = () => {
-    alert('Plan guardado con éxito (mock).');
-    setMostrarModal(false);
-    cargarPlanes();
+  const handleGuardar = async () => {
+    try {
+      const planReal: PlanTratamiento = {
+        fecha_inicio: nuevoPlan.fecha_inicio,
+        fecha_fin: nuevoPlan.fecha_fin,
+        objetivo_cortoplazo: nuevoPlan.objetivo_cortoplazo,
+        objetivo_largoplazo: nuevoPlan.objetivo_largoplazo,
+        periodicidad: nuevoPlan.periodicidad,
+        id_paciente: parseInt(nuevoPlan.paciente),
+        id_usuario: parseInt(sessionStorage.getItem("id_usuario") || "0")
+      };
+
+
+      await crearPlanTratamiento(planReal);
+      alert('✅ Plan guardado con éxito.');
+      setMostrarModal(false);
+      cargarPlanes();
+    } catch (error) {
+      alert('❌ No se pudo guardar el plan.');
+      console.error(error);
+    }
   };
 
-  const verPlan = (paciente: string) => {
-    const plan = planes.find(p => p.paciente === paciente);
+  const verPlan = (pacienteNombre: string) => {
+    const plan = planes.find(p => p.paciente === pacienteNombre);
     if (plan) {
       setNuevoPlan({
         nombre: plan.nombre,
-        paciente: plan.paciente,
+        paciente: plan.id_paciente.toString(),
+        nombre_paciente: plan.paciente,
         edad: plan.edad.toString(),
         rut: plan.rut,
         patologia: plan.patologia,
         fecha_inicio: plan.fecha_inicio,
         fecha_fin: plan.fecha_fin,
-        periodicidad: 'Cada 2 semanas',
-        objetivo_cortoplazo: 'Mejorar coordinación motora fina',
-        objetivo_largoplazo: 'Alcanzar independencia funcional en tareas básicas'
+        periodicidad: plan.periodicidad || 'Cada 2 semanas',
+        objetivo_cortoplazo: plan.objetivo_cortoplazo || '',
+        objetivo_largoplazo: plan.objetivo_largoplazo || ''
       });
       setTituloModal('Plan de Tratamiento');
       setModoLectura(true);
@@ -108,20 +117,21 @@ const PlanTratamientoPage: React.FC = () => {
     }
   };
 
-  const editarPlan = (paciente: string) => {
-    const plan = planes.find(p => p.paciente === paciente);
+  const editarPlan = (pacienteNombre: string) => {
+    const plan = planes.find(p => p.paciente === pacienteNombre);
     if (plan) {
       setNuevoPlan({
         nombre: plan.nombre,
-        paciente: plan.paciente,
+        paciente: plan.id_paciente.toString(),
+        nombre_paciente: plan.paciente,
         edad: plan.edad.toString(),
         rut: plan.rut,
         patologia: plan.patologia,
         fecha_inicio: plan.fecha_inicio,
         fecha_fin: plan.fecha_fin,
-        periodicidad: 'Cada 2 semanas',
-        objetivo_cortoplazo: 'Mejorar coordinación motora fina',
-        objetivo_largoplazo: 'Alcanzar independencia funcional en tareas básicas'
+        periodicidad: plan.periodicidad || '',
+        objetivo_cortoplazo: plan.objetivo_cortoplazo || '',
+        objetivo_largoplazo: plan.objetivo_largoplazo || ''
       });
       setTituloModal('Editar Plan de Tratamiento');
       setModoLectura(false);
@@ -198,6 +208,7 @@ const PlanTratamientoPage: React.FC = () => {
               setNuevoPlan({
                 nombre: '',
                 paciente: '',
+                nombre_paciente: '',
                 edad: '',
                 rut: '',
                 patologia: '',
@@ -214,33 +225,74 @@ const PlanTratamientoPage: React.FC = () => {
         </div>
 
         {mostrarModal && (
-          <div className="modal">
-            <div className="modal-contenido">
-              <h3>{tituloModal}</h3>
-              <input name="paciente"placeholder="Nombre del paciente"value={nuevoPlan.paciente}onChange={handleChange}readOnly={modoLectura}/>
-              <input name="nombre" placeholder="Nombre del plan" value={nuevoPlan.nombre} onChange={handleChange} readOnly={modoLectura} />
-              <input name="edad" type="number" placeholder="Edad" value={nuevoPlan.edad} onChange={handleChange} readOnly={modoLectura} />
-              <input name="rut" placeholder="RUT" value={nuevoPlan.rut} onChange={handleChange} readOnly={modoLectura} />
-              <input name="patologia" placeholder="Patología" value={nuevoPlan.patologia} onChange={handleChange} readOnly={modoLectura} />
-              <input name="fecha_inicio" type="date" value={nuevoPlan.fecha_inicio} onChange={handleChange} readOnly={modoLectura} />
-              <input name="fecha_fin" type="date" value={nuevoPlan.fecha_fin} onChange={handleChange} readOnly={modoLectura} />
-              <input name="periodicidad" placeholder="Periodicidad" value={nuevoPlan.periodicidad} onChange={handleChange} readOnly={modoLectura} />
-              <textarea name="objetivo_cortoplazo" placeholder="Objetivo a corto plazo" value={nuevoPlan.objetivo_cortoplazo} onChange={handleChange} readOnly={modoLectura} />
-              <textarea name="objetivo_largoplazo" placeholder="Objetivo a largo plazo" value={nuevoPlan.objetivo_largoplazo} onChange={handleChange} readOnly={modoLectura} />
+        <div className="modal">
+          <div className="modal-contenido">
+            <h3>{tituloModal}</h3>
 
+            <div className="campo">
+              <label>Nombre del paciente</label>
+              <input name="nombre_paciente" value={nuevoPlan.nombre_paciente} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Nombre del plan</label>
+              <input name="nombre" value={nuevoPlan.nombre} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Edad</label>
+              <input name="edad" type="number" value={nuevoPlan.edad} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>RUT</label>
+              <input name="rut" value={nuevoPlan.rut} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Patología</label>
+              <input name="patologia" value={nuevoPlan.patologia} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Fecha inicio</label>
+              <input name="fecha_inicio" type="date" value={nuevoPlan.fecha_inicio} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Fecha fin</label>
+              <input name="fecha_fin" type="date" value={nuevoPlan.fecha_fin} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Periodicidad</label>
+              <input name="periodicidad" value={nuevoPlan.periodicidad} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Objetivo a corto plazo</label>
+              <textarea name="objetivo_cortoplazo" value={nuevoPlan.objetivo_cortoplazo} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="campo">
+              <label>Objetivo a largo plazo</label>
+              <textarea name="objetivo_largoplazo" value={nuevoPlan.objetivo_largoplazo} onChange={handleChange} readOnly={modoLectura} />
+            </div>
+
+            <div className="modal-acciones">
               {modoLectura ? (
-                <div className="modal-acciones">
-                  <button onClick={() => setMostrarModal(false)}>Cerrar</button>
-                </div>
+                <button onClick={() => setMostrarModal(false)}>Cerrar</button>
               ) : (
-                <div className="modal-acciones">
+                <>
                   <button onClick={handleGuardar}>Guardar</button>
                   <button onClick={() => setMostrarModal(false)}>Cancelar</button>
-                </div>
+                </>
               )}
             </div>
           </div>
-        )}
+        </div>
+      )}
+
       </main>
     </div>
   );

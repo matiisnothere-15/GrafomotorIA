@@ -133,6 +133,10 @@
   gap: 12px;
   font-family: 'Roboto', sans-serif;
 }
+.modal, .modal * {
+  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !important;
+}
+
 
 .modal-contenido input,
 .modal-contenido textarea {
@@ -216,4 +220,193 @@
 .titulo-plan {
   color: #E30613; 
   font-weight: 700;
+}
+input:disabled,
+textarea:disabled {
+  background-color: white !important;
+  color: #000 !important;
+  opacity: 1 !important;
+  cursor: default;
+}
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.campo label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.modal-contenido {
+  width: 100%;
+  max-width: 500px; /* Achica el ancho */
+  padding: 1.5rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  max-height: 90vh; /* Para que no desborde */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.campo label {
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}
+
+.modal-contenido {
+  background: #FFFFFF;
+  padding: 32px 32px 24px;
+  border-radius: 18px;
+  width: 95%;
+  max-width: 700px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  font-family: 'Roboto', sans-serif;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Grid elegante */
+.modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+/* Campo individual */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+}
+
+.modal-contenido {
+  background: #FFFFFF;
+  padding: 32px 32px 24px;
+  border-radius: 18px;
+  width: 95%;
+  max-width: 700px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  font-family: 'Roboto', sans-serif;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Grid elegante */
+.modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+/* Campo individual */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+}
+
+.modal-contenido input,
+.modal-contenido textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #CCCCCC;
+  font-size: 14px;
+  width: 100%;
+  resize: vertical;
+  transition: 0.2s ease;
+}
+
+.modal-contenido input:focus,
+.modal-contenido textarea:focus {
+  outline: none;
+  border-color: #E30613;
+  box-shadow: 0 0 0 2px rgba(227, 6, 19, 0.2);
+}
+
+.modal-contenido textarea {
+  min-height: 60px;
+  max-height: 120px;
+}
+
+/* Desactiva gris */
+input:disabled,
+textarea:disabled,
+input[readonly],
+textarea[readonly] {
+  background-color: #fff !important;
+  color: #000 !important;
+  opacity: 1 !important;
+  cursor: default;
+}
+
+/* Títulos */
+.modal-contenido h3 {
+  font-size: 20px;
+  color: #E30613;
+  font-weight: 700;
+  margin-bottom: 24px;
+  grid-column: span 2;
+}
+
+/* Botones */
+.modal-acciones {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.modal-acciones button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background-color 0.2s ease;
+}
+
+.modal-acciones button:first-child {
+  background-color: #E30613;
+  color: #fff;
+}
+
+.modal-acciones button:first-child:hover {
+  background-color: #c80510;
+}
+
+.modal-acciones button:last-child {
+  background-color: #eeeeee;
+  color: #333;
+}
+
+.modal-acciones button:last-child:hover {
+  background-color: #d6d6d6;
 }
