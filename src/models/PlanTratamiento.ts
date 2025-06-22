@@ -1,5 +1,5 @@
 export interface PlanTratamiento {
-  id_plan: number;
+  id_plan?: number; 
   fecha_inicio: string;
   fecha_fin: string;
   objetivo_cortoplazo: string;

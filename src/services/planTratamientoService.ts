@@ -3,7 +3,10 @@ import type { PlanTratamiento } from "../models/PlanTratamiento";
 
 const getToken = () => sessionStorage.getItem("token") || "";
 
-export const obtenerPlanesTratamiento = async () => {
+/**
+ * Obtener todos los planes de tratamiento desde la API
+ */
+export const obtenerPlanesTratamiento = async (): Promise<any[]> => {
   try {
     const res = await fetch(`${BASE_URL}/planes/listarplanes`, {
       method: "GET",
@@ -24,9 +27,11 @@ export const obtenerPlanesTratamiento = async () => {
   }
 };
 
-// Crear un nuevo plan de tratamiento
+/**
+ * Crear un nuevo plan de tratamiento en la API
+ */
 export const crearPlanTratamiento = async (plan: PlanTratamiento) => {
-  // Validación mínima basada en backend
+  // Validación mínima (puedes mejorar esto según tus reglas de negocio)
   if (!plan || !plan.fecha_inicio || !plan.id_paciente || !plan.id_usuario) {
     throw new Error("❌ Faltan campos obligatorios.");
   }
@@ -51,3 +56,4 @@ export const crearPlanTratamiento = async (plan: PlanTratamiento) => {
     throw error;
   }
 };
+
