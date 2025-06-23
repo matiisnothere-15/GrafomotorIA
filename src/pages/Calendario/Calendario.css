@@ -250,3 +250,56 @@ html, body {
   font-size: 0.75rem;
   padding: 0.3rem 0.6rem;
 }
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .fc {
+    font-size: 1.05rem;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.3rem !important;
+  }
+
+  .fc-button {
+    font-size: 1rem;
+    padding: 0.5rem 0.9rem;
+    min-width: 50px;
+    min-height: 44px;
+  }
+
+  .fc-daygrid-event,
+  .fc-timegrid-event {
+    font-size: 1rem;
+    padding: 4px 6px;
+  }
+
+  .fc-timegrid-slot-label,
+  .fc-col-header-cell-cushion {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .fc {
+    font-size: 1.2rem;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.5rem !important;
+  }
+
+  .fc-button {
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .fc-daygrid-event,
+  .fc-timegrid-event {
+    font-size: 1.05rem;
+    padding: 5px 8px;
+  }
+
+  .fc-timegrid-slot-label,
+  .fc-col-header-cell-cushion {
+    font-size: 1rem;
+  }
+}

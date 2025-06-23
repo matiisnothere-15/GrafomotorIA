@@ -13,9 +13,9 @@ import laberinto from '../../assets/ejercicios/seguir-laberinto.png';
 
 const actividades = [
   { nombre: 'Copia de Figuras', icono: figura, categoria: 'Motricidad Fina', ruta: '/actividad/CopiaFigura' },
-  { nombre: 'Trazado Guiado', icono: trazado, categoria: 'Motricidad Fina',ruta: '/actividad/trazado-guiado' },
-  { nombre: 'Toque secuencial', icono: toque, categoria: 'Visomotor', ruta: '/actividad/toque-secuencial'},
-  { nombre: 'Seleccion Guiada', icono: seleccion, categoria: 'Visomotor' },
+  { nombre: 'Trazado Guiado', icono: trazado, categoria: 'Motricidad Fina', ruta: '/actividad/trazado-guiado' },
+  { nombre: 'Toque Secuencial', icono: toque, categoria: 'Visomotor', ruta: '/actividad/toque-secuencial' },
+  { nombre: 'Selección Guiada', icono: seleccion, categoria: 'Visomotor' },
   { nombre: 'Conexiones', icono: conexiones, categoria: 'Motricidad Fina' },
   { nombre: 'Seguir Laberinto', icono: laberinto, categoria: 'Motricidad Fina' },
 ];
@@ -26,14 +26,14 @@ const Actividades: React.FC = () => {
   }, []);
 
   return (
-    <div className="home-wrapper">
+    <div className="activity-wrapper">
       <Header />
 
       <main className="home-content">
         <div className="activity-grid">
           {actividades.map((actividad, index) => {
             const card = (
-              <div className="activity-card" key={index}>
+              <div className="activity-card" key={index} tabIndex={0}>
                 <h3 className="activity-title">{actividad.nombre}</h3>
                 <img src={actividad.icono} alt={actividad.nombre} className="activity-icon" />
                 <span className={`activity-tag ${actividad.categoria.replace(/\s+/g, '-').toLowerCase()}`}>

@@ -2,7 +2,9 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-image: url('../assets/login-bg.jpg') no-repeat center center;
+  background-image: url('../assets/login-bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
   font-family: 'Poppins', sans-serif;
   overflow: hidden;
@@ -10,35 +12,33 @@
   text-align: center;
 }
 
+/* Título */
 .titulo {
   font-size: 2.4rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: #E30613;
 }
+
+/* Contador + Ronda arriba derecha */
 .info-superior.jugando {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  left: auto;
-  text-align: right;
+  top: 1.5rem;
+  right: 2rem;
   display: flex;
-  gap: 1rem;
-}
-
-.info-superior.jugando .ronda,
-.info-superior.jugando .contador {
-  margin-bottom: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: right;
 }
 
 .ronda,
 .contador {
   font-size: 1.4rem;
-  margin-bottom: 0.8rem;
   color: #555555;
   font-family: 'Roboto', sans-serif;
 }
 
+/* Botón iniciar */
 .boton-jugar {
   position: absolute;
   bottom: 2rem;
@@ -60,6 +60,7 @@
   background-color: #B8040F;
 }
 
+/* Círculos */
 .circulo {
   position: absolute;
   width: 80px;
@@ -75,6 +76,7 @@
   transform: scale(1.2);
 }
 
+/* Pop-up de resultado */
 .popup {
   position: fixed;
   top: 0;
@@ -100,7 +102,7 @@
   border-radius: 1.5rem;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
   width: 90%;
-  max-width: 400px;
+  max-width: 480px;
   text-align: center;
   animation: zoomIn 0.25s ease;
   font-family: 'Roboto', sans-serif;
@@ -118,6 +120,7 @@
   color: #222;
 }
 
+/* Info resumen */
 .resumen-juego {
   margin-top: 1rem;
   font-size: 1rem;
@@ -133,6 +136,7 @@
   color: #333;
 }
 
+/* Botón cerrar */
 .boton-cerrar {
   margin-top: 1.5rem;
   padding: 0.8rem 1.6rem;
@@ -151,28 +155,55 @@
   background-color: #B8040F;
 }
 
+/* Estilos para el porcentaje */
 .porcentaje {
   font-weight: bold;
   font-family: 'Roboto', sans-serif;
+  width: fit-content;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-top: 0.5rem;
 }
 
 .porcentaje.verde {
-  width: fit-content;
-  padding: 3px;
-  border-radius: 4px;
   background-color: #4CAF50;
 }
 
 .porcentaje.amarillo {
-  width: fit-content;
-  padding: 3px;
-  border-radius: 4px;
   background-color: #FFB300;
 }
 
 .porcentaje.rojo {
-  width: fit-content;
-  padding: 3px;
-  border-radius: 4px;
   background-color: #E30613;
+}
+
+/* RESPONSIVO TABLET (768–1439px) */
+@media (min-width: 768px) and (max-width: 1439px) {
+  .info-superior.jugando {
+    right: 1.5rem;
+    top: 1rem;
+  }
+
+  .ronda,
+  .contador {
+    font-size: 1.2rem;
+  }
+
+  .boton-jugar,
+  .boton-cerrar {
+    font-size: 1.1rem;
+    padding: 0.9rem 1.8rem;
+  }
+
+  .popup-contenido {
+    padding: 2rem 1.5rem;
+  }
+
+  .popup-contenido p {
+    font-size: 1.2rem;
+  }
+
+  .resumen-juego {
+    font-size: 0.95rem;
+  }
 }
