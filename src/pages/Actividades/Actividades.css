@@ -1,52 +1,125 @@
-/* Contenedor general */
 .activity-wrapper {
   padding: 2rem;
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: transparent;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-family: ui-sans-serif, system-ui, sans-serif, 'Roboto', 'Poppins';
+  font-family: 'Roboto', 'Poppins', sans-serif;
 }
 
-/* Grid de tarjetas */
+.home-content {
+  width: 100%;
+  max-width: 1400px;
+  box-sizing: border-box;
+}
+
+/* Grid base: 1 columna para fallback */
 .activity-grid {
   display: grid;
-  padding-top: 10px;
-  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  grid-template-columns: 1fr;
   gap: 2rem;
+  justify-items: center;
+  align-items: start;
   width: 100%;
-  max-width: 1200px;
+  padding-top: 2rem;
 }
 
-/* Tarjeta individual */
+/* Tablet 800–1023px: 2 columnas */
+@media (min-width: 800px) and (max-width: 1023px) {
+  .activity-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 2rem;
+  }
+}
+
+/* Tablet grande 1024–1439px: 3 columnas y escala mayor */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .activity-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    padding: 2rem 3rem;
+  }
+
+  .activity-card {
+    max-width: 320px;
+    height: 300px;
+  }
+
+  .activity-icon {
+    width: 110px;
+    height: 110px;
+  }
+
+  .activity-title {
+    font-size: 1.3rem;
+  }
+
+  .activity-tag {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Pantallas grandes 1440px+: 4 columnas y escala más grande */
+@media (min-width: 1440px) {
+  .activity-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    padding: 2rem 4rem;
+  }
+
+  .activity-card {
+    max-width: 360px;
+    height: 330px;
+  }
+
+  .activity-icon {
+    width: 120px;
+    height: 120px;
+  }
+
+  .activity-title {
+    font-size: 1.4rem;
+  }
+
+  .activity-tag {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+/* Tarjeta base */
 .activity-card {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
   text-align: center;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 250px;
-  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  width: 100%;
+  max-width: 280px;
+  height: 260px;
 }
 
 .activity-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  background-color: #fff0f0;
 }
 
-/* Icono grande */
 .activity-icon {
   width: 100px;
   height: 100px;
   margin-bottom: 1rem;
+  object-fit: contain;
 }
 
-/* Título */
 .activity-title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -55,19 +128,17 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Etiqueta de categoría */
 .activity-tag {
   display: inline-block;
-  padding: 0.3rem 0.75rem;
+  padding: 0.4rem 0.9rem;
   border-radius: 10px;
   font-size: 0.85rem;
   font-weight: 500;
   color: white;
-  min-width: 100px;
+  min-width: 120px;
   text-align: center;
 }
 
-/* Estilos por categoría */
 .activity-tag.motricidad-fina {
   background-color: #2196f3;
 }
@@ -76,29 +147,7 @@
   background-color: #9c27b0;
 }
 
-/* Responsivo tablets */
-@media (max-width: 1024px) {
-  .activity-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Responsivo móvil */
-@media (max-width: 640px) {
-  .activity-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .activity-card-link {
   text-decoration: none;
   color: inherit;
-}
-
-/* Ajustes tablet opcionales */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .tu-clase {
-    flex-direction: row;
-    padding: 2rem;
-  }
 }

@@ -1,9 +1,10 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Pizarra from '../../components/Pizarra';
 import { modeloCirculo } from '../../components/FiguraModelo';
-import type { EvaluacionEscala} from '../../models/EvaluacionEscala';
+import type { EvaluacionEscala } from '../../models/EvaluacionEscala';
 import { crearEvaluacionEscala } from '../../services/evaluacionEscalaService';
 import Stars from '../../components/Stars';
+import './CopiaFigura.css';
 
 const CopiaFigura: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
@@ -29,7 +30,6 @@ const CopiaFigura: React.FC = () => {
       return;
     }
 
-    // Distancia promedio desde puntos del trazo hacia el modelo
     let sumaDistancias = 0;
     usuario.forEach(({ x: ux, y: uy }) => {
       let menorDistancia = Infinity;
@@ -41,11 +41,11 @@ const CopiaFigura: React.FC = () => {
       });
       sumaDistancias += menorDistancia;
     });
+
     const promedio = sumaDistancias / usuario.length;
     const maxDistancia = 200;
     let baseScore = Math.max(0, 100 - (promedio / maxDistancia) * 100);
 
-    // Cobertura del modelo: cuántos puntos del modelo están cerca del trazo
     let puntosCubiertos = 0;
     const umbral = 20;
     modelo.forEach(({ x: mx, y: my }) => {
@@ -60,67 +60,50 @@ const CopiaFigura: React.FC = () => {
         }
       }
     });
-    const cobertura = puntosCubiertos / modelo.length;
 
-    // Penalización si cobertura es baja
+    const cobertura = puntosCubiertos / modelo.length;
     if (cobertura < 0.8) {
-      baseScore = baseScore * cobertura; // reduce proporcionalmente
+      baseScore = baseScore * cobertura;
     }
 
     setPuntuacion(Math.round(baseScore));
   };
+const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
+  if (puntuacion === null) return alert("No hay puntuación aún.");
 
-  /*
-  const descargarCoordenadas = (datos: { x: number; y: number }[]) => {
-  const formateado = datos
-    .map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`)
-    .join(',\n');
+  const formateado = imagen.map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`).join(',\n');
   const contenido = `[\n${formateado}\n]`;
-  const blob = new Blob([contenido], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
+  const jsonData = JSON.parse(contenido);
 
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'coordenadas.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-  };*/
-
-  const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
-    const formateado = imagen
-      .map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`)
-      .join(',\n');
-    const contenido = `[\n${formateado}\n]`;
-    const jsonData = JSON.parse(contenido);
-    
-    const datos: EvaluacionEscala = {
-      fecha: "2025-06-02",
-      tipo_escala: "escala 2",
-      resultado: jsonData,
-      puntaje: puntuacion!,
-      // Luego cambiar por el id del paciente realizando el ejercicio
-      id_paciente: 1
-    }
-
-    const resultado = await crearEvaluacionEscala(datos);
-
-    if (resultado) {
-      alert("Coordenadas guardadas");
-    } else {
-      alert("Error al guardar las coordenadas")
-    }
-
+  const datos: EvaluacionEscala = {
+    fecha: new Date().toISOString().split("T")[0],
+    tipo_escala: "escala 2",
+    resultado: jsonData,
+    puntaje: puntuacion,
+    id_paciente: 1,
+    id_ejercicio: 2 // Usa un ID de ejercicio que EXISTE en la base
   };
+
+  try {
+    const resultado = await crearEvaluacionEscala(datos);
+    alert(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
+  } catch (e) {
+    console.error("❌ Error en POST:", e);
+    alert("Error al enviar los datos");
+  }
+};
+
+
 
   const getColor = (puntaje: number | null) => {
     if (puntaje === null) return 'transparent';
-    if (puntaje >= 85) return '#28a745'; // verde
-    if (puntaje >= 60) return '#ffc107'; // amarillo
-    return '#dc3545'; // rojo
+    if (puntaje >= 85) return '#28a745';
+    if (puntaje >= 60) return '#ffc107';
+    return '#dc3545';
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="copiafigura-wrapper">
       <Pizarra
         onFinishDraw={handleFinishDraw}
         coordsModelo={modeloCirculo}
@@ -131,43 +114,14 @@ const CopiaFigura: React.FC = () => {
       />
 
       {coords.length > 0 && (
-        <button
-          onClick={() => guardarCoordenadas(coords)}
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            padding: '8px 12px',
-            fontWeight: 'bold',
-            background: '#e60023',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            zIndex: 3
-          }}
-        >
+        <button className="guardar-btn" onClick={() => guardarCoordenadas(coords)}>
           Guardar coordenadas
         </button>
       )}
 
       {puntuacion !== null && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 20,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: getColor(puntuacion),
-            color: '#fff',
-            padding: '12px 24px',
-            fontSize: '1.2rem',
-            fontWeight: 'bold',
-            borderRadius: '10px',
-            zIndex: 4
-          }}
-        >
-          <Stars porcentaje={puntuacion}></Stars>
+        <div className="resultado-box" style={{ background: getColor(puntuacion) }}>
+          <Stars porcentaje={puntuacion} />
         </div>
       )}
     </div>
