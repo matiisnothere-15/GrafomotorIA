@@ -57,3 +57,22 @@ export const crearPlanTratamiento = async (plan: PlanTratamiento) => {
   }
 };
 
+export const actualizarPlanTratamiento = async (id_plan: number, plan: PlanTratamiento) => {
+  try {
+    const res = await fetch(`${BASE_URL}/planes/editarplan/${id_plan}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`
+      },
+      body: JSON.stringify(plan)
+    });
+
+    if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("❌ Error al actualizar el plan:", error);
+    throw error;
+  }
+};
