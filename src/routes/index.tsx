@@ -17,7 +17,6 @@ import ToqueSecuencial from '../pages/Actividades/ToqueSecuencial';
 
 // Sesiones
 import Sesion from '../pages/Sesiones/Sesion';
-import Reportes from '../pages/Sesiones/Reportes';
 
 // Plan de Tratamiento
 import PlanTratamientoPage from '../pages/Plantratamiento/PlanTratamiento';
@@ -48,7 +47,6 @@ function AppRoutes() {
       {/* Rutas protegidas */}
       <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
       <Route path="/actividades" element={<PrivateRoute><Actividades /></PrivateRoute>} />
-      <Route path="/reportes" element={<PrivateRoute><Reportes /></PrivateRoute>} />
       <Route path="/PlanTratamiento" element={<PrivateRoute><PlanTratamientoPage /></PrivateRoute>} />
       <Route path="/actividad/CopiaFigura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
        <Route path="/actividad/trazado-guiado" element={<PrivateRoute><TrazadoGuiado /></PrivateRoute>} />

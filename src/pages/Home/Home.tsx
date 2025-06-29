@@ -9,7 +9,6 @@ import {
   FaClipboardList,
   FaTasks,
   FaChartLine,
-  FaFileAlt,
   FaInfoCircle
 } from 'react-icons/fa';
 
@@ -19,7 +18,6 @@ const opciones = [
   { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: '/actividades' },
   { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: '/PlanTratamiento' },
   { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/Seguimientos' },
-  { icono: <FaFileAlt />, texto: 'Reportes e informes', ruta: '/reportes' },
   { icono: <FaInfoCircle />, texto: 'Contactanos', ruta: '/contactanos' }
 ];
 
