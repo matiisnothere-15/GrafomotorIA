@@ -31,7 +31,6 @@ export const obtenerPlanesTratamiento = async (): Promise<any[]> => {
  * Crear un nuevo plan de tratamiento en la API
  */
 export const crearPlanTratamiento = async (plan: PlanTratamiento) => {
-  // Validación mínima (puedes mejorar esto según tus reglas de negocio)
   if (!plan || !plan.fecha_inicio || !plan.id_paciente || !plan.id_usuario) {
     throw new Error("❌ Faltan campos obligatorios.");
   }
