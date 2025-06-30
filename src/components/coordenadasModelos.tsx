@@ -1,6 +1,5 @@
 // coordenadasModelos.ts
 
-// Función para interpolar puntos entre dos coordenadas
 function interpolarLinea(p1: [number, number], p2: [number, number], pasos: number): [number, number][] {
   const [x1, y1] = p1;
   const [x2, y2] = p2;
@@ -13,7 +12,6 @@ function interpolarLinea(p1: [number, number], p2: [number, number], pasos: numb
   });
 }
 
-// Modelo de círculo perfecto centrado en (490, 400) con radio 140
 export const modeloCirculo: [number, number][] = Array.from({ length: 120 }, (_, i) => {
   const angulo = (i * 2 * Math.PI) / 120;
   const radio = 140;
@@ -25,7 +23,6 @@ export const modeloCirculo: [number, number][] = Array.from({ length: 120 }, (_,
   ];
 });
 
-// Cuadrado con interpolación en sus 4 lados (30 puntos por lado)
 export const modeloCuadrado: [number, number][] = [
   ...interpolarLinea([350, 260], [630, 260], 30),
   ...interpolarLinea([630, 260], [630, 540], 30),
@@ -33,22 +30,86 @@ export const modeloCuadrado: [number, number][] = [
   ...interpolarLinea([350, 540], [350, 260], 30),
 ];
 
-// Triángulo interpolado (3 lados con 40 puntos cada uno)
 export const modeloTriangulo: [number, number][] = [
   ...interpolarLinea([490, 240], [630, 580], 40),
   ...interpolarLinea([630, 580], [350, 580], 40),
   ...interpolarLinea([350, 580], [490, 240], 40),
 ];
 
-// Placeholders (vacíos por ahora)
-export const modeloEstrella: [number, number][] = [];
-export const modeloFlecha: [number, number][] = [];
-export const modeloPacman: [number, number][] = [];
-export const modeloInfinito: [number, number][] = [];
-export const modeloFlor: [number, number][] = [];
-export const modeloNube: [number, number][] = [];
+export const modeloEstrella: [number, number][] = [
+  ...interpolarLinea([490, 220], [520, 340], 10),
+  ...interpolarLinea([520, 340], [640, 340], 10),
+  ...interpolarLinea([640, 340], [540, 410], 10),
+  ...interpolarLinea([540, 410], [580, 530], 10),
+  ...interpolarLinea([580, 530], [490, 460], 10),
+  ...interpolarLinea([490, 460], [400, 530], 10),
+  ...interpolarLinea([400, 530], [440, 410], 10),
+  ...interpolarLinea([440, 410], [340, 340], 10),
+  ...interpolarLinea([340, 340], [460, 340], 10),
+  ...interpolarLinea([460, 340], [490, 220], 10),
+];
 
-// Mapa centralizado
+export const modeloFlecha: [number, number][] = [
+  ...interpolarLinea([490, 200], [630, 400], 30),
+  ...interpolarLinea([630, 400], [560, 400], 10),
+  ...interpolarLinea([560, 400], [560, 580], 30),
+  ...interpolarLinea([420, 580], [420, 400], 30),
+  ...interpolarLinea([420, 400], [350, 400], 10),
+  ...interpolarLinea([350, 400], [490, 200], 30),
+];
+
+// Pacman
+export const modeloPacman: [number, number][] = [
+  [588, 504], [599, 490], [608, 474], [615, 458], [621, 441], [625, 423], [628, 406], [629, 388],
+  [629, 370], [626, 352], [622, 335], [617, 317], [610, 301], [602, 286], [593, 272], [582, 258],
+  [570, 246], [557, 234], [542, 224], [527, 215], [511, 208], [495, 202], [478, 198], [461, 195],
+  [443, 194], [426, 195], [409, 198], [393, 202], [377, 208], [362, 215], [347, 224], [334, 234],
+  [321, 246], [310, 258], [300, 272], [291, 286], [283, 301], [277, 317], [272, 335], [268, 352],
+  [266, 370], [266, 388], [267, 406], [269, 423], [273, 441], [279, 458], [286, 474], [295, 490],
+  [305, 504], [317, 517], [330, 529], [344, 539], [359, 547], [374, 553], [390, 558], [407, 561],
+  [424, 563], [442, 562], [459, 561], [476, 558], [492, 553], [507, 547], [522, 539], [536, 529],
+  [549, 517], [490, 400], [590, 300], [490, 400]
+];
+
+// Infinito
+export const modeloInfinito: [number, number][] = [
+  [490, 400], [500, 408], [511, 416], [521, 421], [530, 424], [538, 425], [545, 423], [552, 418],
+  [558, 411], [563, 402], [566, 392], [569, 381], [571, 370], [573, 360], [573, 351], [573, 344],
+  [571, 339], [569, 335], [566, 333], [561, 331], [556, 331], [550, 330], [544, 329], [537, 327],
+  [530, 324], [522, 320], [514, 315], [506, 309], [498, 302], [490, 295], [482, 302], [474, 309],
+  [466, 315], [458, 320], [450, 324], [443, 327], [436, 329], [430, 330], [424, 331], [419, 331],
+  [414, 333], [411, 335], [409, 339], [407, 344], [407, 351], [407, 360], [409, 370], [411, 381],
+  [414, 392], [417, 402], [422, 411], [428, 418], [435, 423], [442, 425], [450, 424], [459, 421],
+  [469, 416], [480, 408]
+];
+
+// Flor
+export const modeloFlor: [number, number][] = [
+  [490, 400], [506, 397], [511, 384], [506, 368], [490, 360], [474, 368], [469, 384], [474, 397],
+  [490, 400], [506, 403], [511, 416], [506, 432], [490, 440], [474, 432], [469, 416], [474, 403],
+  [490, 400], [505, 390], [510, 374], [505, 358], [490, 350], [475, 358], [470, 374], [475, 390],
+  [490, 400], [503, 407], [508, 423], [503, 439], [490, 448], [477, 439], [472, 423], [477, 407],
+  [490, 400], [502, 395], [507, 379], [502, 363], [490, 355], [478, 363], [473, 379], [478, 395],
+  [490, 400], [501, 405], [506, 421], [501, 437], [490, 445], [479, 437], [474, 421], [479, 405],
+  [490, 400], [500, 393], [505, 377], [500, 361], [490, 353], [480, 361], [475, 377], [480, 393],
+  [490, 400], [499, 403], [504, 419], [499, 435], [490, 443], [481, 435], [476, 419], [481, 403],
+  [490, 400], [498, 391], [503, 375], [498, 359], [490, 351], [482, 359], [477, 375], [482, 391],
+  [490, 400], [497, 401], [502, 417], [497, 433], [490, 441], [483, 433], [478, 417], [483, 401]
+];
+
+
+export const modeloNube: [number, number][] = [
+  ...interpolarLinea([400, 500], [380, 460], 10),
+  ...interpolarLinea([380, 460], [400, 420], 10),
+  ...interpolarLinea([400, 420], [450, 410], 10),
+  ...interpolarLinea([450, 410], [470, 430], 10),
+  ...interpolarLinea([470, 430], [500, 400], 10),
+  ...interpolarLinea([500, 400], [550, 420], 10),
+  ...interpolarLinea([550, 420], [580, 460], 10),
+  ...interpolarLinea([580, 460], [560, 500], 10),
+  ...interpolarLinea([560, 500], [400, 500], 20),
+];
+
 export const modelos: Record<string, [number, number][]> = {
   circulo: modeloCirculo,
   cuadrado: modeloCuadrado,

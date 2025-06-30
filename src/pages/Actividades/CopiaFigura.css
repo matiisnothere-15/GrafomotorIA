@@ -25,6 +25,25 @@
   z-index: 10;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
+.siguiente-btn {
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.siguiente-btn:hover {
+  background-color: #0056b3;
+}
 
 .guardar-btn:hover {
   background-color: #B8040F;
@@ -80,4 +99,35 @@
     font-size: 1.3rem;
     padding: 16px 32px;
   }
+}
+.selector-nivel {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  z-index: 15;
+}
+
+.selector-nivel button {
+  background-color: #ffffff;
+  border: 2px solid #E30613;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #E30613;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.selector-nivel .actual {
+  padding: 6px 14px;
+  font-weight: bold;
+  background-color: #E30613;
+  color: white;
+  border-radius: 12px;
 }

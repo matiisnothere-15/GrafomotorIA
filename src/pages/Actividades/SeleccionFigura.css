@@ -4,6 +4,7 @@
   overflow-y: auto;
   font-family: 'Roboto', 'Poppins', ui-sans-serif, system-ui, sans-serif;
   padding: 1rem 1rem 2rem 1rem;
+  margin-top: 64px;
 
 }
 
@@ -16,7 +17,6 @@
   max-width: 100%;
 }
 
-/* SOLO TABLET (incluye iPad Pro horizontal hasta 1400px) */
 @media screen and (min-width: 600px) and (max-width: 1400px) {
   .seleccionfigura-grid {
     grid-template-columns: repeat(3, 1fr);
