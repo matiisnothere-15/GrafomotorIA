@@ -8,8 +8,11 @@ interface PizarraProps {
   onModeloTransformado?: (coords: { x: number; y: number }[]) => void;
   coordsModelo?: [number, number][];
   colorModelo?: string;
+  grosorModelo?: number;
+  rellenarModelo?: boolean;
   cerrarTrazo?: boolean;
   debug?: boolean;
+  suavizarModelo?: boolean; // NUEVO
 }
 
 const Pizarra: React.FC<PizarraProps> = ({
@@ -20,8 +23,11 @@ const Pizarra: React.FC<PizarraProps> = ({
   onModeloTransformado,
   coordsModelo = [],
   colorModelo = '#aaaaaa',
+  grosorModelo = 6,
+  rellenarModelo = false,
   cerrarTrazo = true,
-  debug = false
+  debug = false,
+  suavizarModelo = true // NUEVO
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -35,7 +41,6 @@ const Pizarra: React.FC<PizarraProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // High DPI support (anti-aliasing real)
     const dpr = window.devicePixelRatio || 1;
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
@@ -44,8 +49,8 @@ const Pizarra: React.FC<PizarraProps> = ({
     ctx.scale(dpr, dpr);
 
     ctxRef.current = ctx;
-    drawModeloCentrado(ctx, cerrarTrazo);
-  }, [coordsModelo, cerrarTrazo]);
+    drawModeloCentrado(ctx);
+  }, [coordsModelo, cerrarTrazo, grosorModelo, colorModelo, rellenarModelo, suavizarModelo]);
 
   const getBoundingBox = (coords: [number, number][]) => {
     const xs = coords.map(c => c[0]);
@@ -58,7 +63,7 @@ const Pizarra: React.FC<PizarraProps> = ({
     };
   };
 
-  const drawModeloCentrado = (ctx: CanvasRenderingContext2D, cerrar: boolean) => {
+  const drawModeloCentrado = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -69,10 +74,9 @@ const Pizarra: React.FC<PizarraProps> = ({
     const modelWidth = bbox.maxX - bbox.minX;
     const modelHeight = bbox.maxY - bbox.minY;
 
-    const scale = Math.min(
-      window.innerWidth * 0.6 / modelWidth,
-      window.innerHeight * 0.6 / modelHeight
-    );
+    const scaleX = window.innerWidth * 0.6 / modelWidth;
+    const scaleY = window.innerHeight * 0.6 / modelHeight;
+    const scale = Math.min(scaleX, scaleY);
 
     const offsetX = (window.innerWidth - modelWidth * scale) / 2;
     const offsetY = (window.innerHeight - modelHeight * scale) / 2;
@@ -87,18 +91,33 @@ const Pizarra: React.FC<PizarraProps> = ({
 
     ctx.beginPath();
     ctx.moveTo(coordsTransformadas[0].x, coordsTransformadas[0].y);
-    for (let i = 1; i < coordsTransformadas.length - 1; i++) {
-      const p1 = coordsTransformadas[i];
-      const p2 = coordsTransformadas[i + 1];
-      const midX = (p1.x + p2.x) / 2;
-      const midY = (p1.y + p2.y) / 2;
-      ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+
+    if (suavizarModelo) {
+      for (let i = 1; i < coordsTransformadas.length - 1; i++) {
+        const p1 = coordsTransformadas[i];
+        const p2 = coordsTransformadas[i + 1];
+        const midX = (p1.x + p2.x) / 2;
+        const midY = (p1.y + p2.y) / 2;
+        ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+      }
+      const last = coordsTransformadas[coordsTransformadas.length - 1];
+      ctx.lineTo(last.x, last.y);
+    } else {
+      for (let i = 1; i < coordsTransformadas.length; i++) {
+        const p = coordsTransformadas[i];
+        ctx.lineTo(p.x, p.y);
+      }
     }
-    const last = coordsTransformadas[coordsTransformadas.length - 1];
-    ctx.lineTo(last.x, last.y);
-    if (cerrar) ctx.closePath();
+
+    if (cerrarTrazo) ctx.closePath();
+
+    if (rellenarModelo) {
+      ctx.fillStyle = 'rgba(200, 200, 200, 0.2)';
+      ctx.fill();
+    }
+
     ctx.strokeStyle = colorModelo;
-    ctx.lineWidth = 4;
+    ctx.lineWidth = grosorModelo * (window.devicePixelRatio || 1);
     ctx.stroke();
 
     if (debug) {
@@ -121,8 +140,8 @@ const Pizarra: React.FC<PizarraProps> = ({
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     return {
-      x: (e.clientX - rect.left),
-      y: (e.clientY - rect.top)
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
     };
   };
 
