@@ -14,16 +14,17 @@
   box-sizing: border-box;
 }
 
-/* Grid base: 1 columna para fallback */
+
 .activity-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  justify-items: center;
+  justify-items: stretch; 
   align-items: start;
   width: 100%;
   padding-top: 2rem;
 }
+
 
 /* Tablet 800–1023px: 2 columnas */
 @media (min-width: 800px) and (max-width: 1023px) {
@@ -102,10 +103,11 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  width: 100%;
-  max-width: 280px;
-  height: 260px;
+  width: 100%;        
+  max-width: none;   
+  height: 100%;        
 }
+
 
 .activity-card:hover {
   transform: translateY(-4px);
