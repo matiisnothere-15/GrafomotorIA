@@ -14,6 +14,7 @@ import Actividades from '../pages/Actividades/Actividades';
 import CopiaFigura from '../pages/Actividades/CopiaFigura';
 import TrazadoGuiado from '../pages/Actividades/TrazadoGuiado';
 import ToqueSecuencial from '../pages/Actividades/ToqueSecuencial';
+import SeleccionFigura from '../pages/Actividades/SeleccionFigura';
 
 // Sesiones
 import Sesion from '../pages/Sesiones/Sesion';
@@ -32,6 +33,7 @@ import Contactanos from '../pages/Contacto/Contactanos';
 
 // Componente de autenticación
 import PrivateRoute from '../components/PrivateRoute';
+
 
 
 
@@ -58,7 +60,12 @@ function AppRoutes() {
       <Route path="/actividad/toque-secuencial" element={<ToqueSecuencial />} />
       <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
       <Route path="/configuracion" element={<PrivateRoute><Configuracion /></PrivateRoute>} />
-    </Routes>
+      <Route path="/figuras" element={<PrivateRoute><SeleccionFigura /></PrivateRoute>} />
+      <Route path="/copiar-figura/:nivel/:figura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
+
+      
+      </Routes>
+      
   );
 }
 

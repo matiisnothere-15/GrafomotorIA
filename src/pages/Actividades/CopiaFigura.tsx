@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Pizarra from '../../components/Pizarra';
-import { modeloCirculo } from '../../components/FiguraModelo';
+import { modelos } from '../../components/coordenadasModelos';
 import type { EvaluacionEscala } from '../../models/EvaluacionEscala';
 import { crearEvaluacionEscala } from '../../services/evaluacionEscalaService';
 import Stars from '../../components/Stars';
 import './CopiaFigura.css';
 
 const CopiaFigura: React.FC = () => {
+  const { nivel, figura } = useParams();
+  const modelo = modelos[figura || ''];
+  console.log('Nivel:', nivel);
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
 
-  const handleFinishDraw = (puntos: { x: number; y: number }[]) => {
-    setCoords(puntos);
-  };
+  const figurasSinSuavizado = ['cuadrado', 'triangulo', 'estrella', 'flecha'];
+
+  const suavizar = !figurasSinSuavizado.includes(figura || '');
+
+  useEffect(() => {
+    if (!modelo || modelo.length === 0) {
+      alert('❌ Modelo no encontrado');
+    }
+  }, [modelo]);
 
   useEffect(() => {
     if (coords.length > 0 && modeloTransformado.length > 0) {
@@ -68,32 +78,31 @@ const CopiaFigura: React.FC = () => {
 
     setPuntuacion(Math.round(baseScore));
   };
-const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
-  if (puntuacion === null) return alert("No hay puntuación aún.");
 
-  const formateado = imagen.map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`).join(',\n');
-  const contenido = `[\n${formateado}\n]`;
-  const jsonData = JSON.parse(contenido);
+  const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
+    if (puntuacion === null) return alert("No hay puntuación aún.");
 
-  const datos: EvaluacionEscala = {
-    fecha: new Date().toISOString().split("T")[0],
-    tipo_escala: "escala 2",
-    resultado: jsonData,
-    puntaje: puntuacion,
-    id_paciente: 1,
-    id_ejercicio: 2 // Usa un ID de ejercicio que EXISTE en la base
+    const formateado = imagen.map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`).join(',\n');
+    const contenido = `[\n${formateado}\n]`;
+    const jsonData = JSON.parse(contenido);
+
+    const datos: EvaluacionEscala = {
+      fecha: new Date().toISOString().split("T")[0],
+      tipo_escala: "escala 2",
+      resultado: jsonData,
+      puntaje: puntuacion,
+      id_paciente: 1,
+      id_ejercicio: 1 // Puedes ajustar esto según figura o nivel
+    };
+
+    try {
+      const resultado = await crearEvaluacionEscala(datos);
+      alert(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
+    } catch (e) {
+      console.error("❌ Error en POST:", e);
+      alert("Error al enviar los datos");
+    }
   };
-
-  try {
-    const resultado = await crearEvaluacionEscala(datos);
-    alert(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
-  } catch (e) {
-    console.error("❌ Error en POST:", e);
-    alert("Error al enviar los datos");
-  }
-};
-
-
 
   const getColor = (puntaje: number | null) => {
     if (puntaje === null) return 'transparent';
@@ -102,15 +111,24 @@ const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
     return '#dc3545';
   };
 
+  if (!modelo || modelo.length === 0) {
+    return <div className="copiafigura-wrapper">Figura no disponible</div>;
+  }
+
   return (
     <div className="copiafigura-wrapper">
       <Pizarra
-        onFinishDraw={handleFinishDraw}
-        coordsModelo={modeloCirculo}
+        onFinishDraw={setCoords}
+        coordsModelo={modelo}
         onModeloTransformado={setModeloTransformado}
         background="#fff"
         color="black"
         lineWidth={2}
+        colorModelo="#aaaaaa"
+        grosorModelo={10}
+        rellenarModelo={true}
+        cerrarTrazo={true}
+        suavizarModelo={suavizar}
       />
 
       {coords.length > 0 && (

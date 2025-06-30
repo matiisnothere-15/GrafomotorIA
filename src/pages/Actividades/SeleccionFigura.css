@@ -1,0 +1,88 @@
+.seleccionfigura-wrapper {
+  padding-top: 80px;
+  min-height: 100vh;
+  overflow-y: auto;
+  font-family: 'Roboto', 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  padding: 1rem 1rem 2rem 1rem;
+
+}
+
+.seleccionfigura-grid {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  max-width: 100%;
+}
+
+/* SOLO TABLET (incluye iPad Pro horizontal hasta 1400px) */
+@media screen and (min-width: 600px) and (max-width: 1400px) {
+  .seleccionfigura-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 960px;
+  }
+
+  .seleccionfigura-card {
+    padding: 2rem;
+  }
+
+  .seleccionfigura-card h3 {
+    font-size: 1.6rem;
+  }
+
+  .seleccionfigura-card img {
+    max-width: 150px;
+  }
+
+  .seleccionfigura-card .nivel-tag {
+    font-size: 1.1rem;
+    padding: 10px 16px;
+  }
+}
+
+.seleccionfigura-card {
+  background-color: #f8f8f8;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.2rem;
+  height: 100%;
+  
+}
+
+
+.seleccionfigura-card:hover {
+  transform: scale(1.03);
+}
+
+.seleccionfigura-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333333;
+}
+
+.seleccionfigura-card img {
+  max-width: 100px;
+  height: auto;
+  margin: 0 auto 1rem auto;
+}
+
+.seleccionfigura-card .nivel-tag {
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  background-color: #E30613;
+  color: white;
+  margin-top: auto;
+}
