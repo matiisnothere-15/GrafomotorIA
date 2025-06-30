@@ -4,7 +4,9 @@
   margin: 0;
   padding: 0;
   display: block; 
+  margin-top: 64px;
 }
+
 
 body {
   margin: 0;
@@ -12,4 +14,5 @@ body {
   font-family: 'Roboto', sans-serif;
   background: url('../src/assets/login-bg.jpg') no-repeat center center fixed;
   background-size: cover;
+  margin-top: 64px;
 }

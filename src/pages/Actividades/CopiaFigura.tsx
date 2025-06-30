@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Pizarra from '../../components/Pizarra';
 import { modelos } from '../../components/coordenadasModelos';
 import type { EvaluacionEscala } from '../../models/EvaluacionEscala';
@@ -9,15 +9,24 @@ import './CopiaFigura.css';
 
 const CopiaFigura: React.FC = () => {
   const { nivel, figura } = useParams();
+  const navigate = useNavigate();
   const modelo = modelos[figura || ''];
-  console.log('Nivel:', nivel);
+
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
 
   const figurasSinSuavizado = ['cuadrado', 'triangulo', 'estrella', 'flecha'];
-
   const suavizar = !figurasSinSuavizado.includes(figura || '');
+
+  const figurasNivel: Record<number, string[]> = {
+    1: ['circulo', 'cuadrado', 'triangulo'],
+    2: ['estrella', 'flecha', 'pacman'],
+    3: ['infinito', 'flor', 'nube']
+  };
+  const nivelNumero = Number((nivel || '').replace(/[^\d]/g, ''));
+  const figs = figurasNivel[nivelNumero] || [];
+  const actualIndex = figs.indexOf(figura || '');
 
   useEffect(() => {
     if (!modelo || modelo.length === 0) {
@@ -73,34 +82,44 @@ const CopiaFigura: React.FC = () => {
 
     const cobertura = puntosCubiertos / modelo.length;
     if (cobertura < 0.8) {
-      baseScore = baseScore * cobertura;
+      baseScore *= cobertura;
     }
 
     setPuntuacion(Math.round(baseScore));
   };
 
   const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
-    if (puntuacion === null) return alert("No hay puntuación aún.");
-
-    const formateado = imagen.map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`).join(',\n');
-    const contenido = `[\n${formateado}\n]`;
-    const jsonData = JSON.parse(contenido);
-
-    const datos: EvaluacionEscala = {
-      fecha: new Date().toISOString().split("T")[0],
-      tipo_escala: "escala 2",
-      resultado: jsonData,
-      puntaje: puntuacion,
-      id_paciente: 1,
-      id_ejercicio: 1 // Puedes ajustar esto según figura o nivel
-    };
+    if (!figura || !nivel || puntuacion === null) return;
 
     try {
+      const formateado = imagen.map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`).join(',\n');
+      const contenido = `[\n${formateado}\n]`;
+      const jsonData = JSON.parse(contenido);
+
+      const datos: EvaluacionEscala = {
+        fecha: new Date().toISOString().split("T")[0],
+        tipo_escala: "escala 2",
+        resultado: jsonData,
+        puntaje: puntuacion,
+        id_paciente: 1,
+        id_ejercicio: 1
+      };
+
       const resultado = await crearEvaluacionEscala(datos);
-      alert(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
+      console.log("✅ Evaluación creada:", datos);
+      console.log(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
+
+      const siguiente = figs[actualIndex + 1];
+      if (siguiente) {
+        setCoords([]);
+        setPuntuacion(null);
+        navigate(`/copiar-figura/nivel${nivelNumero}/${siguiente}`);
+      } else {
+        alert('✅ Completaste todas las figuras del nivel');
+        navigate('/seleccion-figura');
+      }
     } catch (e) {
       console.error("❌ Error en POST:", e);
-      alert("Error al enviar los datos");
     }
   };
 
@@ -111,12 +130,26 @@ const CopiaFigura: React.FC = () => {
     return '#dc3545';
   };
 
-  if (!modelo || modelo.length === 0) {
-    return <div className="copiafigura-wrapper">Figura no disponible</div>;
-  }
+  const anterior = figs[actualIndex - 1];
+  const siguiente = figs[actualIndex + 1];
 
   return (
     <div className="copiafigura-wrapper">
+      {/* Selector de figura superior */}
+      <div className="selector-nivel">
+        {anterior && (
+          <button onClick={() => navigate(`/copiar-figura/nivel${nivelNumero}/${anterior}`)}>
+            ← {anterior}
+          </button>
+        )}
+        <span className="actual">{figura}</span>
+        {siguiente && (
+          <button onClick={() => navigate(`/copiar-figura/nivel${nivelNumero}/${siguiente}`)}>
+            {siguiente} →
+          </button>
+        )}
+      </div>
+
       <Pizarra
         onFinishDraw={setCoords}
         coordsModelo={modelo}
@@ -133,7 +166,7 @@ const CopiaFigura: React.FC = () => {
 
       {coords.length > 0 && (
         <button className="guardar-btn" onClick={() => guardarCoordenadas(coords)}>
-          Guardar coordenadas
+          Siguiente
         </button>
       )}
 
