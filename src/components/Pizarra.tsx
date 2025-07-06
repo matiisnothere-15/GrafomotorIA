@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useImperativeHandle,
+  forwardRef
+} from 'react';
 
 interface PizarraProps {
   color?: string;
@@ -12,10 +18,10 @@ interface PizarraProps {
   rellenarModelo?: boolean;
   cerrarTrazo?: boolean;
   debug?: boolean;
-  suavizarModelo?: boolean; // NUEVO
+  suavizarModelo?: boolean;
 }
 
-const Pizarra: React.FC<PizarraProps> = ({
+const Pizarra = forwardRef(({
   color = 'black',
   lineWidth = 2,
   background = '#fff',
@@ -26,13 +32,22 @@ const Pizarra: React.FC<PizarraProps> = ({
   grosorModelo = 6,
   rellenarModelo = false,
   cerrarTrazo = true,
-  debug = false,
-  suavizarModelo = true // NUEVO
-}) => {
+  suavizarModelo = true
+}: PizarraProps, ref) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const coordsRef = useRef<{ x: number; y: number }[]>([]);
+
+  useImperativeHandle(ref, () => ({
+    limpiar: () => {
+      const ctx = ctxRef.current;
+      if (!ctx) return;
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      coordsRef.current = [];
+      drawModeloCentrado(ctx);
+    }
+  }));
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -120,19 +135,6 @@ const Pizarra: React.FC<PizarraProps> = ({
     ctx.lineWidth = grosorModelo * (window.devicePixelRatio || 1);
     ctx.stroke();
 
-    if (debug) {
-      ctx.strokeStyle = 'rgba(0,0,255,0.4)';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(offsetX, offsetY, modelWidth * scale, modelHeight * scale);
-      ctx.fillStyle = 'rgba(255,0,0,0.5)';
-      ctx.beginPath();
-      ctx.arc(window.innerWidth / 2, window.innerHeight / 2, 5, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
-
     if (onModeloTransformado) onModeloTransformado(coordsTransformadas);
   };
 
@@ -148,7 +150,12 @@ const Pizarra: React.FC<PizarraProps> = ({
   const startDrawing = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const ctx = ctxRef.current;
     if (!ctx) return;
+
     const pos = getExactPos(e);
+
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = color;
+
     ctx.beginPath();
     ctx.moveTo(pos.x, pos.y);
     coordsRef.current = [pos];
@@ -190,6 +197,6 @@ const Pizarra: React.FC<PizarraProps> = ({
       }}
     />
   );
-};
+});
 
 export default Pizarra;

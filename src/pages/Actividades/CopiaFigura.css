@@ -131,3 +131,57 @@
   color: white;
   border-radius: 12px;
 }
+.resumen-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.resumen-contenido {
+  background: white;
+  padding: 40px 24px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.resumen-contenido h2 {
+  color: #e30613;
+  margin-bottom: 12px;
+}
+
+.resumen-contenido p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.resumen-contenido .volver-btn {
+  background-color: #e30613;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.resumen-contenido .volver-btn:hover {
+  background-color: #b30410;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

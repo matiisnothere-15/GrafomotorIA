@@ -10,7 +10,7 @@ import estrella from '../../assets/figuras/estrella.png';
 import flecha from '../../assets/figuras/flecha.png';
 import pacman from '../../assets/figuras/pacman.png';
 import infinito from '../../assets/figuras/infinito.png';
-import flor from '../../assets/figuras/flor.png';
+import arbol from '../../assets/figuras/arbol.png';
 import nube from '../../assets/figuras/nube.png';
 
 const figuras = [
@@ -21,7 +21,7 @@ const figuras = [
   { nombre: 'Flecha', icono: flecha, nivel: 2, id: 'flecha' },
   { nombre: 'Pacman', icono: pacman, nivel: 2, id: 'pacman' },
   { nombre: 'Infinito', icono: infinito, nivel: 3, id: 'infinito' },
-  { nombre: 'Flor', icono: flor, nivel: 3, id: 'flor' },
+  { nombre: 'Arbol', icono: arbol, nivel: 3, id: 'arbol' },
   { nombre: 'Nube', icono: nube, nivel: 3, id: 'nube' },
 ];
 
