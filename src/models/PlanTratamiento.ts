@@ -5,6 +5,7 @@ export interface PlanTratamiento {
   objetivo_cortoplazo: string;
   objetivo_largoplazo: string;
   periodicidad: string;
+  progreso: string;
   id_paciente: number;
   id_usuario: number;
 }
