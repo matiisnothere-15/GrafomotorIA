@@ -1,0 +1,149 @@
+.hamburguesa {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background-color: #e30613;
+  color: white;
+  font-size: 24px;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu-ejercicio {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  animation: slideIn 0.4s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.menu-ejercicio.abierto {
+  left: 0;
+}
+
+.menu-ejercicio .cerrar {
+  background: none;
+  border: none;
+  font-size: 20px;
+  float: right;
+  cursor: pointer;
+  color: #e30613;
+}
+
+.menu-ejercicio ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+.menu-ejercicio li {
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  padding: 6px 4px;
+  border-radius: 6px;
+}
+
+.menu-ejercicio li:hover {
+  color: #e30613;
+  font-weight: bold;
+  background: #fff2f2;
+  transform: scale(1.02);
+}
+
+.menu-ejercicio li:active {
+  background: #ffeaea;
+  transform: scale(0.97);
+}
+
+.control-lapiz {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.control-lapiz input[type="range"] {
+  width: 100%;
+  margin-top: 4px;
+  cursor: pointer;
+  accent-color: red;
+  appearance: none;
+  height: 6px;
+  background: red;
+  border-radius: 4px;
+  position: relative;
+}
+
+.control-lapiz input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid red;
+  transition: transform 0.2s;
+}
+
+.control-lapiz input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.etiquetas-grosor {
+  position: relative;
+  width: 100%;
+  font-size: 12px;
+  color: #333;
+  margin-top: 4px;
+  height: 18px;
+}
+
+.etiquetas-grosor span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.etiquetas-grosor span:first-child {
+  left: 0%;
+  transform: translateX(0%);
+}
+
+.etiquetas-grosor span:nth-child(2) {
+  left: 50%;
+}
+
+.etiquetas-grosor span:last-child {
+  left: 100%;
+  transform: translateX(-100%);
+}

@@ -5,6 +5,7 @@ import { modelos } from '../../components/coordenadasModelos';
 import type { EvaluacionEscala } from '../../models/EvaluacionEscala';
 import { crearEvaluacionEscala } from '../../services/evaluacionEscalaService';
 import Stars from '../../components/Stars';
+import MenuEjercicio from '../../components/MenuEjercicio';
 import './CopiaFigura.css';
 
 const CopiaFigura: React.FC = () => {
@@ -15,6 +16,9 @@ const CopiaFigura: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
+  const [grosorLinea, setGrosorLinea] = useState(2);
+  const [mostrarResumen, setMostrarResumen] = useState(false);
+  const [precisiones, setPrecisiones] = useState<number[]>([]);
 
   const figurasSinSuavizado = ['cuadrado', 'triangulo', 'estrella', 'flecha'];
   const suavizar = !figurasSinSuavizado.includes(figura || '');
@@ -22,7 +26,7 @@ const CopiaFigura: React.FC = () => {
   const figurasNivel: Record<number, string[]> = {
     1: ['circulo', 'cuadrado', 'triangulo'],
     2: ['estrella', 'flecha', 'pacman'],
-    3: ['infinito', 'flor', 'nube']
+    3: ['infinito', 'arbol', 'nube']
   };
   const nivelNumero = Number((nivel || '').replace(/[^\d]/g, ''));
   const figs = figurasNivel[nivelNumero] || [];
@@ -85,7 +89,9 @@ const CopiaFigura: React.FC = () => {
       baseScore *= cobertura;
     }
 
-    setPuntuacion(Math.round(baseScore));
+    const finalScore = Math.round(baseScore);
+    setPuntuacion(finalScore);
+    setPrecisiones(prev => [...prev, finalScore]);
   };
 
   const guardarCoordenadas = async (imagen: { x: number; y: number }[]) => {
@@ -115,8 +121,7 @@ const CopiaFigura: React.FC = () => {
         setPuntuacion(null);
         navigate(`/copiar-figura/nivel${nivelNumero}/${siguiente}`);
       } else {
-        alert('✅ Completaste todas las figuras del nivel');
-        navigate('/seleccion-figura');
+        setMostrarResumen(true);
       }
     } catch (e) {
       console.error("❌ Error en POST:", e);
@@ -130,12 +135,24 @@ const CopiaFigura: React.FC = () => {
     return '#dc3545';
   };
 
+  const promedioPrecision = Math.round(
+    precisiones.reduce((a, b) => a + b, 0) / precisiones.length || 0
+  );
+
   const anterior = figs[actualIndex - 1];
   const siguiente = figs[actualIndex + 1];
 
   return (
     <div className="copiafigura-wrapper">
-      {/* Selector de figura superior */}
+      <MenuEjercicio
+        onReiniciar={() => {
+          setCoords([]);
+          setPuntuacion(null);
+        }}
+        onVolverSeleccion={() => navigate('/figuras')}
+        onCambiarAncho={(valor) => setGrosorLinea(valor)}
+      />
+
       <div className="selector-nivel">
         {anterior && (
           <button onClick={() => navigate(`/copiar-figura/nivel${nivelNumero}/${anterior}`)}>
@@ -156,7 +173,7 @@ const CopiaFigura: React.FC = () => {
         onModeloTransformado={setModeloTransformado}
         background="#fff"
         color="black"
-        lineWidth={2}
+        lineWidth={grosorLinea}
         colorModelo="#aaaaaa"
         grosorModelo={10}
         rellenarModelo={true}
@@ -173,6 +190,23 @@ const CopiaFigura: React.FC = () => {
       {puntuacion !== null && (
         <div className="resultado-box" style={{ background: getColor(puntuacion) }}>
           <Stars porcentaje={puntuacion} />
+        </div>
+      )}
+
+      {mostrarResumen && (
+        <div className="resumen-modal">
+          <div className="resumen-contenido">
+            <h2>🎉 Resumen de Nivel {nivelNumero}</h2>
+            <p>Ejercicios realizados: {precisiones.length}</p>
+            <p>Desempeño general:</p>
+            <Stars porcentaje={promedioPrecision} />
+            <button
+              className="volver-btn"
+              onClick={() => navigate('/figuras')}
+            >
+              Volver a la selección de niveles
+            </button>
+          </div>
         </div>
       )}
     </div>
