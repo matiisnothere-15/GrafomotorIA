@@ -5,9 +5,9 @@
   font-family: 'Roboto', 'Poppins', ui-sans-serif, system-ui, sans-serif;
   padding: 1rem 1rem 2rem 1rem;
   margin-top: 64px;
-
 }
 
+/* 🟥 Grid principal */
 .seleccionfigura-grid {
   display: grid;
   gap: 1.5rem;
@@ -17,30 +17,7 @@
   max-width: 100%;
 }
 
-@media screen and (min-width: 600px) and (max-width: 1400px) {
-  .seleccionfigura-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 960px;
-  }
-
-  .seleccionfigura-card {
-    padding: 2rem;
-  }
-
-  .seleccionfigura-card h3 {
-    font-size: 1.6rem;
-  }
-
-  .seleccionfigura-card img {
-    max-width: 150px;
-  }
-
-  .seleccionfigura-card .nivel-tag {
-    font-size: 1.1rem;
-    padding: 10px 16px;
-  }
-}
-
+/* 🟨 Tarjeta individual */
 .seleccionfigura-card {
   background-color: #f8f8f8;
   border-radius: 16px;
@@ -55,9 +32,7 @@
   align-items: center;
   gap: 1.2rem;
   height: 100%;
-  
 }
-
 
 .seleccionfigura-card:hover {
   transform: scale(1.03);
@@ -68,6 +43,7 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #333333;
+  text-align: center;
 }
 
 .seleccionfigura-card img {
@@ -85,4 +61,65 @@
   background-color: #E30613;
   color: white;
   margin-top: auto;
+}
+
+/* 📱 Móviles */
+@media screen and (max-width: 767px) {
+  .seleccionfigura-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seleccionfigura-card img {
+    max-width: 90px;
+  }
+}
+
+/* 📱 Tablets medianas */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .seleccionfigura-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 90%;
+  }
+
+  .seleccionfigura-card {
+    padding: 1.8rem;
+  }
+
+  .seleccionfigura-card h3 {
+    font-size: 1.4rem;
+  }
+
+  .seleccionfigura-card img {
+    max-width: 130px;
+  }
+
+  .seleccionfigura-card .nivel-tag {
+    font-size: 1rem;
+    padding: 8px 14px;
+  }
+}
+
+/* 💻 Tablets grandes e iPad Pro (~1024 CSS px reales) */
+@media screen and (min-width: 1000px) {
+  .seleccionfigura-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px;
+  }
+
+  .seleccionfigura-card {
+    padding: 2rem;
+  }
+
+  .seleccionfigura-card h3 {
+    font-size: 1.6rem;
+  }
+
+  .seleccionfigura-card img {
+    max-width: 160px;
+  }
+
+  .seleccionfigura-card .nivel-tag {
+    font-size: 1.15rem;
+    padding: 10px 18px;
+  }
 }

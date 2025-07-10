@@ -15,6 +15,7 @@ import CopiaFigura from '../pages/Actividades/CopiaFigura';
 import TrazadoGuiado from '../pages/Actividades/TrazadoGuiado';
 import ToqueSecuencial from '../pages/Actividades/ToqueSecuencial';
 import SeleccionFigura from '../pages/Actividades/SeleccionFigura';
+import SeleccionTrazado from '../pages/Actividades/SeleccionNivelTrazado';
 
 // Sesiones
 import Sesion from '../pages/Sesiones/Sesion';
@@ -34,9 +35,6 @@ import Contactanos from '../pages/Contacto/Contactanos';
 // Componente de autenticación
 import PrivateRoute from '../components/PrivateRoute';
 
-
-
-
 function AppRoutes() {
   return (
     <Routes>
@@ -44,14 +42,16 @@ function AppRoutes() {
       <Route path="/" element={<Login />} />
       <Route path="/recuperar-contrasena" element={<PasswordRecovery />} />
       {/* <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} /> */}
-      
 
       {/* Rutas protegidas */}
       <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
       <Route path="/actividades" element={<PrivateRoute><Actividades /></PrivateRoute>} />
       <Route path="/PlanTratamiento" element={<PrivateRoute><PlanTratamientoPage /></PrivateRoute>} />
       <Route path="/actividad/CopiaFigura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
-       <Route path="/actividad/trazado-guiado" element={<PrivateRoute><TrazadoGuiado /></PrivateRoute>} />
+      
+      {/* CORREGIDA ESTA LÍNEA */}
+      <Route path="/actividad/trazado-guiado" element={<PrivateRoute><SeleccionTrazado /></PrivateRoute>} />
+      
       <Route path="/Contactanos" element={<PrivateRoute><Contactanos /></PrivateRoute>} />
       <Route path="/Sesion" element={<PrivateRoute><Sesion /></PrivateRoute>} />
       <Route path="/Calendario" element={<PrivateRoute><Calendario /></PrivateRoute>} />
@@ -60,12 +60,15 @@ function AppRoutes() {
       <Route path="/actividad/toque-secuencial" element={<ToqueSecuencial />} />
       <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
       <Route path="/configuracion" element={<PrivateRoute><Configuracion /></PrivateRoute>} />
+
+      {/* Selección y ejecución de CopiaFigura */}
       <Route path="/figuras" element={<PrivateRoute><SeleccionFigura /></PrivateRoute>} />
       <Route path="/copiar-figura/:nivel/:figura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
 
-      
-      </Routes>
-      
+      {/* Selección y ejecución de TrazadoGuiado */}
+      <Route path="/trazados" element={<PrivateRoute><SeleccionTrazado /></PrivateRoute>} />
+      <Route path="/trazado-guiado/:nivel/:figura" element={<PrivateRoute><TrazadoGuiado /></PrivateRoute>} />
+    </Routes>
   );
 }
 

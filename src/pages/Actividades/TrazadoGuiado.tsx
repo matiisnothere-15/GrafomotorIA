@@ -1,226 +1,222 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Pizarra from '../../components/Pizarra';
+import { modelosTrazado } from '../../components/coordenadasModelos';
 import Stars from '../../components/Stars';
-import './TrazadoGuiado.css';
+import MenuEjercicio from '../../components/MenuEjercicio';
+import { crearEvaluacionEscala } from '../../services/evaluacionEscalaService'; // ✅ importa servicio
+import type { EvaluacionEscala } from '../../models/EvaluacionEscala'; // ✅ importa tipo
+import './CopiaFigura.css';
 
-const interpolarLinea = (puntos: [number, number][], paso = 0.02): [number, number][] => {
-  const resultado: [number, number][] = [];
-  for (let i = 0; i < puntos.length - 1; i++) {
-    const [x1, y1] = puntos[i];
-    const [x2, y2] = puntos[i + 1];
-    for (let t = 0; t <= 1; t += paso) {
-      const x = x1 + (x2 - x1) * t;
-      const y = y1 + (y2 - y1) * t;
-      resultado.push([x, y]);
-    }
-  }
-  return resultado;
+const nombresBonitos: Record<string, string> = {
+  montaña: 'Montaña',
+  ondas: 'Ondas Suaves',
+  ola: 'Ola Marina',
+  punteagudo: 'Picos Agudos',
+  caminocurva: 'Camino Curvo',
+  espiral: 'Espiral Creativa',
+  curvasE: 'Curvas Enfrentadas',
+  doble_espiral: 'Doble Espiral',
+  zigzag_espiral: 'Zigzag en Espiral',
 };
-
-const curva = (): [number, number][] => {
-  const raw: [number, number][] = Array.from({ length: 50 }, (_, i) => {
-    const x = 200 + i * 14;
-    const y = 200 + Math.sin(i * 0.4) * 50;
-    return [x, y];
-  });
-  return interpolarLinea(raw);
-};
-
-const zigzag = (): [number, number][] => {
-  const raw: [number, number][] = [
-    [200, 350], [280, 410], [360, 350],
-    [440, 410], [520, 350], [600, 410], [680, 350],
-  ];
-  return interpolarLinea(raw);
-};
-
-const quebrada = (): [number, number][] => {
-  const raw: [number, number][] = [
-    [200, 500], [280, 540], [360, 510],
-    [440, 560], [520, 530], [600, 570],
-  ];
-  return interpolarLinea(raw);
-};
-
-const figuras = [
-  { nombre: 'Curva', coords: curva(), icono: '🌊' },
-  { nombre: 'Zigzag', coords: zigzag(), icono: '📈' },
-  { nombre: 'Línea Quebrada', coords: quebrada(), icono: '📉' },
-];
 
 const TrazadoGuiado: React.FC = () => {
+  const { nivel, figura } = useParams();
+  const navigate = useNavigate();
+  const modelo = modelosTrazado[figura || ''];
+
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
-  const [modeloT, setModeloT] = useState<{ x: number; y: number }[]>([]);
-  const [canvasKey, setCanvasKey] = useState(0);
-  const [etapa, setEtapa] = useState(0);
-  const [resultados, setResultados] = useState<
-    { figura: string; precision: number; duracion: number }[]
-  >([]);
+  const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
-  const [habilitado, setHabilitado] = useState(true);
-  const [mostrarPopup, setMostrarPopup] = useState(false);
-  const [tiempoInicio, setTiempoInicio] = useState<number>(Date.now());
+  const [grosorLinea, setGrosorLinea] = useState(4); 
+  const [mostrarResumen, setMostrarResumen] = useState(false);
+  const [precisiones, setPrecisiones] = useState<number[]>([]);
+  const [keyPizarra, setKeyPizarra] = useState(Date.now()); 
 
-  const modeloActual = figuras[etapa].coords;
-
-  const handleFinishDraw = (p: { x: number; y: number }[]) => {
-    if (habilitado) setCoords(p);
+  const trazadosNivel: Record<number, string[]> = {
+    1: ['montaña', 'ondas', 'ola'],
+    2: ['punteagudo', 'caminocurva', 'espiral'],
+    3: ['curvasE', 'doble_espiral', 'zigzag_espiral'],
   };
+
+  const nivelNumero = Number((nivel || '').replace(/[^\d]/g, ''));
+  const figuras = trazadosNivel[nivelNumero] || [];
+  const actualIndex = figuras.indexOf(figura || '');
+
+  useEffect(() => {
+    if (!modelo || modelo.length === 0) {
+      alert('❌ Modelo no encontrado');
+    }
+  }, [modelo]);
+
+  useEffect(() => {
+    if (coords.length > 0 && modeloTransformado.length > 0) {
+      calcularPrecision(coords, modeloTransformado);
+    }
+  }, [coords, modeloTransformado]);
 
   const calcularPrecision = (
     usuario: { x: number; y: number }[],
     modelo: { x: number; y: number }[]
-  ): number => {
-    if (usuario.length < 10 || modelo.length < 10) return 0;
+  ) => {
+    if (usuario.length < 10 || modelo.length < 10) {
+      setPuntuacion(0);
+      return;
+    }
 
-    const umbral = 35;
-    let puntosCubiertos = 0;
-
-    modelo.forEach(puntoM => {
-      const tocado = usuario.some(puntoU => {
-        const dx = puntoU.x - puntoM.x;
-        const dy = puntoU.y - puntoM.y;
-        return Math.sqrt(dx * dx + dy * dy) <= umbral;
+    let sumaDistancias = 0;
+    usuario.forEach(({ x: ux, y: uy }) => {
+      let menorDistancia = Infinity;
+      modelo.forEach(({ x: mx, y: my }) => {
+        const dx = mx - ux;
+        const dy = my - uy;
+        const distancia = Math.sqrt(dx * dx + dy * dy);
+        if (distancia < menorDistancia) menorDistancia = distancia;
       });
-      if (tocado) puntosCubiertos++;
+      sumaDistancias += menorDistancia;
+    });
+
+    const promedio = sumaDistancias / usuario.length;
+    const maxDistancia = 200;
+    let baseScore = Math.max(0, 100 - (promedio / maxDistancia) * 100);
+
+    let puntosCubiertos = 0;
+    const umbral = 20;
+    modelo.forEach(({ x: mx, y: my }) => {
+      for (let i = 0; i < usuario.length; i++) {
+        const { x: ux, y: uy } = usuario[i];
+        const dx = mx - ux;
+        const dy = my - uy;
+        const distancia = Math.sqrt(dx * dx + dy * dy);
+        if (distancia <= umbral) {
+          puntosCubiertos++;
+          break;
+        }
+      }
     });
 
     const cobertura = puntosCubiertos / modelo.length;
-    let score = cobertura * 100;
-
-    const desviacion = usuario.reduce((acum, puntoU) => {
-      const minDist = modelo.reduce((min, puntoM) => {
-        const dx = puntoU.x - puntoM.x;
-        const dy = puntoU.y - puntoM.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        return dist < min ? dist : min;
-      }, Infinity);
-      return acum + minDist;
-    }, 0) / usuario.length;
-
-    const factor = 1 - Math.min(desviacion / 60, 0.3);
-    score *= factor;
-
-    return Math.max(0, Math.round(score));
-  };
-
-  const finalizarEtapa = () => {
-    setHabilitado(false);
-    const tiempoFin = Date.now();
-    const duracion = Math.round((tiempoFin - tiempoInicio) / 1000);
-
-    if (coords.length && modeloT.length) {
-      const puntaje = calcularPrecision(coords, modeloT);
-      setPuntuacion(puntaje);
-      setResultados(prev => [
-        ...prev,
-        {
-          figura: figuras[etapa].nombre,
-          precision: puntaje,
-          duracion,
-        },
-      ]);
-    } else {
-      setPuntuacion(0);
-      setResultados(prev => [
-        ...prev,
-        {
-          figura: figuras[etapa].nombre,
-          precision: 0,
-          duracion,
-        },
-      ]);
+    if (cobertura < 0.8) {
+      baseScore *= cobertura;
     }
+
+    const finalScore = Math.round(baseScore);
+    setPuntuacion(finalScore);
+    setPrecisiones(prev => [...prev, finalScore]);
   };
 
-  const continuar = () => {
-    if (etapa < figuras.length - 1) {
-      setEtapa(e => e + 1);
-      setCanvasKey(k => k + 1);
+const guardarCoordenadas = async () => {
+  if (!figura || !nivel || puntuacion === null) return;
+
+  try {
+    // Igual que en CopiaFigura: construir string y parsear a JSON
+    const formateado = coords.map(p => `[${Math.round(p.x)}, ${Math.round(p.y)}]`).join(',\n');
+    const contenido = `[\n${formateado}\n]`;
+    const jsonData = JSON.parse(contenido); // <- ahora sí encaja con tipo JSON
+
+    const datos: EvaluacionEscala = {
+      fecha: new Date().toISOString().split("T")[0],
+      tipo_escala: "trazado guiado",
+      resultado: jsonData, // <- se ajusta al tipo JSON
+      puntaje: puntuacion,
+      id_paciente: 1,
+      id_ejercicio: actualIndex + 1 + (nivelNumero - 1) * 3
+    };
+
+    const resultado = await crearEvaluacionEscala(datos);
+    console.log("✅ Evaluación creada:", datos);
+    console.log(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
+  } catch (e) {
+    console.error("❌ Error en POST:", e);
+  }
+};
+
+
+  const siguienteFigura = async () => {
+    await guardarCoordenadas(); // ✅ guardar antes de continuar
+    const siguiente = figuras[actualIndex + 1];
+    if (siguiente) {
       setCoords([]);
       setPuntuacion(null);
-      setHabilitado(true);
-      setTiempoInicio(Date.now());
+      setKeyPizarra(Date.now());
+      navigate(`/trazado-guiado/nivel${nivelNumero}/${siguiente}`);
     } else {
-      setMostrarPopup(true);
+      setMostrarResumen(true);
     }
   };
 
-  const colorClass =
-    puntuacion === null
-      ? ''
-      : puntuacion > 80
-      ? 'verde'
-      : puntuacion >= 50
-      ? 'amarillo'
-      : 'rojo';
+  const promedioPrecision = Math.round(
+    precisiones.reduce((a, b) => a + b, 0) / (precisiones.length || 1)
+  );
+
+  const anterior = figuras[actualIndex - 1];
+  const siguiente = figuras[actualIndex + 1];
 
   return (
-    <div className="trazado-fullscreen">
-      <main className="trazado-contenido">
-        <h2 className="titulo-ejercicio">
-          {figuras[etapa].icono} {figuras[etapa].nombre}
-        </h2>
+    <div className="copiafigura-wrapper">
+      <MenuEjercicio
+        onReiniciar={() => {
+          setCoords([]);
+          setPuntuacion(null);
+          setGrosorLinea(4); 
+          setKeyPizarra(Date.now());
+        }}
+        onVolverSeleccion={() => navigate('/trazados')}
+        onCambiarAncho={(valor) => setGrosorLinea(valor)}
+      />
 
-        <div className={`canvas-container ${habilitado ? '' : 'disabled'}`}>
-          <Pizarra
-            key={canvasKey}
-            color="#005EB8"
-            colorModelo="#E30613"
-            background="#fff"
-            lineWidth={3}
-            onFinishDraw={handleFinishDraw}
-            onModeloTransformado={setModeloT}
-            coordsModelo={modeloActual}
-            cerrarTrazo={false}
-          />
+      <div className="selector-nivel">
+        {anterior && (
+          <button onClick={() => navigate(`/trazado-guiado/nivel${nivelNumero}/${anterior}`)}>
+            ← {nombresBonitos[anterior] || anterior}
+          </button>
+        )}
+        <span className="actual">{nombresBonitos[figura || ''] || figura}</span>
+        {siguiente && (
+          <button onClick={siguienteFigura}>
+            {nombresBonitos[siguiente] || siguiente} →
+          </button>
+        )}
+      </div>
+
+      <Pizarra
+        key={keyPizarra}
+        onFinishDraw={setCoords}
+        coordsModelo={modelo}
+        onModeloTransformado={setModeloTransformado}
+        background="#fff"
+        color="black"
+        lineWidth={grosorLinea}
+        colorModelo="#aaaaaa"
+        grosorModelo={10}
+        rellenarModelo={false}
+        cerrarTrazo={false}
+      />
+
+      {coords.length > 0 && (
+        <button className="guardar-btn" onClick={siguienteFigura}>
+          Siguiente
+        </button>
+      )}
+
+      {puntuacion !== null && (
+        <div className="resultado-box">
+          <Stars porcentaje={puntuacion} />
         </div>
+      )}
 
-        <div className="botones">
-          {puntuacion === null ? (
-            <button className="btn-rojo" onClick={finalizarEtapa}>
-              Finalizar
-            </button>
-          ) : etapa < figuras.length - 1 ? (
-            <>
-              <div className={`resultado ${colorClass}`}>
-                <Stars porcentaje={puntuacion}></Stars>
-              </div>
-              <button className="btn-rojo" onClick={continuar}>
-                Continuar
-              </button>
-            </>
-          ) : (
-            <div className="resultado-final">
-              <h3>Resultados Finales</h3>
-              {resultados.map((r, i) => (
-                <p key={i}>
-                  {figuras[i].icono} {r.figura}: {r.precision}% – {r.duracion}s
-                </p>
-              ))}
-              <p>
-                <strong>
-                  Promedio Total{' '}
-                  <div className='ctn-stars'>
-                    <Stars porcentaje={Math.round(resultados.reduce((a, b) => a + b.precision, 0) / resultados.length)}></Stars>
-                  </div>
-                </strong>
-              </p>
-              <button className="btn-rojo" onClick={() => setMostrarPopup(true)}>
-                Ver mensaje final
-              </button>
-            </div>
-          )}
-        </div>
-      </main>
-
-      {mostrarPopup && (
-        <div className="popup-final">
-          <div className="popup-contenido">
-            <h2>🎉 ¡Bien hecho!</h2>
-            <p>Completaste todos los ejercicios con éxito.</p>
-            <button className="btn-rojo" onClick={() => setMostrarPopup(false)}>
-              Cerrar
+      {mostrarResumen && (
+        <div className="resumen-modal">
+          <div className="resumen-contenido">
+            <h2>🎉 Resumen de Nivel {nivelNumero}</h2>
+            <p>Ejercicios realizados: {precisiones.length}</p>
+            <p>Desempeño general:</p>
+            <Stars porcentaje={promedioPrecision} />
+            <button
+              className="volver-btn"
+              onClick={() => navigate('/trazados')}
+            >
+              Volver a la selección de niveles
             </button>
           </div>
         </div>

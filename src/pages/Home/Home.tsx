@@ -26,11 +26,9 @@ const Home: React.FC = () => {
     document.title = 'Grafomotor IA | Inicio';
   }, []);
 
-
   return (
     <div className="home-wrapper">
-      <Header /> {/*Logo + nombre + icono de usuario */}
-
+      <Header />
       <main className="home-content">
         <div className="home-grid">
           {opciones.map((item, index) => (

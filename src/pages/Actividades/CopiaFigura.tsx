@@ -8,6 +8,19 @@ import Stars from '../../components/Stars';
 import MenuEjercicio from '../../components/MenuEjercicio';
 import './CopiaFigura.css';
 
+// 🎯 Diccionario de IDs reales por figura
+const idsEjercicios: Record<string, number> = {
+  circulo: 1,
+  cuadrado: 2,
+  triangulo: 3,
+  estrella: 4,
+  flecha: 5,
+  pacman: 6,
+  infinito: 7,
+  arbol: 8,
+  nube: 9
+};
+
 const CopiaFigura: React.FC = () => {
   const { nivel, figura } = useParams();
   const navigate = useNavigate();
@@ -16,9 +29,10 @@ const CopiaFigura: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
-  const [grosorLinea, setGrosorLinea] = useState(2);
+  const [grosorLinea, setGrosorLinea] = useState(4);
   const [mostrarResumen, setMostrarResumen] = useState(false);
   const [precisiones, setPrecisiones] = useState<number[]>([]);
+  const [resetKey, setResetKey] = useState(0);
 
   const figurasSinSuavizado = ['cuadrado', 'triangulo', 'estrella', 'flecha'];
   const suavizar = !figurasSinSuavizado.includes(figura || '');
@@ -72,8 +86,7 @@ const CopiaFigura: React.FC = () => {
     let puntosCubiertos = 0;
     const umbral = 20;
     modelo.forEach(({ x: mx, y: my }) => {
-      for (let i = 0; i < usuario.length; i++) {
-        const { x: ux, y: uy } = usuario[i];
+      for (const { x: ux, y: uy } of usuario) {
         const dx = mx - ux;
         const dy = my - uy;
         const distancia = Math.sqrt(dx * dx + dy * dy);
@@ -85,9 +98,7 @@ const CopiaFigura: React.FC = () => {
     });
 
     const cobertura = puntosCubiertos / modelo.length;
-    if (cobertura < 0.8) {
-      baseScore *= cobertura;
-    }
+    if (cobertura < 0.8) baseScore *= cobertura;
 
     const finalScore = Math.round(baseScore);
     setPuntuacion(finalScore);
@@ -108,7 +119,7 @@ const CopiaFigura: React.FC = () => {
         resultado: jsonData,
         puntaje: puntuacion,
         id_paciente: 1,
-        id_ejercicio: 1
+        id_ejercicio: idsEjercicios[figura] || 0 
       };
 
       const resultado = await crearEvaluacionEscala(datos);
@@ -136,7 +147,7 @@ const CopiaFigura: React.FC = () => {
   };
 
   const promedioPrecision = Math.round(
-    precisiones.reduce((a, b) => a + b, 0) / precisiones.length || 0
+    precisiones.reduce((a, b) => a + b, 0) / (precisiones.length || 1)
   );
 
   const anterior = figs[actualIndex - 1];
@@ -148,9 +159,11 @@ const CopiaFigura: React.FC = () => {
         onReiniciar={() => {
           setCoords([]);
           setPuntuacion(null);
+          setGrosorLinea(4); 
+          setResetKey(prev => prev + 1);
         }}
         onVolverSeleccion={() => navigate('/figuras')}
-        onCambiarAncho={(valor) => setGrosorLinea(valor)}
+        onCambiarAncho={setGrosorLinea}
       />
 
       <div className="selector-nivel">
@@ -168,6 +181,7 @@ const CopiaFigura: React.FC = () => {
       </div>
 
       <Pizarra
+        key={resetKey}
         onFinishDraw={setCoords}
         coordsModelo={modelo}
         onModeloTransformado={setModeloTransformado}
@@ -200,10 +214,7 @@ const CopiaFigura: React.FC = () => {
             <p>Ejercicios realizados: {precisiones.length}</p>
             <p>Desempeño general:</p>
             <Stars porcentaje={promedioPrecision} />
-            <button
-              className="volver-btn"
-              onClick={() => navigate('/figuras')}
-            >
+            <button className="volver-btn" onClick={() => navigate('/figuras')}>
               Volver a la selección de niveles
             </button>
           </div>

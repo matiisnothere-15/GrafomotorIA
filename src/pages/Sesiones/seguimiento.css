@@ -17,10 +17,10 @@ body {
 .seguimientos-wrapper {
   background-size: cover;
   min-height: 100vh;
-  padding-top: 250px;
   display: flex;
   /*flex-direction: column;*/
   align-items: center;
+  
 }
 
 .seguimientos-content {
