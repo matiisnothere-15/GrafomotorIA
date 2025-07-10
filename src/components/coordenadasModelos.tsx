@@ -12,6 +12,25 @@ function interpolarLinea(p1: [number, number], p2: [number, number], pasos: numb
   });
 }
 
+function generarEspiral(
+  centro: [number, number],
+  radioInicial: number,
+  vueltas: number,
+  pasos = 160,
+): [number, number][] {
+  return Array.from({ length: pasos }, (_, i) => {
+    const t = i / (pasos - 1);
+    const ang = t * 2 * Math.PI * vueltas;  // dirección normal
+    const r = radioInicial * (1 - t);       // se va cerrando
+    return [
+      Math.round(centro[0] - r * Math.cos(ang)),  // reflejar horizontalmente
+      Math.round(centro[1] + r * Math.sin(ang)),
+    ];
+  });
+}
+
+
+
 export const modeloCirculo: [number, number][] = (() => {
   const totalPuntos = 120;
   const radio = 140;
@@ -169,4 +188,180 @@ export const modelos: Record<string, [number, number][]> = {
   infinito: modeloInfinito,
   arbol: modeloArbol,
   nube: modeloNube,
+};
+
+export const modeloMontana: [number, number][] = [
+  [33, 386],  [55, 364],  [79, 339],  [101, 316], [123, 293],
+  [146, 270], [168, 293], [190, 316], [212, 339], [234, 362],
+  [257, 385], [279, 362], [301, 339], [323, 316], [345, 293],
+  [368, 270], [390, 293], [412, 316], [434, 339], [457, 362],
+  [479, 385], [501, 362], [523, 339], [545, 316], [567, 293],
+  [590, 270], [612, 293], [634, 316], [656, 339], [679, 362],
+  [701, 385], [723, 362], [745, 339], [767, 316], [789, 293],
+  [812, 270], [834, 293], [856, 316], [878, 339], [901, 362],
+  [923, 385]
+];
+
+
+export const modeloOndas: [number, number][] = Array.from({ length: 100 }, (_, i) => {
+  const x = 100 + i * 6;
+  const y = 400 + Math.sin(i * 0.3) * 40;
+  return [x, Math.round(y)];
+});
+export const modeloOla: [number, number][] = [
+  // 1. Comienza en la parte inferior izquierda y sube hasta la cresta
+  [37, 847],
+  [194, 691],
+  [373, 333],
+  [511, 242],
+  [648, 215],
+
+  // 2. Conecta con el rizo y baja por su borde exterior
+  [844, 291],
+  [1024, 564],
+
+  // 3. Dibuja la curva completa del rizo hasta la punta final
+  [1007, 595],
+  [852, 496],
+  [716, 514],
+  [651, 633],
+  [695, 741],
+  [869, 830],
+  [1079, 786] // Punto final del trazo
+];
+
+export const modeloPunteagudo: [number, number][] = [
+  ...interpolarLinea([100, 500], [200, 300], 10),
+  ...interpolarLinea([200, 300], [300, 500], 10),
+  ...interpolarLinea([300, 500], [400, 300], 10),
+  ...interpolarLinea([400, 300], [500, 500], 10),
+  ...interpolarLinea([500, 500], [600, 300], 10),
+  ...interpolarLinea([600, 300], [700, 500], 10),
+  ...interpolarLinea([700, 500], [800, 300], 10),
+  ...interpolarLinea([800, 300], [900, 500], 10),
+  ...interpolarLinea([900, 500], [1000, 300], 10),
+  ...interpolarLinea([1000, 300], [1100, 500], 10),
+];
+
+export const modeloCaminoCurv: [number, number][] = Array.from({ length: 120 }, (_, i) => {
+  const x = 100 + i * 5;
+  const yOndulado = Math.sin(i * 0.25) * 60 * Math.sin(i * 0.1);
+  const yInclinado = i * 0.7; // inclinación leve hacia arriba
+  const y = 400 + yOndulado - yInclinado;
+  return [x, Math.round(y)];
+});
+
+export const modeloEspiral: [number, number][] = (() => {
+  const puntos: [number, number][] = [];
+  const centroX = 400;
+  const centroY = 350;
+  const vueltas = 4;
+  const puntosTotales = 200;
+  const separacion = 3;
+
+  for (let i = 0; i < puntosTotales; i++) {
+    const angulo = i * (Math.PI * 2 * vueltas) / puntosTotales;
+    const radio = i * separacion / puntosTotales * 100;
+    const x = centroX + radio * Math.cos(angulo);
+    const y = centroY + radio * Math.sin(angulo);
+    puntos.push([Math.round(x), Math.round(y)]);
+  }
+
+  return puntos;
+})();
+
+export const modeloCurvasE: [number, number][] = [
+[216, 147], [103, 175], [21, 256], [5, 371], [28, 483], [54, 596], [31, 708], [94, 675], [88, 558],
+[62, 446], [46, 328], [101, 226], [213, 191], [330, 214], [293, 277], [183, 319], [211, 411], [328, 417],
+[252, 458], [196, 543], [281, 599], [347, 633], [244, 675], [224, 773], [334, 799], [454, 793], [575, 786],
+[641, 695], [630, 574], [624, 453], [643, 332], [719, 226], [838, 191], [956, 231], [929, 335], [808, 359],
+[723, 451], [815, 524], [906, 585], [791, 617], [812, 718], [930, 719], [1024, 776], [1002, 872], [881, 878],
+[760, 875], [639, 872], [518, 869], [397, 872], [276, 878], [159, 891], [214, 926], [334, 919], [454, 916],
+[575, 916], [696, 919], [817, 921], [938, 922], [1050, 890], [1070, 780], [995, 696], [879, 672], [838, 644],
+[942, 608], [902, 510], [792, 477], [815, 401], [928, 379], [1012, 308], [982, 199], [879, 151], [762, 159],
+[663, 219], [603, 315], [584, 431], [587, 551], [600, 667], [545, 746], [424, 762], [303, 768], [182, 774],
+];
+
+
+export const modeloDobleEspiral: [number, number][] = (() => {
+  const puntos: [number, number][] = [];
+
+  const vueltas = 3;
+  const puntosPorEspiral = 180;
+  const separacion = 3;
+
+  const centroIzqX = 250;
+  const centroDerX = 850;
+  const centroY = 350;
+
+  const espiralDerecha: [number, number][] = [];
+
+  // Espiral izquierda (centro hacia afuera)
+  for (let i = 0; i < puntosPorEspiral; i++) {
+    const angulo = i * (Math.PI * 2 * vueltas) / puntosPorEspiral;
+    const radio = (i * separacion / puntosPorEspiral) * 100;
+    const x = centroIzqX + radio * Math.cos(angulo);
+    const y = centroY + radio * Math.sin(angulo);
+    puntos.push([Math.round(x), Math.round(y)]);
+  }
+
+  // Generar espiral derecha por separado para conocer el primer punto
+  for (let i = puntosPorEspiral - 1; i >= 0; i--) {
+    const angulo = i * (Math.PI * 2 * vueltas) / puntosPorEspiral + Math.PI;
+    const radio = (i * separacion / puntosPorEspiral) * 100;
+    const x = centroDerX + radio * Math.cos(angulo);
+    const y = centroY + radio * Math.sin(angulo);
+    espiralDerecha.push([Math.round(x), Math.round(y)]);
+  }
+
+  // Línea de conexión directa entre el final del espiral izquierdo y el inicio del derecho
+  const puntoFinalIzq = puntos[puntos.length - 1];
+  const puntoInicioDer = espiralDerecha[0];
+  const pasosConexion = 20;
+  for (let i = 1; i <= pasosConexion; i++) {
+    const t = i / pasosConexion;
+    const x = Math.round(puntoFinalIzq[0] + (puntoInicioDer[0] - puntoFinalIzq[0]) * t);
+    const y = Math.round(puntoFinalIzq[1] + (puntoInicioDer[1] - puntoFinalIzq[1]) * t);
+    puntos.push([x, y]);
+  }
+
+  // Añadir espiral derecha
+  puntos.push(...espiralDerecha);
+
+  return puntos;
+})();
+
+
+
+// Escala multiplicada (1.5x por ejemplo)
+export const modeloZigzagEspiral: [number, number][] = [
+  // 1) Zig-zag (3 picos) más grandes
+  ...interpolarLinea([150, 825], [300, 645], 10),  // ➚
+  ...interpolarLinea([300, 645], [450, 825], 10),  // ➘
+  ...interpolarLinea([450, 825], [600, 645], 10),  // ➚
+  ...interpolarLinea([600, 645], [750, 825], 10),  // ➘
+
+  // 2) Subida más larga hasta la “meseta”
+  ...interpolarLinea([750, 825], [750, 480], 12),
+
+  // 3) Tramo oblicuo más largo hacia la base del espiral
+  ...interpolarLinea([750, 480], [975, 630], 14),
+
+  // 4) Espiral exterior → interior (giro horizontal a la izquierda, más grande)
+  ...generarEspiral([1200, 630], 210, 2.75),
+];
+
+
+
+// Mapa de modelos exportado
+export const modelosTrazado: Record<string, [number, number][]> = {
+  montaña: modeloMontana,
+  ondas: modeloOndas,
+  ola: modeloOla,
+  punteagudo: modeloPunteagudo,
+  caminocurva: modeloCaminoCurv,
+  espiral: modeloEspiral,
+  curvasE: modeloCurvasE,
+  doble_espiral: modeloDobleEspiral,
+  zigzag_espiral: modeloZigzagEspiral,
 };

@@ -16,6 +16,7 @@
   justify-content: center;
   padding: 2rem;
   width: 100%;
+
 }
 
 .contact-card {
@@ -84,6 +85,7 @@
   max-width: 500px;
   width: 100%;
   font-family: inherit;
+  margin-top: 13%;
 }
 
 .contact-form h1 {
