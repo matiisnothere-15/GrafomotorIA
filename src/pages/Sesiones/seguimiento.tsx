@@ -3,13 +3,14 @@ import Header from '../../components/Header';
 import './seguimiento.css';
 import figura from '../../assets/ejercicios/copia-figuras.png';
 import laberinto from '../../assets/ejercicios/seguir-laberinto.png';
+import Select from 'react-select';
+
+import { BASE_URL } from '../../config';
 import type { Paciente } from '../../models/Paciente';
 import type { SeguimientoProgreso } from '../../models/SeguimientoProgreso';
 import type { PlanTratamiento } from '../../models/PlanTratamiento';
-import { BASE_URL } from '../../config';
-import Select from 'react-select';
-import { getPacientes } from '../../services/pacienteService';
-
+import { obtenerPacientes } from '../../services/pacienteService';
+import { getPlanReciente } from '../../utils/planes';
 
 const aciertosEjercicio = [
   { nombre: 'Trazado Guiado', porcentaje: 75 },
@@ -33,24 +34,22 @@ const Seguimientos: React.FC = () => {
   const [fechaHasta, setFechaHasta] = useState<string>('');
   const [nombrePaciente, setNombrePaciente] = useState<string>('');
   const [aciertoTotal, setAciertoTotal] = useState<number>(75);
-  const [objetivoCorto, setObjetivoCorto] = useState<string>('');
-  const [objetivoLargo, setObjetivoLargo] = useState<string>('');
+  const [objetivoCorto, setObjetivoCorto] = useState<string>('No hay objetivo definido');
+  const [objetivoLargo, setObjetivoLargo] = useState<string>('No hay objetivo definido');
 
   useEffect(() => {
     const fetchPacientes = async () => {
-      {/*hacer pa too OK*/}
-      const rest = await getPacientes()
-      setPacientes(rest)
+      const rest = await obtenerPacientes();
+      setPacientes(rest);
     };
     fetchPacientes();
   }, []);
 
   const handleBuscar = async () => {
     try {
-      const idExtraido = pacienteSeleccionado.split('|')[1]?.trim();
-      const id = idExtraido ? parseInt(idExtraido) : null;
-
+      const id = parseInt(pacienteSeleccionado);
       const token = sessionStorage.getItem('token');
+
       const res = await fetch(`${BASE_URL}/seguimientos/listarseguimientos`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -72,18 +71,12 @@ const Seguimientos: React.FC = () => {
       const resPlanes = await fetch(`${BASE_URL}/api/planes/listarplanes`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const planes = await resPlanes.json();
-      const planesPaciente = planes.filter((p) => p.id_paciente === id);
-      const planReciente = planesPaciente.sort(
-        (a, b) => new Date(b.fecha_inicio).getTime() - new Date(a.fecha_inicio).getTime()
-      )[0];
+      const planes: PlanTratamiento[] = await resPlanes.json();
+      const planReciente = getPlanReciente(planes, id);
 
       if (planReciente) {
         setObjetivoCorto(planReciente.objetivo_cortoplazo);
         setObjetivoLargo(planReciente.objetivo_largoplazo);
-      } else {
-        setObjetivoCorto('No hay objetivo definido');
-        setObjetivoLargo('No hay objetivo definido');
       }
 
       const promedio = filtrado.length
@@ -94,13 +87,12 @@ const Seguimientos: React.FC = () => {
       console.error('Error al filtrar seguimientos:', error);
     }
   };
+
   return (
-    
     <div className="seguimientos-wrapper">
       <Header />
       <main className="seguimientos-content">
         <h2 className="titulo-vista">Seguimiento del Paciente</h2>
-
         <div className="filtros-container">
           <div className="filtros-row">
             <div className="filtros filtros-progreso">
