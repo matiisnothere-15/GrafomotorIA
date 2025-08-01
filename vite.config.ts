@@ -3,9 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  // 👇 **LA SOLUCIÓN CLAVE:** Asegura que la app busque sus archivos en /GrafomotorIA/
-  base: '/GrafomotorIA/',
-
+  base: '/GrafomotorIA/', // 👈 forzar la base para GitHub Pages
   plugins: [
     react(),
     VitePWA({
@@ -18,8 +16,8 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '.',
-        start_url: '.',
+        scope: '/GrafomotorIA/', // 👈 necesario para que PWA funcione bien en subcarpeta
+        start_url: '/GrafomotorIA/', // 👈 igual que arriba
         icons: [
           {
             src: 'pwa-192x192.png',
