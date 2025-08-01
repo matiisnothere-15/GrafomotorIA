@@ -1,83 +1,77 @@
-import { BASE_URL } from "../config.ts";
-import type { Paciente } from "../models/Paciente.ts";
+import { BASE_URL, getHeaders } from "./api"
+import type { Paciente } from "../models/Paciente"
 
-export const getPacientes = async (): Promise<Paciente[]> => {
-  const token = sessionStorage.getItem("token");
-  const res = await fetch(`${BASE_URL}/pacientes/listarpacientes`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Error al obtener pacientes");
-  return await res.json();
-};
-
-
-export const getPacienteById = async (id: number): Promise<Paciente> => {
-  const res = await fetch(`${BASE_URL}/paciente/${id}`, {
-    headers: { "Content-Type": "application/json" },
-  });
-
-  if (!res.ok) throw new Error("Paciente no encontrado");
-  return await res.json();
-};
-
-export const createPaciente = async (data: Paciente) => {
-  const res = await fetch(`${BASE_URL}/paciente`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) throw new Error("Error al crear paciente");
-  return await res.json();
-};
-
-export const updatePaciente = async (id: number, data: Paciente) => {
-  const res = await fetch(`${BASE_URL}/paciente/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) throw new Error("Error al actualizar paciente");
-  return await res.json();
-};
-
-export const deletePaciente = async (id: number) => {
-  const res = await fetch(`${BASE_URL}/paciente/${id}`, {
-    method: "DELETE",
-  });
-
-  if (!res.ok) throw new Error("Error al eliminar paciente");
-};
-
-
-export const actualizarPaciente = async (id: string | number, datos: any) => {
-  const res = await fetch(`${BASE_URL}/pacientes/editarpaciente/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-    },
-    body: JSON.stringify(datos),
-  });
-
-  if (!res.ok) throw new Error('Error al actualizar paciente');
-  return await res.json();
-};
-
-export const obtenerPacientes = async () => {
-  const token = sessionStorage.getItem("token");
+// GET: Listar todos los pacientes
+export const obtenerPacientes = async (): Promise<Paciente[]> => {
   const res = await fetch(`${BASE_URL}/pacientes/listarpacientes`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) throw new Error("Error al obtener pacientes");
-  return await res.json();
-};
+    headers: getHeaders(),
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(error.msg || "Error al obtener pacientes")
+  }
+
+  return await res.json()
+}
+
+// GET: Obtener paciente por ID
+export const getPacienteById = async (id: number): Promise<Paciente> => {
+  const res = await fetch(`${BASE_URL}/pacientes/mostrarpaciente/${id}`, {
+    method: "GET",
+    headers: getHeaders(),
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(error.msg || "Paciente no encontrado")
+  }
+
+  return await res.json()
+}
+
+// POST: Crear nuevo paciente
+export const createPaciente = async (data: Paciente): Promise<Paciente> => {
+  const res = await fetch(`${BASE_URL}/pacientes/crearpaciente`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(error.msg || "Error al crear paciente")
+  }
+
+  return await res.json()
+}
+
+// PUT: Actualizar paciente existente (usando nueva ruta)
+export const actualizarPaciente = async (id: number | string, data: any): Promise<Paciente> => {
+  const res = await fetch(`${BASE_URL}/pacientes/editarpaciente/${id}`, {
+    method: "PUT",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(error.msg || "Error al actualizar paciente")
+  }
+
+  return await res.json()
+}
+
+// DELETE: Eliminar paciente
+export const deletePaciente = async (id: number): Promise<void> => {
+  const res = await fetch(`${BASE_URL}/pacientes/eliminarpaciente/${id}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(error.msg || "Error al eliminar paciente")
+  }
+}
