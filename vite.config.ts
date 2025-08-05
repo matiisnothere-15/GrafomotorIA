@@ -2,9 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-
 export default defineConfig({
-  base: '/GrafomotorIA/', // 👈 forzar la base para GitHub Pages
+  base: '/GrafomotorIA/', 
   plugins: [
     react(),
     VitePWA({
@@ -17,8 +16,8 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '/GrafomotorIA/', // 👈 necesario para que PWA funcione bien en subcarpeta
-        start_url: '/GrafomotorIA/', // 👈 igual que arriba
+        scope: '/GrafomotorIA/', 
+        start_url: '/GrafomotorIA/', 
         icons: [
           {
             src: 'pwa-192x192.png',

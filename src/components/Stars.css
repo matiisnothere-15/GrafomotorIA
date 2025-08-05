@@ -1,3 +1,5 @@
+
+
 .valoracion {
   display: flex;
   gap: 8px;
@@ -7,30 +9,38 @@
 }
 
 .valoracion svg {
-  transform: scale(0);
+  width: 40px;
+  height: 40px;
+  /* Animación mejorada */
+  transform: translateY(-50px) rotate(90deg) scale(0);
   opacity: 0;
-  animation: estrellaAparece 0.5s ease-out forwards;
-  animation-fill-mode: forwards;
+  animation: star-fall-in 0.6s cubic-bezier(0.76, 0.01, 0.22, 1.6) forwards;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
 }
 
-/* Delays progresivos para animarlas una a una */
+/* Delays progresivos para la animación en cascada */
 .valoracion svg:nth-child(1) { animation-delay: 0s; }
-.valoracion svg:nth-child(2) { animation-delay: 0.2s; }
-.valoracion svg:nth-child(3) { animation-delay: 0.4s; }
-.valoracion svg:nth-child(4) { animation-delay: 0.6s; }
-.valoracion svg:nth-child(5) { animation-delay: 0.8s; }
+.valoracion svg:nth-child(2) { animation-delay: 0.1s; }
+.valoracion svg:nth-child(3) { animation-delay: 0.2s; }
+.valoracion svg:nth-child(4) { animation-delay: 0.3s; }
+.valoracion svg:nth-child(5) { animation-delay: 0.4s; }
 
-@keyframes estrellaAparece {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.5);
+/* Nueva animación de caída y rotación */
+@keyframes star-fall-in {
+  to {
+    transform: translateY(0) rotate(0) scale(1);
     opacity: 1;
   }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+}
+
+/* Estilos para los diferentes estados de las estrellas */
+.star-path {
+  stroke-width: 4;
+  stroke: #c7c7c7;
+  fill: none;
+}
+
+.star-path.filled {
+  fill: #FFD700; /* Color dorado */
+  stroke: #e7a000;
 }
