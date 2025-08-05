@@ -1,3 +1,5 @@
+// Contenido de src/components/Pizarra.tsx
+
 import React, {
   useRef,
   useEffect,
@@ -38,6 +40,8 @@ const Pizarra = forwardRef(({
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const coordsRef = useRef<{ x: number; y: number }[]>([]);
+  // 👇 Nuevo estado para detectar si se ha usado un lápiz
+  const [penModeActive, setPenModeActive] = useState(false);
 
   useImperativeHandle(ref, () => ({
     limpiar: () => {
@@ -148,6 +152,17 @@ const Pizarra = forwardRef(({
   };
 
   const startDrawing = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    // 👇 **AQUÍ EMPIEZA LA NUEVA LÓGICA**
+    // Si se usa un lápiz por primera vez, activamos el "modo lápiz".
+    if (e.pointerType === 'pen' && !penModeActive) {
+      setPenModeActive(true);
+    }
+
+    // Si el modo lápiz está activo, solo permitimos dibujar con el lápiz.
+    if (penModeActive && e.pointerType !== 'pen') {
+      return;
+    }
+
     const ctx = ctxRef.current;
     if (!ctx) return;
 
@@ -163,6 +178,15 @@ const Pizarra = forwardRef(({
   };
 
   const draw = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    // 👇 **LÓGICA ACTUALIZADA AQUÍ TAMBIÉN**
+    // Si el modo lápiz está activo, no dibujamos si el evento no es de un lápiz.
+    if (penModeActive && e.pointerType !== 'pen') {
+      if (isDrawing) {
+        stopDrawing();
+      }
+      return;
+    }
+
     if (!isDrawing || !ctxRef.current) return;
     const pos = getExactPos(e);
     const ctx = ctxRef.current;

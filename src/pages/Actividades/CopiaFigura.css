@@ -1,3 +1,5 @@
+/* Contenido de src/pages/Actividades/CopiaFigura.css */
+
 .copiafigura-wrapper {
   position: relative;
   width: 100vw;
@@ -49,7 +51,7 @@
   background-color: #B8040F;
 }
 
-/* Resultado flotante centrado */
+/* 👇 SECCIÓN MODIFICADA Y MEJORADA */
 .resultado-box {
   position: absolute;
   bottom: 40px;
@@ -57,12 +59,37 @@
   transform: translateX(-50%);
   color: white;
   padding: 12px 24px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 12px;
+  border-radius: 16px;
   z-index: 10;
   box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 220px;
+  transition: background-color 0.3s ease;
 }
+
+/* Nuevos colores por clase */
+.resultado-box.verde {
+  background: linear-gradient(45deg, #28a745, #228B22);
+}
+.resultado-box.amarillo {
+  background: linear-gradient(45deg, #ffc107, #ff8f00);
+}
+.resultado-box.rojo {
+  background: linear-gradient(45deg, #dc3545, #c82333);
+}
+
+/* Mensaje de ánimo */
+.resultado-mensaje {
+  font-size: 1rem;
+  margin-top: 5px;
+  font-weight: normal;
+}
+/* Fin de la sección modificada */
+
 
 /* Breakpoints para tablets */
 

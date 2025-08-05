@@ -1,3 +1,5 @@
+// Contenido de src/pages/Actividades/CopiaFigura.tsx
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Pizarra from '../../components/Pizarra';
@@ -53,8 +55,11 @@ const CopiaFigura: React.FC = () => {
   }, [modelo]);
 
   useEffect(() => {
-    if (coords.length > 0 && modeloTransformado.length > 0) {
+
+    if (coords.length > 20 && modeloTransformado.length > 0) {
       calcularPrecision(coords, modeloTransformado);
+    } else {
+      setPuntuacion(null);
     }
   }, [coords, modeloTransformado]);
 
@@ -119,8 +124,10 @@ const CopiaFigura: React.FC = () => {
         resultado: jsonData,
         puntaje: puntuacion,
         id_paciente: 1,
-        id_ejercicio: idsEjercicios[figura] || 0 
+        id_ejercicio: idsEjercicios[figura] || 0
       };
+
+      console.log('Enviando datos de CopiaFigura:', datos);
 
       const resultado = await crearEvaluacionEscala(datos);
       console.log("✅ Evaluación creada:", datos);
@@ -139,11 +146,18 @@ const CopiaFigura: React.FC = () => {
     }
   };
 
-  const getColor = (puntaje: number | null) => {
-    if (puntaje === null) return 'transparent';
-    if (puntaje >= 85) return '#28a745';
-    if (puntaje >= 60) return '#ffc107';
-    return '#dc3545';
+  const getColorClass = (puntaje: number | null) => {
+    if (puntaje === null) return '';
+    if (puntaje >= 80) return 'verde';
+    if (puntaje >= 40) return 'amarillo';
+    return 'rojo';
+  };
+
+  const getMensaje = (puntaje: number | null) => {
+    if (puntaje === null) return '';
+    if (puntaje >= 80) return '¡Excelente!';
+    if (puntaje >= 40) return '¡Muy bien!';
+    return '¡Sigue intentando!';
   };
 
   const promedioPrecision = Math.round(
@@ -159,7 +173,7 @@ const CopiaFigura: React.FC = () => {
         onReiniciar={() => {
           setCoords([]);
           setPuntuacion(null);
-          setGrosorLinea(4); 
+          setGrosorLinea(4);
           setResetKey(prev => prev + 1);
         }}
         onVolverSeleccion={() => navigate('/figuras')}
@@ -201,9 +215,11 @@ const CopiaFigura: React.FC = () => {
         </button>
       )}
 
+      {/* 👇 JSX MODIFICADO PARA USAR LA CLASE Y MENSAJE DINÁMICOS */}
       {puntuacion !== null && (
-        <div className="resultado-box" style={{ background: getColor(puntuacion) }}>
+        <div className={`resultado-box ${getColorClass(puntuacion)}`}>
           <Stars porcentaje={puntuacion} />
+          <div className="resultado-mensaje">{getMensaje(puntuacion)}</div>
         </div>
       )}
 

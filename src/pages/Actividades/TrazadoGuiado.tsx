@@ -1,3 +1,5 @@
+// Contenido de src/pages/Actividades/TrazadoGuiado.tsx
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Pizarra from '../../components/Pizarra';
@@ -28,10 +30,10 @@ const TrazadoGuiado: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
-  const [grosorLinea, setGrosorLinea] = useState(4); 
+  const [grosorLinea, setGrosorLinea] = useState(4);
   const [mostrarResumen, setMostrarResumen] = useState(false);
   const [precisiones, setPrecisiones] = useState<number[]>([]);
-  const [keyPizarra, setKeyPizarra] = useState(Date.now()); 
+  const [keyPizarra, setKeyPizarra] = useState(Date.now());
 
   const trazadosNivel: Record<number, string[]> = {
     1: ['montaña', 'ondas', 'ola'],
@@ -50,8 +52,13 @@ const TrazadoGuiado: React.FC = () => {
   }, [modelo]);
 
   useEffect(() => {
-    if (coords.length > 0 && modeloTransformado.length > 0) {
+    // 👇 **LÓGICA MEJORADA**
+    // Solo calcular si el trazo tiene una longitud mínima
+    if (coords.length > 20 && modeloTransformado.length > 0) {
       calcularPrecision(coords, modeloTransformado);
+    } else {
+      // Si no, no se muestra puntuación
+      setPuntuacion(null);
     }
   }, [coords, modeloTransformado]);
 
@@ -60,6 +67,21 @@ const TrazadoGuiado: React.FC = () => {
     modelo: { x: number; y: number }[]
   ) => {
     if (usuario.length < 10 || modelo.length < 10) {
+      setPuntuacion(0);
+      return;
+    }
+
+    const estaCerca = usuario.some(puntoUsuario => 
+      modelo.some(puntoModelo => {
+        const distancia = Math.sqrt(
+          Math.pow(puntoUsuario.x - puntoModelo.x, 2) +
+          Math.pow(puntoUsuario.y - puntoModelo.y, 2)
+        );
+        return distancia < 150; // Umbral de 150px
+      })
+    );
+
+    if (!estaCerca) {
       setPuntuacion(0);
       return;
     }
@@ -123,6 +145,8 @@ const guardarCoordenadas = async () => {
       id_ejercicio: actualIndex + 1 + (nivelNumero - 1) * 3
     };
 
+   console.log('Enviando datos de TrazadoGuiado:', datos);
+
     const resultado = await crearEvaluacionEscala(datos);
     console.log("✅ Evaluación creada:", datos);
     console.log(resultado ? "✅ Coordenadas guardadas" : "❌ Error al guardar");
@@ -151,6 +175,21 @@ const guardarCoordenadas = async () => {
 
   const anterior = figuras[actualIndex - 1];
   const siguiente = figuras[actualIndex + 1];
+  
+  // 👇 **NUEVAS FUNCIONES PARA ESTILOS DINÁMICOS**
+  const getColorClass = (puntaje: number | null) => {
+    if (puntaje === null) return '';
+    if (puntaje >= 80) return 'verde';
+    if (puntaje >= 40) return 'amarillo';
+    return 'rojo';
+  };
+
+  const getMensaje = (puntaje: number | null) => {
+    if (puntaje === null) return '';
+    if (puntaje >= 80) return '¡Excelente!';
+    if (puntaje >= 40) return '¡Muy bien!';
+    return '¡Sigue intentando!';
+  };
 
   return (
     <div className="copiafigura-wrapper">
@@ -158,7 +197,7 @@ const guardarCoordenadas = async () => {
         onReiniciar={() => {
           setCoords([]);
           setPuntuacion(null);
-          setGrosorLinea(4); 
+          setGrosorLinea(4);
           setKeyPizarra(Date.now());
         }}
         onVolverSeleccion={() => navigate('/trazados')}
@@ -193,15 +232,17 @@ const guardarCoordenadas = async () => {
         cerrarTrazo={false}
       />
 
-      {coords.length > 0 && (
+      {coords.length > 20 && ( // Solo mostrar el botón si el trazo es válido
         <button className="guardar-btn" onClick={siguienteFigura}>
           Siguiente
         </button>
       )}
-
+      
+      {/* 👇 JSX MODIFICADO PARA USAR LA CLASE Y MENSAJE DINÁMICOS */}
       {puntuacion !== null && (
-        <div className="resultado-box">
+        <div className={`resultado-box ${getColorClass(puntuacion)}`}>
           <Stars porcentaje={puntuacion} />
+          <div className="resultado-mensaje">{getMensaje(puntuacion)}</div>
         </div>
       )}
 

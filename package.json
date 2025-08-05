@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/GrafomotorIA/",
+    "build": "vite build",
     "preview": "vite preview --host --port 4173",
     "start": "serve -s dist",
     "predeploy": "npm run build",
