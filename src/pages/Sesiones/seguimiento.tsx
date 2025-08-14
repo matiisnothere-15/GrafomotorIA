@@ -14,7 +14,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import CircularProgressBar from '../../components/CircularProgressBar'; // Importa el nuevo componente
+import CircularProgressBar from '../../components/CircularProgressBar';
 import { obtenerPacientes } from '../../services/pacienteService';
 import { obtenerEvaluacionesEscala } from '../../services/evaluacionEscalaService';
 import { obtenerPlanesTratamiento } from '../../services/planTratamientoService';
@@ -27,9 +27,33 @@ ChartJS.register(
   CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend
 );
 
+/* ========= NUEVO: normalización de nombres para que coincidan con las fotos ========= */
 const NOMBRES_EJERCICIOS: { [key: string]: string } = {
   'escala 2': 'Copia de Figuras',
+  'copia de figuras': 'Copia de Figuras',
   'trazado guiado': 'Trazado Guiado',
+  'seleccion guiada': 'Selección Guiada',
+  'selección guiada': 'Selección Guiada',
+  'conexiones': 'Conexiones',
+  'seguir laberinto': 'Seguir Laberinto',
+  'toque secuencial': 'Toque Secuencial',
+};
+
+/* ========= NUEVO: import de fotos y mapa Título → Foto ========= */
+import imgConexiones from '../../assets/ejercicios/conexiones.png';
+import imgCopiaFiguras from '../../assets/ejercicios/copia-figuras.png';
+import imgSeguirLaberinto from '../../assets/ejercicios/seguir-laberinto.png';
+import imgSeleccionGuiada from '../../assets/ejercicios/seleccion-guiada.png';
+import imgToqueSecuencial from '../../assets/ejercicios/toque-secuencial.png';
+import imgTrazadoGuiado from '../../assets/ejercicios/trazado-guiado.png';
+
+const FOTO_BY_TIPO: Record<string, string> = {
+  'Copia de Figuras': imgCopiaFiguras,
+  'Trazado Guiado': imgTrazadoGuiado,
+  'Selección Guiada': imgSeleccionGuiada,
+  'Conexiones': imgConexiones,
+  'Seguir Laberinto': imgSeguirLaberinto,
+  'Toque Secuencial': imgToqueSecuencial,
 };
 
 interface ChartData {
@@ -86,15 +110,15 @@ const Seguimientos: React.FC = () => {
     }
 
     const idPaciente = parseInt(pacienteSeleccionado);
-    
+
     const evsPaciente = evaluaciones.filter(e => {
       if (e.id_paciente !== idPaciente) return false;
-      
+
       if (!fechaDesde && !fechaHasta) return true;
-      
+
       const fechaEval = new Date(e.fecha);
       fechaEval.setUTCHours(0, 0, 0, 0);
-      
+
       if (fechaDesde) {
         const desde = new Date(fechaDesde);
         desde.setUTCHours(0,0,0,0);
@@ -105,7 +129,7 @@ const Seguimientos: React.FC = () => {
         hasta.setUTCHours(0,0,0,0);
         if (fechaEval > hasta) return false;
       }
-      
+
       return true;
     }).sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
 
@@ -134,7 +158,8 @@ const Seguimientos: React.FC = () => {
 
     const ejercicios: { [key: string]: number[] } = {};
     evsPaciente.forEach(ev => {
-      const tipo = NOMBRES_EJERCICIOS[String(ev.tipo_escala).toLowerCase()] || ev.tipo_escala || 'Desconocido';
+      const key = String(ev.tipo_escala || '').toLowerCase();
+      const tipo = NOMBRES_EJERCICIOS[key] || (ev.tipo_escala || 'Desconocido');
       if (!ejercicios[tipo]) ejercicios[tipo] = [];
       ejercicios[tipo].push(ev.puntaje);
     });
@@ -172,7 +197,7 @@ const Seguimientos: React.FC = () => {
         });
         setRendimientoReciente({ fortaleza, debilidad });
     }
-    
+
     const planReciente = getPlanReciente(planes, idPaciente);
     setObjetivoCorto(planReciente?.objetivo_cortoplazo || 'Sin plan asignado');
     setObjetivoLargo(planReciente?.objetivo_largoplazo || 'Sin plan asignado');
@@ -219,7 +244,7 @@ const Seguimientos: React.FC = () => {
                 <div className="inicial-circulo">{nombrePaciente.charAt(0)}</div>
                 <h3>{nombrePaciente}</h3>
             </div>
-            
+
             <div className="card linea">
                 <h3>Progreso del Paciente</h3>
                 <div className="chart-container">
@@ -235,10 +260,35 @@ const Seguimientos: React.FC = () => {
             </div>
 
             <div className="card objetivos-plan">
+              <div className="op-head">
                 <h3>Objetivos del Plan</h3>
-                <p><strong>Corto Plazo:</strong> {objetivoCorto}</p>
-                <p><strong>Largo Plazo:</strong> {objetivoLargo}</p>
+                <span className="op-badge">Seguimiento activo</span>
+              </div>
+
+              <div className="op-grid">
+                <div className="op-box op-corto">
+                  <div className="op-icon" aria-hidden>📝</div>
+                  <div className="op-content">
+                    <div className="op-label">Corto Plazo</div>
+                    <div className="op-text">{objetivoCorto || 'Sin plan asignado'}</div>
+                  </div>
+                </div>
+
+                <div className="op-box op-largo">
+                  <div className="op-icon" aria-hidden>🎯</div>
+                  <div className="op-content">
+                    <div className="op-label">Largo Plazo</div>
+                    <div className="op-text">{objetivoLargo || 'Sin plan asignado'}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Estado vacío elegante por si no hay plan */}
+              {(objetivoCorto === 'Sin plan asignado' && objetivoLargo === 'Sin plan asignado') && (
+                <div className="op-empty">Aún no hay un plan de tratamiento asignado.</div>
+              )}
             </div>
+
 
             <div className="card circulo-total">
                 <h3>Acierto Promedio General</h3>
@@ -247,18 +297,40 @@ const Seguimientos: React.FC = () => {
                     {aciertoTotal >= 70 ? 'Buen progreso' : aciertoTotal >= 40 ? 'Progreso Aceptable' : 'Necesita Apoyo'}
                 </p>
             </div>
-            
+
             <div className="card rendimiento-reciente">
                 <h3>Rendimiento Reciente</h3>
                 <div className="rendimiento-simple">
-                <div>
-                    <p>Fortaleza</p>
-                    <span>{rendimientoReciente.fortaleza}</span>
-                </div>
-                <div>
-                    <p>A mejorar</p>
-                    <span>{rendimientoReciente.debilidad}</span>
-                </div>
+                  <div>
+                    <p className="muted">Fortaleza</p>
+                    <span className="badge success">{rendimientoReciente.fortaleza}</span>
+                    {FOTO_BY_TIPO[rendimientoReciente.fortaleza] && (
+                      <div className="rr-foto">
+                        <img
+                          className="rr-thumb"
+                          src={FOTO_BY_TIPO[rendimientoReciente.fortaleza]}
+                          alt={rendimientoReciente.fortaleza}
+                          loading="lazy"
+                        />
+                        <div className="rr-caption">{rendimientoReciente.fortaleza}</div>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="muted">A mejorar</p>
+                    <span className="badge warn">{rendimientoReciente.debilidad}</span>
+                    {FOTO_BY_TIPO[rendimientoReciente.debilidad] && (
+                      <div className="rr-foto">
+                        <img
+                          className="rr-thumb"
+                          src={FOTO_BY_TIPO[rendimientoReciente.debilidad]}
+                          alt={rendimientoReciente.debilidad}
+                          loading="lazy"
+                        />
+                        <div className="rr-caption">{rendimientoReciente.debilidad}</div>
+                      </div>
+                    )}
+                  </div>
                 </div>
             </div>
             </div>
