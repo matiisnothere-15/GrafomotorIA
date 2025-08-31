@@ -36,46 +36,131 @@
   text-decoration: underline;
 }
 
+/* 🟥 Categorías y Secciones */
+.categoria-seccion {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.categoria-header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.categoria-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  text-align: center;
+}
+
+.categoria-icono {
+  font-size: 2.2rem;
+}
+
+.admin-titulo {
+  color: rgb(233, 194, 67); /* Amarillo para administrador */
+}
+
+.terapeuta-titulo {
+  color: rgb(211, 55, 65); /* Rojo para terapeuta */
+}
+
 /* 🟥 Tarjetas del Home */
 .home-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+.admin-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.terapeuta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .home-card {
-  width: 350px;
-  height: 120px;
+  min-width: 280px;
+  max-width: 300px;
+  flex: 1;
+  height: 110px;
   background-color: #FFFFFF;
   border-radius: 16px;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.25rem;
   text-decoration: none;
   color: #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1.25rem;
+  gap: 1rem;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+.admin-card {
+  border-left: 4px solid rgb(233, 194, 67);
+}
+
+.terapeuta-card {
+  border-left: 4px solid rgb(211, 55, 65);
+}
+
 .home-card:hover {
-  background-color: #FBEAEA;
   transform: translateY(-2px);
   color: #1a1a1a;
+}
+
+.admin-card:hover {
+  background-color: rgba(233, 194, 67, 0.1);
+  box-shadow: 0 8px 20px rgba(233, 194, 67, 0.2);
+}
+
+.terapeuta-card:hover {
+  background-color: rgba(211, 55, 65, 0.1);
+  box-shadow: 0 8px 20px rgba(211, 55, 65, 0.2);
 }
 
 /* 🟩 Contenedor general del grid */
 .home-content {
   flex: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  padding: 1rem 1rem;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .home-wrapper {
@@ -85,24 +170,35 @@
   width: 100%;
   background: url(../../assets/login-bg.jpg) no-repeat center center fixed;
   background-size: cover;
+  align-items: center;
 }
 
 /* 🟨 Íconos circulares dentro de las tarjetas */
 .card-circle {
   background-color: #FBEAEA;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #E30613;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   flex-shrink: 0;
 }
 
+.admin-circle {
+  background-color: rgba(233, 194, 67, 0.2);
+  color: rgb(233, 194, 67);
+}
+
+.terapeuta-circle {
+  background-color: rgba(211, 55, 65, 0.2);
+  color: rgb(211, 55, 65);
+}
+
 .card-texto {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
   font-family: 'Roboto', sans-serif;
   white-space: nowrap;
@@ -166,28 +262,51 @@
 
 /* ===================== RESPONSIVE ===================== */
 
-/* Tablets grandes (iPad Pro 12.9" y similares) */
-@media (min-width: 1360px) and (max-width: 1440px) {
-  html {
-    font-size: 18px;
+/* Pantallas grandes (iPad Pro y superiores) */
+@media (min-width: 1360px) {
+  
+  .categoria-titulo {
+    font-size: 2rem;
   }
+  
+  .categoria-seccion {
+    margin-bottom: 0.3rem;
+  }
+  
+  .categoria-header {
+    margin-bottom: 0.2rem;
+  }
+  
   .home-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
-    padding: 2.5rem 4rem;
+    gap: 2rem;
+    padding: 2rem 3rem;
     max-width: 1350px;
+    justify-content: center;
   }
+  
+  .admin-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .terapeuta-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
   .home-card {
-    width: 420px;
-    height: 160px;
+    min-width: 350px;
+    max-width: 380px;
+    height: 140px;
     border-radius: 20px;
     transform: none;
-    gap: 2rem;
+    gap: 1.5rem;
   }
+  
   .card-circle {
-    width: 90px;
-    height: 90px;
-    font-size: 2.5rem;
+    width: 80px;
+    height: 80px;
+    font-size: 2.2rem;
   }
 
   .nombre-logo {
@@ -206,72 +325,188 @@
   }
 }
 
-/* Tablets medianas y chicas (>= 900px y < 1360px) */
-@media (max-width: 1359px) and (min-width: 900px) {
+/* iPad Air y tablets similares (>= 1100px y < 1360px) */
+@media (min-width: 1100px) and (max-width: 1359px) {
+  .categoria-titulo {
+    font-size: 2rem;
+  }
+  
+  .categoria-seccion {
+    margin-bottom: 0.3rem;
+  }
+  
+  .categoria-header {
+    margin-bottom: 0.2rem;
+  }
+  
   .home-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-    max-width: 1000px;
+    gap: 2rem;
+    padding: 2rem 3rem;
+    max-width: 1350px;
+    justify-content: center;
   }
+  
+  .admin-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .terapeuta-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
   .home-card {
-    width: 300px;
-    height: 100px;
-    padding: 1rem 1.2rem;
-    gap: 0.8rem;
+    min-width: 350px;
+    max-width: 380px;
+    height: 140px;
+    border-radius: 20px;
+    transform: none;
+    gap: 1.5rem;
   }
+  
   .card-circle {
-    width: 48px;
-    height: 48px;
-    font-size: 1.3rem;
+    width: 80px;
+    height: 80px;
+    font-size: 2.2rem;
   }
-  .card-texto {
-    font-size: 1.05rem;
+
+  .nombre-logo {
+    font-size: 26px;
+  }
+  .user-label {
+    font-size: 1.2rem;
+  }
+  .user-icon {
+    font-size: 3.8rem;
+    padding: 0.6rem;
+  }
+  .user-dropdown a {
+    font-size: 1.15rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Tablets medianas y chicas (>= 900px y < 1100px) */
+@media (max-width: 1099px) and (min-width: 900px) {
+  .categoria-titulo {
+    font-size: 2rem;
+  }
+  
+  .categoria-seccion {
+    margin-bottom: 0.3rem;
+  }
+  
+  .categoria-header {
+    margin-bottom: 0.2rem;
+  }
+  
+  .home-grid {
+    gap: 2rem;
+    padding: 2rem 3rem;
+    max-width: 1350px;
+    justify-content: center;
+  }
+  
+  .admin-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .terapeuta-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .home-card {
+    min-width: 350px;
+    max-width: 380px;
+    height: 140px;
+    border-radius: 20px;
+    transform: none;
+    gap: 1.5rem;
+  }
+  
+  .card-circle {
+    width: 80px;
+    height: 80px;
+    font-size: 2.2rem;
+  }
+
+  .nombre-logo {
+    font-size: 26px;
+  }
+  .user-label {
+    font-size: 1.2rem;
+  }
+  .user-icon {
+    font-size: 3.8rem;
+    padding: 0.6rem;
+  }
+  .user-dropdown a {
+    font-size: 1.15rem;
+    padding: 1rem 1.5rem;
   }
 }
 
 /* Tablets pequeñas  (>=600px y <900px) */
 @media (max-width: 899px) and (min-width: 600px) {
+  .categoria-titulo {
+    font-size: 2rem;
+  }
+  
+  .categoria-seccion {
+    margin-bottom: 0.3rem;
+  }
+  
+  .categoria-header {
+    margin-bottom: 0.2rem;
+  }
+  
   .home-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.7rem;
-    max-width: 600px;
+    gap: 2rem;
+    padding: 2rem 3rem;
+    max-width: 1350px;
+    justify-content: center;
   }
+  
+  .admin-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .terapeuta-grid {
+    gap: 2rem;
+    justify-content: center;
+  }
+  
   .home-card {
-    width: 160px;
-    height: 80px;
-    padding: 0.5rem 0.6rem;
-    gap: 0.5rem;
+    min-width: 350px;
+    max-width: 380px;
+    height: 140px;
+    border-radius: 20px;
+    transform: none;
+    gap: 1.5rem;
   }
+  
   .card-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 0.9rem;
+    width: 80px;
+    height: 80px;
+    font-size: 2.2rem;
   }
-  .card-texto {
-    font-size: 0.85rem;
-  }
-}
 
-/* Móviles: 1 columna */
-@media (max-width: 599px) {
-  .home-grid {
-    grid-template-columns: 1fr;
-    padding: 1.5rem;
-    max-width: 400px;
+  .nombre-logo {
+    font-size: 26px;
   }
-  .home-card {
-    width: 100%;
-    min-width: 0;
-    height: 80px;
-    padding: 0.7rem;
-    gap: 0.5rem;
+  .user-label {
+    font-size: 1.2rem;
   }
-  .card-circle {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+  .user-icon {
+    font-size: 3.8rem;
+    padding: 0.6rem;
   }
-  .card-texto {
-    font-size: 0.9rem;
+  .user-dropdown a {
+    font-size: 1.15rem;
+    padding: 1rem 1.5rem;
   }
 }
