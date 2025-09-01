@@ -144,11 +144,32 @@ const Seguimientos: React.FC = () => {
     const totalPuntaje = evsPaciente.reduce((acc, ev) => acc + ev.puntaje, 0);
     setAciertoTotal(Math.round(totalPuntaje / evsPaciente.length));
 
+    // Agrupar evaluaciones por fecha y calcular promedio diario
+    const evaluacionesPorFecha: { [fecha: string]: number[] } = {};
+    
+    evsPaciente.forEach(ev => {
+      const fechaStr = new Date(ev.fecha).toLocaleDateString('es-CL', { timeZone: 'UTC' });
+      if (!evaluacionesPorFecha[fechaStr]) {
+        evaluacionesPorFecha[fechaStr] = [];
+      }
+      evaluacionesPorFecha[fechaStr].push(ev.puntaje);
+    });
+
+    // Crear arrays para labels y datos con promedio por día
+    const fechasUnicas = Object.keys(evaluacionesPorFecha).sort((a, b) => {
+      return new Date(a.split('/').reverse().join('-')).getTime() - new Date(b.split('/').reverse().join('-')).getTime();
+    });
+    
+    const promediosPorDia = fechasUnicas.map(fecha => {
+      const puntajes = evaluacionesPorFecha[fecha];
+      return Math.round(puntajes.reduce((sum, puntaje) => sum + puntaje, 0) / puntajes.length);
+    });
+
     setProgresoData({
-      labels: evsPaciente.map(e => new Date(e.fecha).toLocaleDateString('es-CL', { timeZone: 'UTC' })),
+      labels: fechasUnicas,
       datasets: [{
-        label: 'Puntaje por Sesión (%)',
-        data: evsPaciente.map(e => e.puntaje),
+        label: 'Promedio Diario (%)',
+        data: promediosPorDia,
         borderColor: '#E30613',
         backgroundColor: 'rgba(227, 6, 19, 0.2)',
         fill: true,
