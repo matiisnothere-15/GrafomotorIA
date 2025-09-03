@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import Header from '../../components/Header';
+import HeaderPaciente from '../../components/HeaderPacientes';
+import { useGlobalPaciente } from '../../context/PacienteContext';
 import { Link } from 'react-router-dom';
 import './SeleccionFigura.css';
 
@@ -28,13 +29,15 @@ const trazados = [
 
 
 const SeleccionTrazado: React.FC = () => {
+  const { nombre } = useGlobalPaciente();
+
   useEffect(() => {
     document.title = 'Selecciona un Trazado';
   }, []);
 
   return (
     <div className="seleccionfigura-wrapper">
-      <Header />
+      <HeaderPaciente nombre_paciente={nombre!} />
       <main>
         <div className="seleccionfigura-grid">
           {trazados.map((trazo) => {

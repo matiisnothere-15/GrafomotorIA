@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import '../Auth/Login.css';
 import './Actividades.css';
-import Header from '../../components/Header';
+import HeaderPaciente from '../../components/HeaderPacientes';
 import { Link } from 'react-router-dom';
+
+import { useGlobalPaciente } from '../../context/PacienteContext';
 
 import figura from '../../assets/ejercicios/copia-figuras.png';
 import trazado from '../../assets/ejercicios/trazado-guiado.png';
@@ -21,13 +23,15 @@ const actividades = [
 ];
 
 const Actividades: React.FC = () => {
+  const { nombre } = useGlobalPaciente();
+
   useEffect(() => {
     document.title = 'Grafomotor IA | Actividades';
   }, []);
 
   return (
     <div className="activity-wrapper">
-      <Header />
+      <HeaderPaciente nombre_paciente={nombre!} />
 
       <main className="home-content">
         <div className="activity-grid">

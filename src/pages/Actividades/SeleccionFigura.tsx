@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import Header from '../../components/Header';
+import HeaderPaciente from '../../components/HeaderPacientes';
+import { useGlobalPaciente } from '../../context/PacienteContext';
 import { Link } from 'react-router-dom';
 import './SeleccionFigura.css';
 
@@ -26,13 +27,15 @@ const figuras = [
 ];
 
 const SeleccionFigura: React.FC = () => {
+  const { nombre } = useGlobalPaciente();
+
   useEffect(() => {
     document.title = 'Selecciona una Figura';
   }, []);
 
   return (
     <div className="seleccionfigura-wrapper">
-      <Header />
+      <HeaderPaciente nombre_paciente={nombre!} />
       <main>
         <div className="seleccionfigura-grid">
           {figuras.map((figura) => {

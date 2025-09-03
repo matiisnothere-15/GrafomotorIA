@@ -16,6 +16,21 @@ export const obtenerPacientes = async (): Promise<Paciente[]> => {
   return await res.json()
 }
 
+// GET: Listar todos los pacientes del terapeuta
+export const obtenerPacientesPorTerapeuta = async (id_terapeuta: number): Promise<Paciente[]> => {
+  const res = await fetch(`${BASE_URL}/pacientes/listarpacientesporterapeuta/${id_terapeuta}`, {
+    method: "GET",
+    headers: getHeaders(),
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(error.msg || "Error al obtener pacientes")
+  }
+
+  return await res.json()
+}
+
 // GET: Obtener paciente por ID
 export const getPacienteById = async (id: number): Promise<Paciente> => {
   const res = await fetch(`${BASE_URL}/pacientes/mostrarpaciente/${id}`, {
