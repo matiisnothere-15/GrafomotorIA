@@ -32,8 +32,12 @@ import Perfil from '../pages/Perfil/Perfil';
 import Configuracion from '../pages/configuracion/Configuracion';
 import Contactanos from '../pages/Contacto/Contactanos';
 
-// Componente de autenticación
+// Componente de autenticación y proteccion de rutas de ejercicios si no se selecciona al paciente
 import PrivateRoute from '../components/PrivateRoute';
+import PrivatePacienteRoute from '../components/PrivatePacienteRoute';
+
+// Grupo para paginas de ejercicios
+//import EjerciciosLayout from '../layouts/EjerciciosLayout';
 
 function AppRoutes() {
   return (
@@ -45,29 +49,29 @@ function AppRoutes() {
 
       {/* Rutas protegidas */}
       <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-      <Route path="/actividades" element={<PrivateRoute><Actividades /></PrivateRoute>} />
+      <Route path="/actividades" element={<PrivatePacienteRoute><Actividades /></PrivatePacienteRoute>} />
       <Route path="/PlanTratamiento" element={<PrivateRoute><PlanTratamientoPage /></PrivateRoute>} />
       <Route path="/actividad/CopiaFigura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
       
       {/* CORREGIDA ESTA LÍNEA */}
-      <Route path="/actividad/trazado-guiado" element={<PrivateRoute><SeleccionTrazado /></PrivateRoute>} />
+      <Route path="/actividad/trazado-guiado" element={<PrivatePacienteRoute><SeleccionTrazado /></PrivatePacienteRoute>} />
       
       <Route path="/Contactanos" element={<PrivateRoute><Contactanos /></PrivateRoute>} />
       <Route path="/Sesion" element={<PrivateRoute><Sesion /></PrivateRoute>} />
       <Route path="/Calendario" element={<PrivateRoute><Calendario /></PrivateRoute>} />
       <Route path="/Seguimientos" element={<PrivateRoute><Seguimientos /></PrivateRoute>} />
       <Route path="/ver-sesiones" element={<VerSesiones />} />
-      <Route path="/actividad/toque-secuencial" element={<ToqueSecuencial />} />
+      <Route path="/actividad/toque-secuencial" element={<PrivatePacienteRoute><ToqueSecuencial /></PrivatePacienteRoute>} />
       <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
       <Route path="/configuracion" element={<PrivateRoute><Configuracion /></PrivateRoute>} />
 
       {/* Selección y ejecución de CopiaFigura */}
-      <Route path="/figuras" element={<PrivateRoute><SeleccionFigura /></PrivateRoute>} />
-      <Route path="/copiar-figura/:nivel/:figura" element={<PrivateRoute><CopiaFigura /></PrivateRoute>} />
+      <Route path="/figuras" element={<PrivatePacienteRoute><SeleccionFigura /></PrivatePacienteRoute>} />
+      <Route path="/copiar-figura/:nivel/:figura" element={<PrivatePacienteRoute><CopiaFigura /></PrivatePacienteRoute>} />
 
       {/* Selección y ejecución de TrazadoGuiado */}
-      <Route path="/trazados" element={<PrivateRoute><SeleccionTrazado /></PrivateRoute>} />
-      <Route path="/trazado-guiado/:nivel/:figura" element={<PrivateRoute><TrazadoGuiado /></PrivateRoute>} />
+      <Route path="/trazados" element={<PrivatePacienteRoute><SeleccionTrazado /></PrivatePacienteRoute>} />
+      <Route path="/trazado-guiado/:nivel/:figura" element={<PrivatePacienteRoute><TrazadoGuiado /></PrivatePacienteRoute>} />
     </Routes>
   );
 }

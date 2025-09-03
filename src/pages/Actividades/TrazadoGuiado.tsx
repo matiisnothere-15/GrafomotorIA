@@ -1,4 +1,5 @@
 // Contenido de src/pages/Actividades/TrazadoGuiado.tsx
+import { useGlobalPaciente } from '../../context/PacienteContext';
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -23,6 +24,8 @@ const nombresBonitos: Record<string, string> = {
 };
 
 const TrazadoGuiado: React.FC = () => {
+  const { id } = useGlobalPaciente();
+
   const { nivel, figura } = useParams();
   const navigate = useNavigate();
   const modelo = modelosTrazado[figura || ''];
@@ -141,7 +144,7 @@ const guardarCoordenadas = async () => {
       tipo_escala: "trazado guiado",
       resultado: jsonData, // <- se ajusta al tipo JSON
       puntaje: puntuacion,
-      id_paciente: 1,
+      id_paciente: Number(id),
       id_ejercicio: actualIndex + 1 + (nivelNumero - 1) * 3
     };
 

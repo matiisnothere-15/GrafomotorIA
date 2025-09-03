@@ -510,3 +510,91 @@
     padding: 1rem 1.5rem;
   }
 }
+
+/*=================== Estilos Modal ========================*/
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-contenido-pacientes {
+  overflow: visible !important;
+  width: 100%;
+  max-width: 600px;
+  padding: 1.5rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  max-height: 90vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+.modal, .modal * {
+  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !important;
+}
+
+.modal-contenido-pacientes input,
+.modal-contenido-pacientes textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #CCCCCC;
+  font-size: 14px;
+  width: 100%;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.modal-acciones button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.modal-acciones button:first-child {
+  background-color: #E30613;
+  color: #FFFFFF;
+}
+
+.button-disabled {
+  opacity: 0.5;
+  cursor: default !important;
+}
+
+.modal-acciones button:last-child {
+  background-color: #CCCCCC;
+  color: #000000;
+}
+
+/* Títulos */
+.modal-contenido-pacientes h3 {
+  font-size: 20px;
+  color: #E30613;
+  font-weight: 700;
+  margin-bottom: 24px;
+  grid-column: span 2;
+}
+
+.select-paciente {
+  position: absolute;
+  min-width: 280px;
+  font-size: 0.9rem;
+  z-index: 9999;
+}
+
+.no-border {
+  outline: none !important;
+}

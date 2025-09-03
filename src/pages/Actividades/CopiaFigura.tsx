@@ -1,4 +1,5 @@
 // Contenido de src/pages/Actividades/CopiaFigura.tsx
+import { useGlobalPaciente } from '../../context/PacienteContext';
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -24,6 +25,8 @@ const idsEjercicios: Record<string, number> = {
 };
 
 const CopiaFigura: React.FC = () => {
+  const { id } = useGlobalPaciente();
+
   const { nivel, figura } = useParams();
   const navigate = useNavigate();
   const modelo = modelos[figura || ''];
@@ -118,12 +121,13 @@ const CopiaFigura: React.FC = () => {
       const contenido = `[\n${formateado}\n]`;
       const jsonData = JSON.parse(contenido);
 
+      // Recibir id del paciente seleccionado
       const datos: EvaluacionEscala = {
         fecha: new Date().toISOString().split("T")[0],
         tipo_escala: "escala 2",
         resultado: jsonData,
         puntaje: puntuacion,
-        id_paciente: 1,
+        id_paciente: Number(id),
         id_ejercicio: idsEjercicios[figura] || 0
       };
 
