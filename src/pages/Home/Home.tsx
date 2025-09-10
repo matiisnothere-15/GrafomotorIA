@@ -11,23 +11,23 @@ import {
   FaTasks,
   FaChartLine,
   FaInfoCircle,
-  FaCog,
-  FaUserMd
+  FaUserMd,
+  FaUser
 } from 'react-icons/fa';
 import type { Paciente } from '../../models/Paciente';
 import { useGlobalPaciente } from '../../context/PacienteContext';
 import { obtenerPacientes, obtenerPacientesPorTerapeuta } from '../../services/pacienteService';
 
-const opcionesAdministrador = [
-  { icono: <FaClipboardList />, texto: 'Sesiones', ruta: '/Sesion' },
-  { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: '/Calendario' }
+const opcionesPaciente = [
+  { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: '/actividades' }
 ];
 
 const opcionesTerapeuta = [
-  { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: '/actividades' },
+  { icono: <FaClipboardList />, texto: 'Sesiones', ruta: '/Sesion' },
+  { icono: <FaCalendarAlt />, texto: 'Calendario y citas', ruta: '/Calendario' },
   { icono: <FaTasks />, texto: 'Planes de tratamiento', ruta: '/PlanTratamiento' },
-  { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/Seguimientos' },
-  { icono: <FaInfoCircle />, texto: 'Contactanos', ruta: '/contactanos' }
+  { icono: <FaChartLine />, texto: 'Seguimiento y progresos', ruta: '/Seguimientos' }
+  // { icono: <FaInfoCircle />, texto: 'Contactanos', ruta: '/contactanos' }
 ];
 
 const Home: React.FC = () => {
@@ -73,20 +73,27 @@ const Home: React.FC = () => {
       <Header />
       <main className="home-content">
 
-        {/* Sección Administrador */}
+        {/* Sección Paciente */}
         <div className="categoria-seccion admin-seccion">
           <div className="categoria-header">
             <h2 className="categoria-titulo admin-titulo">
-              <FaCog className="categoria-icono" />
-              Administrador
+              <FaUser className="categoria-icono" />
+              Paciente
             </h2>
           </div>
           <div className="home-grid admin-grid">
-            {opcionesAdministrador.map((item, index) => (
-              <Link to={item.ruta} className="home-card admin-card" key={`admin-${index}`}>
-                <div className="card-circle admin-circle">{item.icono}</div>
-                <span className="card-texto">{item.texto}</span>
-              </Link>
+            {opcionesPaciente.map((item, index) => (
+              item.ruta == "/actividades"
+                ?
+                <button onClick={() => setAbierto(true)} className="no-border home-card admin-card" key={`paciente-${index}`}>
+                  <div className="card-circle admin-circle">{item.icono}</div>
+                  <span className="card-texto">{item.texto}</span>
+                </button>
+                :
+                <Link to={item.ruta} className="home-card admin-card" key={`paciente-${index}`}>
+                  <div className="card-circle admin-circle">{item.icono}</div>
+                  <span className="card-texto">{item.texto}</span>
+                </Link>
             ))}
           </div>
         </div>

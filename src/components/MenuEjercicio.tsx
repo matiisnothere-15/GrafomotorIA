@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import './MenuEjercicio.css';
-import { CgMenu, CgChevronLeft, CgRedo, CgArrowLeft, CgPen } from 'react-icons/cg';
+import { CgMenu, CgChevronLeft, CgRedo, CgArrowLeft, CgPen, CgArrowsH } from 'react-icons/cg';
 
 interface Props {
   onReiniciar: () => void;
   onVolverSeleccion: () => void;
   onCambiarAncho: (ancho: number) => void;
+  onCambiarPosicionFigura?: (posicion: 'izquierda' | 'derecha') => void;
+  posicionFigura?: 'izquierda' | 'derecha';
+  mostrarOpcionPosicion?: boolean;
 }
 
-const MenuEjercicio: React.FC<Props> = ({ onReiniciar, onVolverSeleccion, onCambiarAncho }) => {
+const MenuEjercicio: React.FC<Props> = ({ 
+  onReiniciar, 
+  onVolverSeleccion, 
+  onCambiarAncho, 
+  onCambiarPosicionFigura,
+  posicionFigura = 'izquierda',
+  mostrarOpcionPosicion = false
+}) => {
   const [abierto, setAbierto] = useState(false);
 
   return (
@@ -52,6 +62,29 @@ const MenuEjercicio: React.FC<Props> = ({ onReiniciar, onVolverSeleccion, onCamb
               </div>
             </div>
           </li>
+          {mostrarOpcionPosicion && onCambiarPosicionFigura && (
+            <li>
+              <div className="control-posicion">
+                <label>
+                  <CgArrowsH size={18} color="#e30613" /> Posición de la figura:
+                </label>
+                <div className="opciones-posicion">
+                  <button 
+                    className={`btn-posicion ${posicionFigura === 'izquierda' ? 'activo' : ''}`}
+                    onClick={() => onCambiarPosicionFigura('izquierda')}
+                  >
+                    Izquierda
+                  </button>
+                  <button 
+                    className={`btn-posicion ${posicionFigura === 'derecha' ? 'activo' : ''}`}
+                    onClick={() => onCambiarPosicionFigura('derecha')}
+                  >
+                    Derecha
+                  </button>
+                </div>
+              </div>
+            </li>
+          )}
         </ul>
       </div>
     </>

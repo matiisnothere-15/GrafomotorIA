@@ -27,8 +27,15 @@ export const obtenerEvaluacionesEscala = async (): Promise<EvaluacionEscala[]> =
 // Crear una nueva evaluación escala
 export const crearEvaluacionEscala = async (evaluacion: EvaluacionEscala): Promise<boolean> => {
   // Validación mínima
-  if (!evaluacion.fecha || !evaluacion.tipo_escala || !evaluacion.resultado || !evaluacion.puntaje || !evaluacion.id_paciente) {
-    console.warn("❌ Faltan campos obligatorios en la evaluación.")
+  if (!evaluacion.fecha || !evaluacion.tipo_escala || !evaluacion.resultado || evaluacion.puntaje === undefined || !evaluacion.id_paciente || !evaluacion.id_ejercicio) {
+    console.warn("❌ Faltan campos obligatorios en la evaluación:", {
+      fecha: !!evaluacion.fecha,
+      tipo_escala: !!evaluacion.tipo_escala,
+      resultado: !!evaluacion.resultado,
+      puntaje: evaluacion.puntaje,
+      id_paciente: !!evaluacion.id_paciente,
+      id_ejercicio: !!evaluacion.id_ejercicio
+    })
     return false
   }
 
