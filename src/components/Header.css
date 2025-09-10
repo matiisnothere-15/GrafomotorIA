@@ -62,6 +62,7 @@ login-logo {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  user-select: none;
 }
 
 .user-label {
@@ -137,6 +138,23 @@ login-logo {
 
 .boton:hover {
   color: #FFFFFF;
+}
+
+.user-dropdown-pacientes {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 999;
+  user-select: none;
+}
+
+.user-dropdown-pacientes button:hover {
+  background-color: #ffecec;
+  color: #e50914;
 }
 
 /*=================== Estilos Modal ========================*/
