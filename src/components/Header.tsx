@@ -73,9 +73,9 @@ const Header: React.FC = () => {
             <div className="user-dropdown">
               <Link to="/perfil"><FaUser /> Perfil</Link>
               <Link to="/configuracion"><FaCog /> Configuración</Link>
-              <button onClick={handleLogout} className="logout">
+              <Link to="" onClick={handleLogout} className="logout">
                 <RiLogoutBoxLine /> Salir
-              </button>
+              </Link>
             </div>
           )}
         </div>

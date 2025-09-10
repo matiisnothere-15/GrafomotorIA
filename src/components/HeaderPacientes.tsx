@@ -2,24 +2,36 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/teleton-logo.png';
 import { FaHospitalUser } from "react-icons/fa6";
 import './Header.css';
-import { useState } from 'react';
-import { useGlobalPaciente } from '../context/PacienteContext';
+import { useEffect, useState, useRef } from 'react';
+import { RiLogoutBoxLine } from 'react-icons/ri';
+import { IoIosArrowDown } from "react-icons/io";
 
 type Props = {
   nombre_paciente: string;
 };
 
 const HeaderPaciente = ({ nombre_paciente }: Props) => {
-    const [abierto, setAbierto] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
-    const { setGlobalPaciente } = useGlobalPaciente();
 
-    const cerrarSesion = () => {
-        setGlobalPaciente("", "")
-        sessionStorage.clear();
-        localStorage.removeItem("fotoPerfil");
+    const salirSesion = () => {
         navigate('/');
     }
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setMenuOpen(false);
+            };
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [])
 
     return (
         <header className="login-header">
@@ -27,38 +39,26 @@ const HeaderPaciente = ({ nombre_paciente }: Props) => {
                 <img src={logo} alt="Teletón" className="login-logo" />
                 <div className="logo-separador" />
                 <p className="nombre-logo">Grafomotor IA</p>
-
-                <button className='boton' onClick={() => setAbierto(true)}>Salir</button>
             </div>
 
-            <div className="user-container">
+            <div className="user-container" onClick={() => setMenuOpen(!menuOpen)} ref={dropdownRef}>
                 <div className="user-label" style={{gap: "15px"}}>
                     <span><strong>Paciente: </strong> {nombre_paciente}</span>
                     
                     <FaHospitalUser style={{width: "32px", height: "32px", color: "#E30613"}}></FaHospitalUser>
+                    <IoIosArrowDown />
                 </div>
 
-            </div>
-
-            {
-                abierto && (
-                    <div className='modal'>
-                        <div className='modal-contenido-pacientes'>
-                            <h3>¿Seguro que deseas salir?</h3>
-                            
-                            <p>La sesión de ejercicios finalizará y no podrás volver a iniciarla.</p>
-
-                            <div className="modal-acciones">
-                                <button onClick={() => cerrarSesion()}>Salir</button>
-                                
-                                <button onClick={() => {
-                                setAbierto(false);
-                                }}>Cerrar</button>
-                            </div>
+                {
+                    menuOpen && (
+                        <div className="user-dropdown-pacientes">
+                            <button onClick={() => salirSesion()} className="logout">
+                                <RiLogoutBoxLine /> Salir de la sesión
+                            </button>
                         </div>
-                    </div>
-                )
-            }
+                )}
+
+            </div>
 
         </header>
     );

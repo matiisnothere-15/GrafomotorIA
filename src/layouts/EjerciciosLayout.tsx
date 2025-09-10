@@ -1,53 +1,58 @@
-/* Corregir para bloquear las cargas a las páginas del paciente en caso de que se salga de las paginas de ejercicios
-import React, { useContext, useEffect } from "react";
-import { Outlet, UNSAFE_NavigationContext } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useBlocker, useNavigate } from "react-router-dom";
+import { useGlobalPaciente } from '../context/PacienteContext';
 
-// Hook para bloquear navegación
-function useBlocker(blocker: () => boolean, when: boolean = true) {
-  const { navigator } = useContext(UNSAFE_NavigationContext) as {
-    navigator: { push: (...args: any[]) => void };
-  };
+const EJERCICIOS_PATHS = [
+  "/actividades",
+  "/actividad/CopiaFigura",
+  "/actividad/trazado-guiado",
+  "/actividad/toque-secuencial",
+  "/figuras",
+  "/copiar-figura",
+  "/trazados",
+  "/trazado-guiado",
+];
+
+function useConfirmExit(message: string) {
+  const navigate = useNavigate();
+  const { setGlobalPaciente } = useGlobalPaciente();
+
+  const blocker = useBlocker(({ nextLocation }) => {
+    // Bloquea solo si la próxima ruta NO pertenece a ejercicios
+    const isExiting = !EJERCICIOS_PATHS.some(path =>
+      nextLocation.pathname.startsWith(path)
+    );
+    return isExiting;
+  });
 
   useEffect(() => {
-    if (!when) return;
-
-    const push = navigator.push;
-    navigator.push = (...args: any[]) => {
-      const allowTransition = blocker();
-      if (allowTransition) {
-        push(...args);
+    if (blocker.state === "blocked") {
+      const confirmExit = window.confirm(message);
+      if (confirmExit) {
+        blocker.proceed();
+        setGlobalPaciente("", "")
+        sessionStorage.clear();
+        localStorage.removeItem("fotoPerfil");
+        navigate('/');
+      } else {
+        blocker.reset();
       }
-    };
-
-    return () => {
-      navigator.push = push;
-    };
-  }, [blocker, when, navigator]);
+    }
+  }, [blocker, message]);
 }
 
 const EjerciciosLayout: React.FC = () => {
-  // Confirmación al cambiar de página dentro de la app
-  useBlocker(() => {
-    return window.confirm(
-      "⚠️ Vas a salir de la sección de ejercicios, ¿quieres continuar?"
-    );
-  }, true);
+  useConfirmExit("⚠️ Vas a salir de la sección de ejercicios, la sesión finalizará y no podrás volver a iniciar ¿quieres continuar?");
 
-  // Confirmación al cerrar pestaña o recargar
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = "";
     };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
-  return <Outlet />; // Renderiza la subruta activa
+  return <Outlet />;
 };
 
 export default EjerciciosLayout;
-*/
