@@ -147,3 +147,46 @@
   left: 100%;
   transform: translateX(-100%);
 }
+
+/* Estilos para control de posición */
+.control-posicion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.opciones-posicion {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-posicion {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #e30613;
+  background: white;
+  color: #e30613;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.btn-posicion:hover {
+  background: #fff2f2;
+  transform: scale(1.05);
+}
+
+.btn-posicion.activo {
+  background: #e30613;
+  color: white;
+  transform: scale(1.05);
+}
+
+.btn-posicion:active {
+  transform: scale(0.95);
+}
