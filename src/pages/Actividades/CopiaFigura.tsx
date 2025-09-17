@@ -9,6 +9,9 @@ import type { EvaluacionEscala } from '../../models/EvaluacionEscala';
 import { crearEvaluacionEscala } from '../../services/evaluacionEscalaService';
 import Stars from '../../components/Stars';
 import MenuEjercicio from '../../components/MenuEjercicio';
+import EvaluacionIA from '../../components/EvaluacionIA';
+import ResumenIA from '../../components/ResumenIA';
+import IconoIA from '../../components/IconoIA';
 import './CopiaFigura.css';
 
 // 🎯 Diccionario de IDs reales por figura
@@ -35,10 +38,13 @@ const CopiaFigura: React.FC = () => {
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
   const [grosorLinea, setGrosorLinea] = useState(4);
-  const [mostrarResumen, setMostrarResumen] = useState(false);
   const [precisiones, setPrecisiones] = useState<number[]>([]);
   const [resetKey, setResetKey] = useState(0);
   const [posicionFigura, setPosicionFigura] = useState<'izquierda' | 'derecha'>('izquierda');
+  const [mostrarEvaluacionIA, setMostrarEvaluacionIA] = useState(false);
+  const [, setPuntuacionIA] = useState<number | null>(null);
+  const [mostrarResumenIA, setMostrarResumenIA] = useState(false);
+  const [puntuacionesUsuario, setPuntuacionesUsuario] = useState<number[]>([]); // Para el resumen IA
 
   const figurasSinSuavizado = ['cuadrado', 'triangulo', 'estrella', 'flecha'];
   const suavizar = !figurasSinSuavizado.includes(figura || '');
@@ -395,7 +401,8 @@ const CopiaFigura: React.FC = () => {
     
     // 👇 **MOSTRAR AL NIÑO LA EVALUACIÓN AMIGABLE**
     setPuntuacion(puntuacionAmigable);
-    setPrecisiones(prev => [...prev, puntuacionMedica]); // Guardar la médica para el resumen
+    setPrecisiones(prev => [...prev, puntuacionMedica]); // Guardar la médica para BD
+    setPuntuacionesUsuario(prev => [...prev, puntuacionAmigable]); // Guardar la amigable para resumen IA
     
     console.log('🎯 EVALUACIÓN DUAL CopiaFigura:', {
       'Para el niño (estrellas)': puntuacionAmigable,
@@ -441,7 +448,8 @@ const CopiaFigura: React.FC = () => {
         setPuntuacion(null);
         navigate(`/copiar-figura/nivel${nivelNumero}/${siguiente}`);
       } else {
-        setMostrarResumen(true);
+        // Mostrar resumen IA para todos los niveles
+        setMostrarResumenIA(true);
       }
     } catch (e) {
       console.error("❌ Error en POST:", e);
@@ -462,12 +470,30 @@ const CopiaFigura: React.FC = () => {
     return '¡Sigue intentando!';
   };
 
-  const promedioPrecision = Math.round(
-    precisiones.reduce((a, b) => a + b, 0) / (precisiones.length || 1)
+
+  // Promedio para el resumen IA (usando las puntuaciones que vio el usuario)
+  const promedioUsuario = Math.round(
+    puntuacionesUsuario.reduce((a, b) => a + b, 0) / (puntuacionesUsuario.length || 1)
   );
 
   const anterior = figs[actualIndex - 1];
   const siguiente = figs[actualIndex + 1];
+
+  // Función para mostrar evaluación IA manualmente
+  const manejarEvaluarConIA = () => {
+    if (coords.length > 20 && modeloTransformado.length > 0) {
+      setMostrarEvaluacionIA(true);
+    }
+  };
+
+  // Función para aceptar la evaluación de IA
+  const manejarAceptarEvaluacionIA = (estrellasIA: number) => {
+    setPuntuacionIA(estrellasIA);
+    // Convertir estrellas a porcentaje (1 estrella = 20%, 5 estrellas = 100%)
+    const nuevaPuntuacion = Math.round((estrellasIA / 5) * 100);
+    setPuntuacion(nuevaPuntuacion);
+  };
+
 
   return (
     <div className="copiafigura-wrapper">
@@ -515,9 +541,58 @@ const CopiaFigura: React.FC = () => {
         posicionFigura={posicionFigura}
       />
 
+      {/* Botón Siguiente arriba a la derecha */}
       {coords.length > 0 && (
-        <button className="guardar-btn" onClick={() => guardarCoordenadas(coords)}>
+        <button 
+          className="guardar-btn" 
+          onClick={() => guardarCoordenadas(coords)}
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000
+          }}
+        >
           Siguiente
+        </button>
+      )}
+      
+      {/* Botón de evaluación IA abajo a la derecha */}
+      {coords.length > 0 && (
+        <button 
+          onClick={manejarEvaluarConIA}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            background: '#dc2626',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            zIndex: 1000,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            width: 'auto',
+            height: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#b91c1c';
+            e.currentTarget.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#dc2626';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          <IconoIA size={24} className="compacto" />
+          IA
         </button>
       )}
 
@@ -529,19 +604,34 @@ const CopiaFigura: React.FC = () => {
         </div>
       )}
 
-      {mostrarResumen && (
-        <div className="resumen-modal">
-          <div className="resumen-contenido">
-            <h2>🎉 Resumen de Nivel {nivelNumero}</h2>
-            <p>Ejercicios realizados: {precisiones.length}</p>
-            <p>Desempeño general:</p>
-            <Stars porcentaje={promedioPrecision} />
-            <button className="volver-btn" onClick={() => navigate('/figuras')}>
-              Volver a la selección de niveles
-            </button>
-          </div>
-        </div>
+
+      {/* Evaluación IA */}
+      {mostrarEvaluacionIA && modeloTransformado.length > 0 && (
+        <EvaluacionIA
+          coordenadasModelo={modeloTransformado}
+          coordenadasPaciente={escalarCoordenadasUsuario(filtrarCoordenadasAreaDibujo(coords, posicionFigura), posicionFigura)}
+          figuraObjetivo={figura || 'Figura'}
+          puntuacionOriginal={puntuacion ? Math.round((puntuacion / 100) * 5) : 1}
+          onClose={() => setMostrarEvaluacionIA(false)}
+          onAceptarEvaluacion={manejarAceptarEvaluacionIA}
+        />
       )}
+
+      {/* Resumen IA para todos los niveles */}
+      {mostrarResumenIA && (
+        <ResumenIA
+          tipoEjercicio="Copia de Figuras"
+          nivel={nivelNumero}
+          precisiones={puntuacionesUsuario}
+          promedioPrecision={promedioUsuario}
+          ejerciciosCompletados={puntuacionesUsuario.length}
+          onClose={() => {
+            setMostrarResumenIA(false);
+            navigate('/figuras');
+          }}
+        />
+      )}
+
     </div>
   );
 };

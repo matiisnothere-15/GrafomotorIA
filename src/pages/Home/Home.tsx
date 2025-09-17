@@ -17,6 +17,7 @@ import {
 import type { Paciente } from '../../models/Paciente';
 import { useGlobalPaciente } from '../../context/PacienteContext';
 import { obtenerPacientes, obtenerPacientesPorTerapeuta } from '../../services/pacienteService';
+import ChatIA from '../../components/ChatIA';
 
 const opcionesPaciente = [
   { icono: <FaDumbbell />, texto: 'Biblioteca de ejercicios', ruta: '/actividades' }
@@ -179,6 +180,22 @@ const Home: React.FC = () => {
         }
 
       </main>
+
+      {/* Chat IA solo en el Home */}
+      <ChatIA
+        tipoEjercicio="general"
+        figuraObjetivo="Asistente general"
+        descripcionTrazado=""
+        nivelActual="Inicio"
+        dificultades={[]}
+        progreso="Sistema de grafomotricidad"
+        perfilPaciente={pacienteSeleccionado ? {
+          nombre: nombrePaciente,
+          id: pacienteSeleccionado,
+          edad: undefined, // Se puede agregar más tarde
+          diagnostico: undefined // Se puede agregar más tarde
+        } : undefined}
+      />
     </div>
   );
 };

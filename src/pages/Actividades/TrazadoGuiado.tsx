@@ -7,6 +7,9 @@ import DoblePizarra from '../../components/DoblePizarra';
 import { modelosTrazado } from '../../components/coordenadasModelos';
 import Stars from '../../components/Stars';
 import MenuEjercicio from '../../components/MenuEjercicio';
+import EvaluacionIA from '../../components/EvaluacionIA';
+import ResumenIA from '../../components/ResumenIA';
+import IconoIA from '../../components/IconoIA';
 import { crearEvaluacionEscala } from '../../services/evaluacionEscalaService'; // ✅ importa servicio
 import type { EvaluacionEscala } from '../../models/EvaluacionEscala'; // ✅ importa tipo
 import './CopiaFigura.css';
@@ -34,10 +37,13 @@ const TrazadoGuiado: React.FC = () => {
   const [modeloTransformado, setModeloTransformado] = useState<{ x: number; y: number }[]>([]);
   const [puntuacion, setPuntuacion] = useState<number | null>(null);
   const [grosorLinea, setGrosorLinea] = useState(4);
-  const [mostrarResumen, setMostrarResumen] = useState(false);
   const [precisiones, setPrecisiones] = useState<number[]>([]);
   const [keyPizarra, setKeyPizarra] = useState(Date.now());
   const [posicionFigura, setPosicionFigura] = useState<'izquierda' | 'derecha'>('izquierda');
+  const [mostrarEvaluacionIA, setMostrarEvaluacionIA] = useState(false);
+  const [, setPuntuacionIA] = useState<number | null>(null);
+  const [mostrarResumenIA, setMostrarResumenIA] = useState(false);
+  const [puntuacionesUsuario, setPuntuacionesUsuario] = useState<number[]>([]); // Para el resumen IA
 
   const trazadosNivel: Record<number, string[]> = {
     1: ['montaña', 'ondas', 'ola'],
@@ -397,7 +403,8 @@ const TrazadoGuiado: React.FC = () => {
     
     // 👇 **MOSTRAR AL NIÑO LA EVALUACIÓN AMIGABLE**
     setPuntuacion(puntuacionAmigable);
-    setPrecisiones(prev => [...prev, puntuacionMedica]); // Guardar la médica para el resumen
+    setPrecisiones(prev => [...prev, puntuacionMedica]); // Guardar la médica para BD
+    setPuntuacionesUsuario(prev => [...prev, puntuacionAmigable]); // Guardar la amigable para resumen IA
     
     console.log('🎯 EVALUACIÓN DUAL:', {
       'Para el niño (estrellas)': puntuacionAmigable,
@@ -451,12 +458,15 @@ const guardarCoordenadas = async () => {
       setKeyPizarra(Date.now());
       navigate(`/trazado-guiado/nivel${nivelNumero}/${siguiente}`);
     } else {
-      setMostrarResumen(true);
+      // Mostrar resumen IA para todos los niveles
+      setMostrarResumenIA(true);
     }
   };
 
-  const promedioPrecision = Math.round(
-    precisiones.reduce((a, b) => a + b, 0) / (precisiones.length || 1)
+
+  // Promedio para el resumen IA (usando las puntuaciones que vio el usuario)
+  const promedioUsuario = Math.round(
+    puntuacionesUsuario.reduce((a, b) => a + b, 0) / (puntuacionesUsuario.length || 1)
   );
 
   const anterior = figuras[actualIndex - 1];
@@ -476,6 +486,34 @@ const guardarCoordenadas = async () => {
     if (puntaje >= 40) return '¡Muy bien!';
     return '¡Sigue intentando!';
   };
+
+  // Función para mostrar evaluación IA manualmente
+  const manejarEvaluarConIA = () => {
+    console.log('🔍 TrazadoGuiado - Intentando evaluar con IA:', {
+      coordsLength: coords.length,
+      modeloTransformadoLength: modeloTransformado.length,
+      figura: figura,
+      posicionFigura: posicionFigura
+    });
+    
+    if (coords.length > 20 && modeloTransformado.length > 0) {
+      console.log('✅ TrazadoGuiado - Mostrando evaluación IA');
+      setMostrarEvaluacionIA(true);
+    } else {
+      console.log('❌ TrazadoGuiado - No se puede evaluar:', {
+        reason: coords.length <= 20 ? 'coords insuficientes' : 'modelo no transformado'
+      });
+    }
+  };
+
+  // Función para aceptar la evaluación de IA
+  const manejarAceptarEvaluacionIA = (estrellasIA: number) => {
+    setPuntuacionIA(estrellasIA);
+    // Convertir estrellas a porcentaje (1 estrella = 20%, 5 estrellas = 100%)
+    const nuevaPuntuacion = Math.round((estrellasIA / 5) * 100);
+    setPuntuacion(nuevaPuntuacion);
+  };
+
 
   return (
     <div className="copiafigura-wrapper">
@@ -511,7 +549,10 @@ const guardarCoordenadas = async () => {
         key={keyPizarra}
         onFinishDraw={setCoords}
         coordsModelo={modelo}
-        onModeloTransformado={setModeloTransformado}
+        onModeloTransformado={(coords) => {
+          console.log('🔍 TrazadoGuiado - Recibiendo modelo transformado:', coords.length, 'puntos');
+          setModeloTransformado(coords);
+        }}
         background="#fff"
         color="black"
         lineWidth={grosorLinea}
@@ -522,9 +563,58 @@ const guardarCoordenadas = async () => {
         posicionFigura={posicionFigura}
       />
 
-      {coords.length > 20 && ( // Solo mostrar el botón si el trazo es válido
-        <button className="guardar-btn" onClick={siguienteFigura}>
+      {/* Botón Siguiente arriba a la derecha */}
+      {coords.length > 20 && (
+        <button 
+          className="guardar-btn" 
+          onClick={siguienteFigura}
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000
+          }}
+        >
           Siguiente
+        </button>
+      )}
+      
+      {/* Botón de evaluación IA abajo a la derecha */}
+      {coords.length > 20 && (
+        <button 
+          onClick={manejarEvaluarConIA}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            background: '#dc2626',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            zIndex: 1000,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            width: 'auto',
+            height: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#b91c1c';
+            e.currentTarget.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#dc2626';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          <IconoIA size={24} className="compacto" />
+          IA
         </button>
       )}
       
@@ -536,22 +626,34 @@ const guardarCoordenadas = async () => {
         </div>
       )}
 
-      {mostrarResumen && (
-        <div className="resumen-modal">
-          <div className="resumen-contenido">
-            <h2>🎉 Resumen de Nivel {nivelNumero}</h2>
-            <p>Ejercicios realizados: {precisiones.length}</p>
-            <p>Desempeño general:</p>
-            <Stars porcentaje={promedioPrecision} />
-            <button
-              className="volver-btn"
-              onClick={() => navigate('/trazados')}
-            >
-              Volver a la selección de niveles
-            </button>
-          </div>
-        </div>
+
+      {/* Evaluación IA */}
+      {mostrarEvaluacionIA && modeloTransformado.length > 0 && (
+        <EvaluacionIA
+          coordenadasModelo={modeloTransformado}
+          coordenadasPaciente={escalarCoordenadasUsuario(filtrarCoordenadasAreaDibujo(coords, posicionFigura), posicionFigura)}
+          figuraObjetivo={nombresBonitos[figura || ''] || figura}
+          puntuacionOriginal={puntuacion ? Math.round((puntuacion / 100) * 5) : 1}
+          onClose={() => setMostrarEvaluacionIA(false)}
+          onAceptarEvaluacion={manejarAceptarEvaluacionIA}
+        />
       )}
+
+      {/* Resumen IA para todos los niveles */}
+      {mostrarResumenIA && (
+        <ResumenIA
+          tipoEjercicio="Trazado Guiado"
+          nivel={nivelNumero}
+          precisiones={puntuacionesUsuario}
+          promedioPrecision={promedioUsuario}
+          ejerciciosCompletados={puntuacionesUsuario.length}
+          onClose={() => {
+            setMostrarResumenIA(false);
+            navigate('/trazados');
+          }}
+        />
+      )}
+
     </div>
   );
 };

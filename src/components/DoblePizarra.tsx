@@ -146,7 +146,10 @@ const DoblePizarra = forwardRef(({
     ctx.lineWidth = grosorModelo * (window.devicePixelRatio || 1);
     ctx.stroke();
 
-    if (onModeloTransformado) onModeloTransformado(coordsTransformadas);
+    if (onModeloTransformado) {
+      console.log('🔍 DoblePizarra - Enviando modelo transformado:', coordsTransformadas.length, 'puntos');
+      onModeloTransformado(coordsTransformadas);
+    }
   };
 
   const getExactPos = (e: React.PointerEvent<HTMLCanvasElement>) => {
